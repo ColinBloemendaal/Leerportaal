@@ -21,7 +21,7 @@ Legend: `[ ]` todo · `[x]` done · `[~]` in progress · `[!]` blocked (add a no
 - [x] Configure `.env.example` with every key the project needs
 - [x] `Model::preventLazyLoading()` + `preventSilentlyDiscardingAttributes()` in non-production
 - [x] Create the layer directories from CLAUDE.md §3 (`Actions`, `Contracts`, `DataTransferObjects`, `Repositories/Eloquent`, `Services`, `Http/Resources`, `Enums`, `Exceptions`)
-- [ ] `RepositoryServiceProvider` with interface → implementation binding convention
+- [x] `RepositoryServiceProvider` with interface → implementation binding convention
 - [ ] Base classes/interfaces: `QuestionType`, `PaymentGateway` stub, base repository interface pattern
 - [ ] `tests/Architecture/` Pest arch tests enforcing CLAUDE.md §3a (see §9)
 - [ ] `tests/Fakes/` directory + fake for every external-service interface
