@@ -1,0 +1,65 @@
+name: CI
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+
+concurrency:
+    group: ci-${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+    cancel-in-progress: true
+
+jobs:
+    php:
+        name: PHP (Pint, Larastan, Pest)
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.3'
+                  extensions: mbstring, pdo_sqlite, sqlite3
+                  coverage: pcov
+
+            - name: Cache Composer dependencies
+              uses: actions/cache@v4
+              with:
+                  path: vendor
+                  key: composer-${{ hashFiles('composer.lock') }}
+
+            - name: Install Composer dependencies
+              run: composer install --no-interaction --prefer-dist
+
+            - name: Prepare environment
+              run: |
+                  cp .env.example .env
+                  php artisan key:generate
+
+            - name: Run checks (Pint, Larastan, Pest with coverage gate)
+              run: composer check
+
+    js:
+        name: JS (ESLint, Prettier, vue-tsc)
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Setup Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '22'
+                  cache: npm
+
+            - name: Install npm dependencies
+              run: npm ci
+
+            - name: Lint (ESLint + Prettier)
+              run: npm run lint
+
+            - name: Type-check (vue-tsc)
+              run: npm run types
+
+            - name: Build
+              run: npm run build
