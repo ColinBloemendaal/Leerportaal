@@ -14,7 +14,7 @@ Legend: `[ ]` todo · `[x]` done · `[~]` in progress · `[!]` blocked (add a no
 - [x] Install Inertia (server + client) + Vue 3 + TypeScript + Vite
 - [x] Install Bootstrap 5.3 + Sass. Create `resources/sass/_variables.scss` and `app.scss`
 - [x] Confirm no Tailwind anywhere in the project (remove Laravel's default)
-- [ ] Install Pint, Larastan (level 8), Pest, Pest coverage plugin
+- [x] Install Pint, Larastan (level 8), Pest, Pest coverage plugin — coverage driver (Xdebug/PCOV) not installed locally on this machine; wired into CI instead
 - [ ] Install ESLint, Prettier, `vue-tsc`
 - [ ] Add `composer check` / `composer fix` / `npm run lint` / `npm run types` scripts
 - [ ] GitHub Actions CI: Pint, Larastan, Pest with 85% coverage gate, ESLint, vue-tsc
