@@ -4,7 +4,10 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "lint": "eslint . && prettier --check resources/js",
+        "format": "eslint . --fix && prettier --write resources/js",
+        "types": "vue-tsc --noEmit"
     },
     "devDependencies": {
         "@eslint/js": "^10.0.1",

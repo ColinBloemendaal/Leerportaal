@@ -16,7 +16,7 @@ Legend: `[ ]` todo · `[x]` done · `[~]` in progress · `[!]` blocked (add a no
 - [x] Confirm no Tailwind anywhere in the project (remove Laravel's default)
 - [x] Install Pint, Larastan (level 8), Pest, Pest coverage plugin — coverage driver (Xdebug/PCOV) not installed locally on this machine; wired into CI instead
 - [x] Install ESLint, Prettier, `vue-tsc`
-- [ ] Add `composer check` / `composer fix` / `npm run lint` / `npm run types` scripts
+- [x] Add `composer check` / `composer fix` / `npm run lint` / `npm run types` scripts
 - [ ] GitHub Actions CI: Pint, Larastan, Pest with 85% coverage gate, ESLint, vue-tsc
 - [ ] Configure `.env.example` with every key the project needs
 - [ ] `Model::preventLazyLoading()` + `preventSilentlyDiscardingAttributes()` in non-production
