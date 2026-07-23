@@ -18,7 +18,7 @@ Legend: `[ ]` todo · `[x]` done · `[~]` in progress · `[!]` blocked (add a no
 - [x] Install ESLint, Prettier, `vue-tsc`
 - [x] Add `composer check` / `composer fix` / `npm run lint` / `npm run types` scripts
 - [x] GitHub Actions CI: Pint, Larastan, Pest with 85% coverage gate, ESLint, vue-tsc
-- [ ] Configure `.env.example` with every key the project needs
+- [x] Configure `.env.example` with every key the project needs
 - [ ] `Model::preventLazyLoading()` + `preventSilentlyDiscardingAttributes()` in non-production
 - [ ] Create the layer directories from CLAUDE.md §3 (`Actions`, `Contracts`, `DataTransferObjects`, `Repositories/Eloquent`, `Services`, `Http/Resources`, `Enums`, `Exceptions`)
 - [ ] `RepositoryServiceProvider` with interface → implementation binding convention
