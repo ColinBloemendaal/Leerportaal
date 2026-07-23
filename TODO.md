@@ -27,7 +27,7 @@ Legend: `[ ]` todo · `[x]` done · `[~]` in progress · `[!]` blocked (add a no
 - [x] `tests/Fakes/` directory + fake for every external-service interface
 - [!] One vertical slice as a reference implementation (FormRequest → DTO → Action → Repository → Inertia Resource) for later tasks to copy — deferred to Phase 1 by human decision: every real concept to slice through belongs to a later phase, and a throwaway non-domain example couldn't demonstrate tenancy scoping (CLAUDE.md §2). Moved to Phase 1 below, once the first tenant-scoped model exists.
 - [x] Base Inertia layouts: `GuestLayout`, `AppLayout`, `AdminLayout` (Bootstrap, no theming yet)
-- [ ] Error pages (403/404/419/500) as Inertia pages
+- [x] Error pages (403/404/419/500) as Inertia pages
 - [ ] Ploi deployment script + zero-downtime deploy, staging environment on Hetzner
 - [ ] Queue worker (Redis) + Horizon, scheduler cron via Ploi
 - [ ] Sentry (or equivalent) with PII redaction configured
