@@ -24,7 +24,7 @@ Legend: `[ ]` todo · `[x]` done · `[~]` in progress · `[!]` blocked (add a no
 - [x] `RepositoryServiceProvider` with interface → implementation binding convention
 - [x] Base classes/interfaces: `QuestionType`, `PaymentGateway` stub, base repository interface pattern
 - [x] `tests/Architecture/` Pest arch tests enforcing CLAUDE.md §3a (see §9)
-- [ ] `tests/Fakes/` directory + fake for every external-service interface
+- [x] `tests/Fakes/` directory + fake for every external-service interface
 - [ ] One vertical slice as a reference implementation (FormRequest → DTO → Action → Repository → Inertia Resource) for later tasks to copy
 - [ ] Base Inertia layouts: `GuestLayout`, `AppLayout`, `AdminLayout` (Bootstrap, no theming yet)
 - [ ] Error pages (403/404/419/500) as Inertia pages
