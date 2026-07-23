@@ -1,6 +1,7 @@
 import { createApp, h, DefineComponent } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import 'bootstrap';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Leerportaal';
 
