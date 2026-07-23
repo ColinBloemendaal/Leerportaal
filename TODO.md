@@ -9,9 +9,9 @@ Legend: `[ ]` todo · `[x]` done · `[~]` in progress · `[!]` blocked (add a no
 
 ## Phase 0 — Foundation
 
-- [ ] `composer create-project laravel/laravel` — PHP 8.3, Laravel 12
-- [ ] Git init, `main` protected, branch naming per CLAUDE.md §10
-- [ ] Install Inertia (server + client) + Vue 3 + TypeScript + Vite
+- [x] `composer create-project laravel/laravel` — PHP 8.3, Laravel 12
+- [x] Git init, `main` protected, branch naming per CLAUDE.md §10 — branch protection skipped by explicit human decision (solo work, direct commits to `main` allowed for now)
+- [x] Install Inertia (server + client) + Vue 3 + TypeScript + Vite
 - [ ] Install Bootstrap 5.3 + Sass. Create `resources/sass/_variables.scss` and `app.scss`
 - [ ] Confirm no Tailwind anywhere in the project (remove Laravel's default)
 - [ ] Install Pint, Larastan (level 8), Pest, Pest coverage plugin
