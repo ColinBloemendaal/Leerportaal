@@ -25,7 +25,7 @@ Legend: `[ ]` todo · `[x]` done · `[~]` in progress · `[!]` blocked (add a no
 - [x] Base classes/interfaces: `QuestionType`, `PaymentGateway` stub, base repository interface pattern
 - [x] `tests/Architecture/` Pest arch tests enforcing CLAUDE.md §3a (see §9)
 - [x] `tests/Fakes/` directory + fake for every external-service interface
-- [ ] One vertical slice as a reference implementation (FormRequest → DTO → Action → Repository → Inertia Resource) for later tasks to copy
+- [!] One vertical slice as a reference implementation (FormRequest → DTO → Action → Repository → Inertia Resource) for later tasks to copy — deferred to Phase 1 by human decision: every real concept to slice through belongs to a later phase, and a throwaway non-domain example couldn't demonstrate tenancy scoping (CLAUDE.md §2). Moved to Phase 1 below, once the first tenant-scoped model exists.
 - [ ] Base Inertia layouts: `GuestLayout`, `AppLayout`, `AdminLayout` (Bootstrap, no theming yet)
 - [ ] Error pages (403/404/419/500) as Inertia pages
 - [ ] Ploi deployment script + zero-downtime deploy, staging environment on Hetzner
@@ -55,6 +55,7 @@ Legend: `[ ]` todo · `[x]` done · `[~]` in progress · `[!]` blocked (add a no
 - [ ] `users` table: one table, one guard, `reseller_id` nullable (null = platform staff)
 - [ ] `resellerklanten` table + model, `reseller_id` scoped
 - [ ] `users.resellerklant_id` nullable FK
+- [ ] Reference vertical slice (FormRequest → DTO → Action → Repository → Inertia Resource) built around `resellerklanten` — deferred here from Phase 0 task 13, since it's the first tenant-scoped model and can demonstrate `TenantScoped` in the copyable example
 - [ ] Login, logout, password reset, email verification (Fortify or hand-rolled)
 - [ ] 2FA (TOTP + recovery codes). Mandatory for platform roles, optional for others
 - [ ] Rate limiting on all auth endpoints
