@@ -15,7 +15,7 @@ Legend: `[ ]` todo · `[x]` done · `[~]` in progress · `[!]` blocked (add a no
 - [x] Install Bootstrap 5.3 + Sass. Create `resources/sass/_variables.scss` and `app.scss`
 - [x] Confirm no Tailwind anywhere in the project (remove Laravel's default)
 - [x] Install Pint, Larastan (level 8), Pest, Pest coverage plugin — coverage driver (Xdebug/PCOV) not installed locally on this machine; wired into CI instead
-- [ ] Install ESLint, Prettier, `vue-tsc`
+- [x] Install ESLint, Prettier, `vue-tsc`
 - [ ] Add `composer check` / `composer fix` / `npm run lint` / `npm run types` scripts
 - [ ] GitHub Actions CI: Pint, Larastan, Pest with 85% coverage gate, ESLint, vue-tsc
 - [ ] Configure `.env.example` with every key the project needs
