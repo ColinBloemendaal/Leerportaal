@@ -17,6 +17,7 @@ Rules:
 5. If a task is blocked or ambiguous, **stop and ask**. Do not guess at product decisions. Do not silently pick an interpretation.
 6. If you discover work that isn't in `TODO.md`, add it to the correct phase rather than doing it inline.
 7. Never mark a task complete without tests passing and static analysis clean.
+8. **Never start a live browser session (dev server preview, `artisan serve`, `npm run dev`, etc.) to test the app.** The human does this testing themselves. Verify with `composer check` / static analysis / automated tests instead.
 
 Every commit must leave `main` deployable.
 
