@@ -23,7 +23,7 @@ Legend: `[ ]` todo · `[x]` done · `[~]` in progress · `[!]` blocked (add a no
 - [x] Create the layer directories from CLAUDE.md §3 (`Actions`, `Contracts`, `DataTransferObjects`, `Repositories/Eloquent`, `Services`, `Http/Resources`, `Enums`, `Exceptions`)
 - [x] `RepositoryServiceProvider` with interface → implementation binding convention
 - [x] Base classes/interfaces: `QuestionType`, `PaymentGateway` stub, base repository interface pattern
-- [ ] `tests/Architecture/` Pest arch tests enforcing CLAUDE.md §3a (see §9)
+- [x] `tests/Architecture/` Pest arch tests enforcing CLAUDE.md §3a (see §9)
 - [ ] `tests/Fakes/` directory + fake for every external-service interface
 - [ ] One vertical slice as a reference implementation (FormRequest → DTO → Action → Repository → Inertia Resource) for later tasks to copy
 - [ ] Base Inertia layouts: `GuestLayout`, `AppLayout`, `AdminLayout` (Bootstrap, no theming yet)
