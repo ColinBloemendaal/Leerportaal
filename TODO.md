@@ -55,7 +55,7 @@ Legend: `[ ]` todo · `[x]` done · `[~]` in progress · `[!]` blocked (add a no
 - [x] `users` table: one table, one guard, `reseller_id` nullable (null = platform staff)
 - [x] `resellerklanten` table + model, `reseller_id` scoped — done early (Tenancy core section above)
 - [x] `users.resellerklant_id` nullable FK
-- [ ] Reference vertical slice (FormRequest → DTO → Action → Repository → Inertia Resource) built around `resellerklanten` — deferred here from Phase 0 task 13, since it's the first tenant-scoped model and can demonstrate `TenantScoped` in the copyable example
+- [x] Reference vertical slice (FormRequest → DTO → Action → Repository → Inertia Resource) built around `resellerklanten` — index + create, `/klanten`; not yet gated behind `auth` middleware since login doesn't exist (next task) — `can:` middleware still denies guests and platform staff
 - [ ] Login, logout, password reset, email verification (Fortify or hand-rolled)
 - [ ] 2FA (TOTP + recovery codes). Mandatory for platform roles, optional for others
 - [ ] Rate limiting on all auth endpoints
