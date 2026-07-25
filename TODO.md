@@ -39,9 +39,9 @@ Legend: `[ ]` todo · `[x]` done · `[~]` in progress · `[!]` blocked (add a no
 ### Tenancy core
 
 - [x] `resellers` table + model (name, slug, status, settings, soft deletes)
-- [ ] `App\Tenancy\TenantContext` scoped singleton
-- [ ] `App\Scopes\TenantScope` global scope
-- [ ] `App\Concerns\TenantScoped` trait (scope + `creating` stamp)
+- [x] `App\Tenancy\TenantContext` scoped singleton
+- [x] `App\Scopes\TenantScope` global scope
+- [x] `App\Concerns\TenantScoped` trait (scope + `creating` stamp) — Larastan flags an unused trait with no consumer, so `resellerklanten` (table + model only, see below) was pulled forward as its first real consumer, with an isolation test in `tests/Tenancy/`
 - [ ] `ResolveTenant` middleware: custom domain → cookie → fallback
 - [ ] `/login/{slug}` route that resolves reseller and sets the tenant cookie
 - [ ] Custom domain table + verification flow (DNS CNAME check)
@@ -53,7 +53,7 @@ Legend: `[ ]` todo · `[x]` done · `[~]` in progress · `[!]` blocked (add a no
 ### Users & auth
 
 - [ ] `users` table: one table, one guard, `reseller_id` nullable (null = platform staff)
-- [ ] `resellerklanten` table + model, `reseller_id` scoped
+- [x] `resellerklanten` table + model, `reseller_id` scoped — done early (Tenancy core section above); still needs `users.resellerklant_id` and the rest of this section
 - [ ] `users.resellerklant_id` nullable FK
 - [ ] Reference vertical slice (FormRequest → DTO → Action → Repository → Inertia Resource) built around `resellerklanten` — deferred here from Phase 0 task 13, since it's the first tenant-scoped model and can demonstrate `TenantScoped` in the copyable example
 - [ ] Login, logout, password reset, email verification (Fortify or hand-rolled)
