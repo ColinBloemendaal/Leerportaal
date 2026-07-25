@@ -42,9 +42,9 @@ Legend: `[ ]` todo · `[x]` done · `[~]` in progress · `[!]` blocked (add a no
 - [x] `App\Tenancy\TenantContext` scoped singleton
 - [x] `App\Scopes\TenantScope` global scope
 - [x] `App\Concerns\TenantScoped` trait (scope + `creating` stamp) — Larastan flags an unused trait with no consumer, so `resellerklanten` (table + model only, see below) was pulled forward as its first real consumer, with an isolation test in `tests/Tenancy/`
-- [x] `ResolveTenant` middleware: custom domain → cookie → fallback — custom domain step stubbed out (returns nothing) until the next task adds the table; cookie resolution live and tested
+- [x] `ResolveTenant` middleware: custom domain → cookie → fallback — both steps now fully wired (this task added the custom domain step)
 - [x] `/login/{slug}` route that resolves reseller and sets the tenant cookie
-- [ ] Custom domain table + verification flow (DNS CNAME check)
+- [x] Custom domain table + verification flow (DNS CNAME check)
 - [ ] Automated LetsEncrypt issuance for custom domains (Ploi API)
 - [ ] Unbranded fallback experience for bare `leerportaal.nl`
 - [ ] `tests/Tenancy/` helper: `actingAsReseller()`, `assertTenantIsolated()`

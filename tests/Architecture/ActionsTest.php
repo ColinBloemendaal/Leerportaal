@@ -9,7 +9,7 @@ it('exposes only __invoke as a public entry point', function (): void {
 
     foreach ($classes as $class) {
         $reflection = new ReflectionClass($class);
-        $publicMethods = array_diff(Support::ownPublicMethods($reflection), ['__construct']);
+        $publicMethods = array_values(array_diff(Support::ownPublicMethods($reflection), ['__construct']));
 
         expect($publicMethods)
             ->toBe(['__invoke'], "{$class} must expose only __invoke, found: ".implode(', ', $publicMethods));

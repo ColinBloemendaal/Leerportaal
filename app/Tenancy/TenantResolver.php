@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tenancy;
 
+use App\Contracts\Repositories\CustomDomainRepository;
 use App\Contracts\Repositories\ResellerRepository;
 use App\Models\Reseller;
 use Illuminate\Http\Request;
@@ -12,17 +13,22 @@ use Illuminate\Http\Request;
  * Resolution chain per CLAUDE.md §1: custom domain -> tenant cookie ->
  * fallback. Bare browsing with neither is the legitimate unbranded
  * experience, not an error.
- *
- * Custom domain resolution lands here once the custom domain table and
- * verification flow exist (Phase 1 task 22) -- for now, cookie only.
  */
 final class TenantResolver
 {
-    public function __construct(private readonly ResellerRepository $resellers) {}
+    public function __construct(
+        private readonly ResellerRepository $resellers,
+        private readonly CustomDomainRepository $customDomains,
+    ) {}
 
     public function resolve(Request $request): ?Reseller
     {
-        return $this->resolveByCookie($request);
+        return $this->resolveByCustomDomain($request) ?? $this->resolveByCookie($request);
+    }
+
+    private function resolveByCustomDomain(Request $request): ?Reseller
+    {
+        return $this->customDomains->findVerifiedByDomain($request->getHost())?->reseller;
     }
 
     private function resolveByCookie(Request $request): ?Reseller
