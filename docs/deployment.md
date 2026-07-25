@@ -11,7 +11,7 @@ These are Ploi dashboard actions, not something scriptable from this repo:
 3. Paste [`deploy/ploi-deploy.sh`](../deploy/ploi-deploy.sh)'s contents into Site -> **Deploy Script**. Keep the two in sync by hand -- Ploi does not read the file from the repo.
 4. Enable **Zero-downtime deployment** in Site -> Settings. Ploi then builds each release in a fresh directory and atomically symlinks it into place once the deploy script exits `0`.
 5. Enable the **Laravel Scheduler** toggle (Site -> Scheduler). This registers the `* * * * * php artisan schedule:run` cron entry Ploi manages -- nothing to add manually.
-6. Add a **queue worker daemon** (Site -> Queue) once Horizon is installed: command `php artisan horizon`, with `php artisan horizon:terminate` added as a deploy script step so workers pick up new code on each release (graceful restart, not a hard kill).
+6. Add a **queue worker daemon** (Site -> Queue): command `php artisan horizon`. `deploy/ploi-deploy.sh` already calls `php artisan horizon:terminate` on each release so workers pick up new code (graceful restart, not a hard kill).
 7. Repeat steps 2-6 for a second, staging site pointed at a staging branch/subdomain, with its own database and `.env` -- this is the "staging environment" TODO item. Staging should mirror production configuration (§1 of CLAUDE.md) as closely as practical, scaled down.
 8. Set every key from `.env.example` in the site's **Environment file** editor in Ploi, with real values (Mollie, Sentry, S3-compatible storage, Ploi API for LetsEncrypt automation, etc.).
 

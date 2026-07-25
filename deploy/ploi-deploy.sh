@@ -23,3 +23,8 @@ php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 php artisan event:cache
+
+# Gracefully restarts Horizon workers so they pick up the new code on
+# their next job (not a hard kill) -- Ploi's Horizon queue daemon
+# (Site -> Queue) auto-restarts the process after this.
+php artisan horizon:terminate

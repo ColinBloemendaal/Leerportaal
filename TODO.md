@@ -29,7 +29,7 @@ Legend: `[ ]` todo · `[x]` done · `[~]` in progress · `[!]` blocked (add a no
 - [x] Base Inertia layouts: `GuestLayout`, `AppLayout`, `AdminLayout` (Bootstrap, no theming yet)
 - [x] Error pages (403/404/419/500) as Inertia pages
 - [!] Ploi deployment script + zero-downtime deploy, staging environment on Hetzner — deploy script and docs done (`deploy/ploi-deploy.sh`, `docs/deployment.md`); actually provisioning the Hetzner server, Ploi site, and staging environment needs your Ploi/Hetzner account access — see `docs/deployment.md` for the exact steps
-- [ ] Queue worker (Redis) + Horizon, scheduler cron via Ploi
+- [!] Queue worker (Redis) + Horizon, scheduler cron via Ploi — Horizon installed and configured, `QUEUE_CONNECTION=redis`; the actual queue worker daemon and scheduler cron registration are Ploi dashboard actions — see `docs/deployment.md`
 - [ ] Sentry (or equivalent) with PII redaction configured
 
 ---
