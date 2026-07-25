@@ -169,7 +169,12 @@ return [
     |
     */
 
-    'secure' => env('SESSION_SECURE_COOKIE'),
+    // Defaults to true in production even if the env var is never set on
+    // the host (defense in depth -- see CLAUDE.md §7). Safe to cache: this
+    // resolves when `config:cache` runs on the production host itself.
+    // Reads the raw APP_ENV var directly (not app()->environment()) --
+    // config files load before the container's 'env' binding exists.
+    'secure' => env('SESSION_SECURE_COOKIE', env('APP_ENV') === 'production'),
 
     /*
     |--------------------------------------------------------------------------

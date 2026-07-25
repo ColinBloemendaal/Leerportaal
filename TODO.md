@@ -59,7 +59,7 @@ Legend: `[ ]` todo · `[x]` done · `[~]` in progress · `[!]` blocked (add a no
 - [x] Login, logout, password reset, email verification (Fortify or hand-rolled) — hand-rolled by human decision, using the same Action/FormRequest/Controller pattern as everywhere else; login is tenant-aware (branded domain restricts to that reseller + platform staff, unbranded restricts to platform staff only)
 - [x] 2FA (TOTP + recovery codes). Mandatory for platform roles, optional for others. `reseller_id === null` used as a proxy for "platform role" until task 34 (spatie/laravel-permission) exists
 - [x] Rate limiting on all auth endpoints
-- [ ] Session security: regeneration, secure cookies, sensible lifetime
+- [x] Session security: regeneration, secure cookies, sensible lifetime. Regeneration was already in place from the login/2FA/logout work; added a production-defaulting `secure` cookie flag (defense in depth even if the host env var is never set) and kept the 120-minute default lifetime
 - [ ] Invite flow: reseller/klant invites user by email, signed branded link
 
 ### Roles & permissions
