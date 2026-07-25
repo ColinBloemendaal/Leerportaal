@@ -38,7 +38,7 @@ Legend: `[ ]` todo · `[x]` done · `[~]` in progress · `[!]` blocked (add a no
 
 ### Tenancy core
 
-- [ ] `resellers` table + model (name, slug, status, settings, soft deletes)
+- [x] `resellers` table + model (name, slug, status, settings, soft deletes)
 - [ ] `App\Tenancy\TenantContext` scoped singleton
 - [ ] `App\Scopes\TenantScope` global scope
 - [ ] `App\Concerns\TenantScoped` trait (scope + `creating` stamp)
