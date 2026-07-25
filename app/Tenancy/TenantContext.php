@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tenancy;
 
 use App\Models\Reseller;
+use Spatie\Permission\PermissionRegistrar;
 
 /**
  * The current tenant for this request. Bound as a scoped singleton
@@ -16,9 +17,17 @@ final class TenantContext
 {
     private ?Reseller $reseller = null;
 
+    public function __construct(private readonly PermissionRegistrar $permissionRegistrar) {}
+
     public function set(Reseller $reseller): void
     {
         $this->reseller = $reseller;
+
+        // Keeps spatie/laravel-permission's teams feature (team_foreign_key
+        // = reseller_id) in sync with every call site that resolves tenant
+        // -- not just ResolveTenant middleware -- so role/permission checks
+        // never need a separate "which reseller" step of their own.
+        $this->permissionRegistrar->setPermissionsTeamId($reseller->id);
     }
 
     public function get(): ?Reseller

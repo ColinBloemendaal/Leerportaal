@@ -64,7 +64,7 @@ Legend: `[ ]` todo · `[x]` done · `[~]` in progress · `[!]` blocked (add a no
 
 ### Roles & permissions
 
-- [ ] Install `spatie/laravel-permission`, teams mode, `team_foreign_key = reseller_id`
+- [x] Install `spatie/laravel-permission`, teams mode, `team_foreign_key = reseller_id`. `TenantContext::set()` now also calls `PermissionRegistrar::setPermissionsTeamId()`, so every call site that resolves tenant (middleware and the invite-accept flow) keeps spatie's team scoping in sync automatically. Open question before role seeding: `model_has_roles`/`model_has_permissions.reseller_id` is NOT NULL (and part of the composite PK) once teams mode is on, so platform staff (`reseller_id` null) cannot be assigned any spatie role as currently configured -- needs a decision before task 35
 - [ ] Seed roles: `super-admin`, `platform-admin`, `platform-author`, `support`, `reseller-owner`, `reseller-admin`, `reseller-author`, `reseller-reporter`, `klant-admin`, `klant-manager`, `cursist`
 - [ ] Seed granular permissions (courses._, users._, reports._, billing._, impersonate)
 - [ ] Base `Policy` for every model. `Gate::before` for super-admin only

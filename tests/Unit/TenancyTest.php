@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Schema;
+use Spatie\Permission\PermissionRegistrar;
 use Tests\TestCase;
 
 uses(TestCase::class, RefreshDatabase::class);
@@ -39,7 +40,7 @@ afterEach(function (): void {
 });
 
 it('reports no tenant by default', function (): void {
-    $context = new TenantContext;
+    $context = app(TenantContext::class);
 
     expect($context->check())->toBeFalse()
         ->and($context->id())->toBeNull()
@@ -48,12 +49,19 @@ it('reports no tenant by default', function (): void {
 
 it('reports the set tenant', function (): void {
     $reseller = Reseller::factory()->create();
-    $context = new TenantContext;
+    $context = app(TenantContext::class);
     $context->set($reseller);
 
     expect($context->check())->toBeTrue()
         ->and($context->id())->toBe($reseller->id)
         ->and($context->get()->is($reseller))->toBeTrue();
+});
+
+it('keeps the spatie/laravel-permission team id in sync when the tenant is set', function (): void {
+    $reseller = Reseller::factory()->create();
+    app(TenantContext::class)->set($reseller);
+
+    expect(app(PermissionRegistrar::class)->getPermissionsTeamId())->toBe($reseller->id);
 });
 
 it('fails closed when no tenant is set', function (): void {
