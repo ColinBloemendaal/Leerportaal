@@ -6,6 +6,7 @@ namespace App\Actions\Tenancy;
 
 use App\Contracts\Dns\DnsResolver;
 use App\Enums\CustomDomainStatus;
+use App\Events\Tenancy\CustomDomainVerified;
 use App\Models\CustomDomain;
 
 final readonly class VerifyCustomDomain
@@ -23,6 +24,12 @@ final readonly class VerifyCustomDomain
             'verified_at' => $verified ? now() : null,
         ]);
 
-        return $customDomain->refresh();
+        $customDomain = $customDomain->refresh();
+
+        if ($verified) {
+            event(new CustomDomainVerified($customDomain));
+        }
+
+        return $customDomain;
     }
 }

@@ -23,4 +23,4 @@ These are Ploi dashboard actions, not something scriptable from this repo:
 
 ## Custom domains and LetsEncrypt
 
-Automated LetsEncrypt issuance for reseller custom domains (Phase 1) goes through the Ploi API (`PLOI_API_KEY`, `PLOI_SERVER_ID` in `.env`) rather than the dashboard, since it has to run unattended per reseller. Not implemented yet -- tracked in `TODO.md` Phase 1.
+Automated LetsEncrypt issuance for reseller custom domains goes through the Ploi API (`PLOI_API_KEY`, `PLOI_SERVER_ID`, `PLOI_SITE_ID` in `.env`) rather than the dashboard, since it has to run unattended per reseller. `App\Services\Ploi\HttpPloiClient` implements this, but its endpoint path and payload shape are written to best available understanding of Ploi's API, not verified against a live account (marked `VERIFY:` in the file) -- confirm and adjust once real Ploi credentials exist. Everything around it (the `App\Contracts\Ploi\PloiClient` interface, the `IssueLetsEncryptCertificate` action, the `CustomDomainVerified` event that triggers it automatically once `VerifyCustomDomain` succeeds, and `tests/Fakes/FakePloiClient`) is done and tested independently of that HTTP layer.

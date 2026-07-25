@@ -41,6 +41,7 @@ arch('only actions, repositories, and models touch models directly')
         'App\Policies',
         'App\Http\Resources',
         'App\Tenancy',
+        'App\Events',
         'Database\Factories',
         'Database\Seeders',
     ]);
