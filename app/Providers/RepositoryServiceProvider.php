@@ -7,9 +7,11 @@ namespace App\Providers;
 use App\Contracts\Repositories\CustomDomainRepository;
 use App\Contracts\Repositories\ResellerKlantRepository;
 use App\Contracts\Repositories\ResellerRepository;
+use App\Contracts\Repositories\UserInviteRepository;
 use App\Repositories\Eloquent\EloquentCustomDomainRepository;
 use App\Repositories\Eloquent\EloquentResellerKlantRepository;
 use App\Repositories\Eloquent\EloquentResellerRepository;
+use App\Repositories\Eloquent\EloquentUserInviteRepository;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -25,5 +27,6 @@ final class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ResellerRepository::class, EloquentResellerRepository::class);
         $this->app->bind(CustomDomainRepository::class, EloquentCustomDomainRepository::class);
         $this->app->bind(ResellerKlantRepository::class, EloquentResellerKlantRepository::class);
+        $this->app->bind(UserInviteRepository::class, EloquentUserInviteRepository::class);
     }
 }

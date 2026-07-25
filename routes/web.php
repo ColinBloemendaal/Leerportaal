@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\InviteAcceptController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RecoveryCodeController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\TenantLoginController;
 use App\Http\Controllers\Auth\TwoFactorAuthenticationController;
 use App\Http\Controllers\Auth\TwoFactorChallengeController;
+use App\Http\Controllers\InvitesController;
 use App\Http\Controllers\ResellerKlantController;
 use App\Http\Middleware\EnsureTwoFactorAuthenticationIsEnabled;
 use Illuminate\Support\Facades\Route;
@@ -38,6 +40,12 @@ Route::middleware('guest')->group(function () {
     Route::post('/reset-password', [ResetPasswordController::class, 'store'])
         ->middleware('throttle:password-reset')
         ->name('password.store');
+
+    Route::get('/invite/{reseller}/accept/{invite}/{hash}', [InviteAcceptController::class, 'show'])
+        ->middleware('signed')
+        ->name('invite.accept');
+    Route::post('/invite/{reseller}/accept/{invite}/{hash}', [InviteAcceptController::class, 'store'])
+        ->middleware(['signed', 'throttle:invite-accept']);
 });
 
 Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->group(function () {
@@ -77,4 +85,12 @@ Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->grou
 
     Route::post('/klanten', [ResellerKlantController::class, 'store'])
         ->name('klanten.store');
+
+    Route::get('/invites', [InvitesController::class, 'index'])
+        ->middleware('can:viewAny,App\Models\UserInvite')
+        ->name('invites.index');
+
+    Route::post('/invites', [InvitesController::class, 'store'])->name('invites.store');
+
+    Route::delete('/invites/{invite}', [InvitesController::class, 'destroy'])->name('invites.destroy');
 });

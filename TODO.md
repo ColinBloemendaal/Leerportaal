@@ -60,7 +60,7 @@ Legend: `[ ]` todo · `[x]` done · `[~]` in progress · `[!]` blocked (add a no
 - [x] 2FA (TOTP + recovery codes). Mandatory for platform roles, optional for others. `reseller_id === null` used as a proxy for "platform role" until task 34 (spatie/laravel-permission) exists
 - [x] Rate limiting on all auth endpoints
 - [x] Session security: regeneration, secure cookies, sensible lifetime. Regeneration was already in place from the login/2FA/logout work; added a production-defaulting `secure` cookie flag (defense in depth even if the host env var is never set) and kept the 120-minute default lifetime
-- [ ] Invite flow: reseller/klant invites user by email, signed branded link
+- [x] Invite flow: reseller/klant invites user by email, signed branded link. `user_invites` table (tenant-scoped) + `App\Enums\Role` (the full task-34 role list, stored but not yet enforced -- task 34 should seed these exact cases rather than reinventing them). Accept link carries the reseller's slug (`/invite/{reseller}/accept/{invite}/{hash}`) so the guest's request can re-resolve TenantContext before any tenant-scoped read happens, same bootstrapping idea as `/login/{slug}` -- avoids ever needing `withoutTenantScope()` for a non-admin context
 
 ### Roles & permissions
 

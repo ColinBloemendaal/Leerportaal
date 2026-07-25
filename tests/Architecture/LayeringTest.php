@@ -45,6 +45,9 @@ arch('only actions, repositories, and models touch models directly')
         // instead of going through a Repository). No other controllers are
         // exempt.
         'App\Http\Controllers\Auth',
+        // Mailables shape their own view data from a model, the same job
+        // Http\Resources does for Inertia props.
+        'App\Mail',
         'Database\Factories',
         'Database\Seeders',
     ]);

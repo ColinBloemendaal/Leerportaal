@@ -87,5 +87,11 @@ final class AppServiceProvider extends ServiceProvider
 
             return Limit::perMinute(5)->by((string) $key);
         });
+
+        // Signed link, so brute-forcing the hash isn't really feasible --
+        // this is just baseline hygiene, not the primary defense.
+        RateLimiter::for('invite-accept', function (Request $request): Limit {
+            return Limit::perMinute(10)->by((string) $request->ip());
+        });
     }
 }
