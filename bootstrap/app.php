@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\ResolveTenant;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -16,7 +17,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Appended, not prepended: must run after EncryptCookies decrypts
+        // the incoming reseller_slug cookie, and before HandleInertiaRequests
+        // in case shared props ever need tenant data.
         $middleware->web(append: [
+            ResolveTenant::class,
             HandleInertiaRequests::class,
         ]);
     })

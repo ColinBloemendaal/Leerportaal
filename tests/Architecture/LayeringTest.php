@@ -35,6 +35,7 @@ arch('only actions, repositories, and models touch models directly')
     ->expect('App\Models')
     ->toOnlyBeUsedIn([
         'App\Actions',
+        'App\Contracts\Repositories',
         'App\Repositories',
         'App\Models',
         'App\Policies',
