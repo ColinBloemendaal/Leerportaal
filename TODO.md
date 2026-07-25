@@ -47,7 +47,7 @@ Legend: `[ ]` todo · `[x]` done · `[~]` in progress · `[!]` blocked (add a no
 - [x] Custom domain table + verification flow (DNS CNAME check)
 - [!] Automated LetsEncrypt issuance for custom domains (Ploi API) — interface, Action, event/listener wiring, and fake all done and tested; `HttpPloiClient`'s endpoint/payload are written to best understanding of Ploi's API but marked `VERIFY:` since untested against a live account — needs your Ploi credentials to confirm
 - [x] Unbranded fallback experience for bare `leerportaal.nl`
-- [ ] `tests/Tenancy/` helper: `actingAsReseller()`, `assertTenantIsolated()`
+- [x] `tests/Tenancy/` helper: `actingAsReseller()`, `assertTenantIsolated()`
 - [ ] Artisan command `tenancy:audit` — fails if any tenant table lacks `reseller_id` or the trait
 
 ### Users & auth
