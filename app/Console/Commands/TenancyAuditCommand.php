@@ -16,9 +16,21 @@ use Illuminate\Support\Facades\Schema;
  * missing); a model using TenantScoped whose table lacks reseller_id is
  * broken. Platform-owned models need no explicit exemption -- they simply
  * have no reseller_id column, so neither check applies to them.
+ *
+ * User is the one deliberate exception: one table mixes platform staff
+ * (reseller_id null) and reseller-owned rows, so it can't use the
+ * fail-closed TenantScoped trait the way single-ownership tables do.
+ * Reseller-scoped user queries are explicit elsewhere. See CLAUDE.md §3.
  */
 final class TenancyAuditCommand extends Command
 {
+    /**
+     * @var array<int, class-string<Model>>
+     */
+    private const EXEMPT = [
+        'App\Models\User',
+    ];
+
     /**
      * @var string
      */
@@ -34,6 +46,10 @@ final class TenancyAuditCommand extends Command
         $problems = [];
 
         foreach ($this->modelClasses() as $class) {
+            if (in_array($class, self::EXEMPT, true)) {
+                continue;
+            }
+
             $table = (new $class)->getTable();
 
             if (! Schema::hasTable($table)) {

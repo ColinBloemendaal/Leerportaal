@@ -1,32 +1,33 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+/**
+ * One table, one guard. reseller_id is nullable: null means platform
+ * staff. Platform-owned per CLAUDE.md §3 -- does not use TenantScoped,
+ * since the table mixes platform and reseller-owned rows; reseller-scoped
+ * user queries are explicit (repository methods), not a blanket scope.
+ */
+final class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory;
+
+    use Notifiable;
+    use SoftDeletes;
+
+    protected $guarded = [];
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
      * @var list<string>
      */
     protected $hidden = [
@@ -35,8 +36,6 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
-     *
      * @return array<string, string>
      */
     protected function casts(): array
@@ -45,5 +44,21 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * @return BelongsTo<Reseller, $this>
+     */
+    public function reseller(): BelongsTo
+    {
+        return $this->belongsTo(Reseller::class);
+    }
+
+    /**
+     * @return BelongsTo<ResellerKlant, $this>
+     */
+    public function resellerKlant(): BelongsTo
+    {
+        return $this->belongsTo(ResellerKlant::class);
     }
 }
