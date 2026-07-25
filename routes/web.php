@@ -22,17 +22,22 @@ Route::get('/login/{slug}', TenantLoginController::class)->name('tenant.login');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'create'])->name('login');
-    Route::post('/login', [LoginController::class, 'store']);
+    Route::post('/login', [LoginController::class, 'store'])->middleware('throttle:login');
 
     Route::get('/two-factor-challenge', [TwoFactorChallengeController::class, 'create'])
         ->name('two-factor.challenge');
-    Route::post('/two-factor-challenge', [TwoFactorChallengeController::class, 'store']);
+    Route::post('/two-factor-challenge', [TwoFactorChallengeController::class, 'store'])
+        ->middleware('throttle:two-factor-challenge');
 
     Route::get('/forgot-password', [ForgotPasswordController::class, 'create'])->name('password.request');
-    Route::post('/forgot-password', [ForgotPasswordController::class, 'store'])->name('password.email');
+    Route::post('/forgot-password', [ForgotPasswordController::class, 'store'])
+        ->middleware('throttle:password-reset')
+        ->name('password.email');
 
     Route::get('/reset-password/{token}', [ResetPasswordController::class, 'create'])->name('password.reset');
-    Route::post('/reset-password', [ResetPasswordController::class, 'store'])->name('password.store');
+    Route::post('/reset-password', [ResetPasswordController::class, 'store'])
+        ->middleware('throttle:password-reset')
+        ->name('password.store');
 });
 
 Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->group(function () {
@@ -50,12 +55,17 @@ Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->grou
 
     Route::prefix('settings')->name('settings.')->group(function () {
         Route::get('/two-factor', [TwoFactorAuthenticationController::class, 'show'])->name('two-factor.show');
-        Route::post('/two-factor', [TwoFactorAuthenticationController::class, 'store'])->name('two-factor.store');
+        Route::post('/two-factor', [TwoFactorAuthenticationController::class, 'store'])
+            ->middleware('throttle:two-factor-manage')
+            ->name('two-factor.store');
         Route::post('/two-factor/confirm', [TwoFactorAuthenticationController::class, 'confirm'])
+            ->middleware('throttle:two-factor-manage')
             ->name('two-factor.confirm');
         Route::delete('/two-factor', [TwoFactorAuthenticationController::class, 'destroy'])
+            ->middleware('throttle:two-factor-manage')
             ->name('two-factor.destroy');
         Route::post('/two-factor/recovery-codes', [RecoveryCodeController::class, 'store'])
+            ->middleware('throttle:two-factor-manage')
             ->name('two-factor.recovery-codes');
     });
 
