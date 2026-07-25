@@ -4,9 +4,13 @@ use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Auth\RecoveryCodeController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\TenantLoginController;
+use App\Http\Controllers\Auth\TwoFactorAuthenticationController;
+use App\Http\Controllers\Auth\TwoFactorChallengeController;
 use App\Http\Controllers\ResellerKlantController;
+use App\Http\Middleware\EnsureTwoFactorAuthenticationIsEnabled;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -20,6 +24,10 @@ Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'create'])->name('login');
     Route::post('/login', [LoginController::class, 'store']);
 
+    Route::get('/two-factor-challenge', [TwoFactorChallengeController::class, 'create'])
+        ->name('two-factor.challenge');
+    Route::post('/two-factor-challenge', [TwoFactorChallengeController::class, 'store']);
+
     Route::get('/forgot-password', [ForgotPasswordController::class, 'create'])->name('password.request');
     Route::post('/forgot-password', [ForgotPasswordController::class, 'store'])->name('password.email');
 
@@ -27,7 +35,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/reset-password', [ResetPasswordController::class, 'store'])->name('password.store');
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->group(function () {
     Route::post('/logout', LogoutController::class)->name('logout');
 
     Route::get('/email/verify', [EmailVerificationController::class, 'notice'])->name('verification.notice');
@@ -39,6 +47,17 @@ Route::middleware('auth')->group(function () {
     Route::post('/email/verification-notification', [EmailVerificationController::class, 'resend'])
         ->middleware('throttle:6,1')
         ->name('verification.send');
+
+    Route::prefix('settings')->name('settings.')->group(function () {
+        Route::get('/two-factor', [TwoFactorAuthenticationController::class, 'show'])->name('two-factor.show');
+        Route::post('/two-factor', [TwoFactorAuthenticationController::class, 'store'])->name('two-factor.store');
+        Route::post('/two-factor/confirm', [TwoFactorAuthenticationController::class, 'confirm'])
+            ->name('two-factor.confirm');
+        Route::delete('/two-factor', [TwoFactorAuthenticationController::class, 'destroy'])
+            ->name('two-factor.destroy');
+        Route::post('/two-factor/recovery-codes', [RecoveryCodeController::class, 'store'])
+            ->name('two-factor.recovery-codes');
+    });
 
     // Reference vertical slice (FormRequest -> DTO -> Action -> Repository
     // -> Inertia Resource), copyable for later features -- see CLAUDE.md §0.

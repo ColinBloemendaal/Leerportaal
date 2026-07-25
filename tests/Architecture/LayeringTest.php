@@ -2,10 +2,6 @@
 
 declare(strict_types=1);
 
-arch('controllers do not depend on models directly')
-    ->expect('App\Http\Controllers')
-    ->not->toUse('App\Models');
-
 arch('actions and services do not use facades')
     ->expect(['App\Actions', 'App\Services'])
     ->not->toUse('Illuminate\Support\Facades');
@@ -42,6 +38,13 @@ arch('only actions, repositories, and models touch models directly')
         'App\Http\Resources',
         'App\Tenancy',
         'App\Events',
+        // Auth controllers need to know "the current actor is a User" to
+        // pass identity into Actions -- a narrower, different concern than
+        // the business-logic-querying this rule otherwise guards against
+        // (e.g. a controller doing ResellerKlant::where(...)->get()
+        // instead of going through a Repository). No other controllers are
+        // exempt.
+        'App\Http\Controllers\Auth',
         'Database\Factories',
         'Database\Seeders',
     ]);

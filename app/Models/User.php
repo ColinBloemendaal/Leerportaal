@@ -34,6 +34,8 @@ final class User extends Authenticatable implements MustVerifyEmail
     protected $hidden = [
         'password',
         'remember_token',
+        'two_factor_secret',
+        'two_factor_recovery_codes',
     ];
 
     /**
@@ -44,7 +46,24 @@ final class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'two_factor_secret' => 'encrypted',
+            'two_factor_recovery_codes' => 'encrypted:array',
+            'two_factor_confirmed_at' => 'datetime',
         ];
+    }
+
+    public function hasEnabledTwoFactorAuthentication(): bool
+    {
+        return $this->two_factor_confirmed_at !== null;
+    }
+
+    /**
+     * Proxy for "platform roles" until real roles exist (Phase 1 task 34)
+     * -- see CLAUDE.md §3, "platform users" is the closest settled concept.
+     */
+    public function requiresTwoFactorAuthentication(): bool
+    {
+        return $this->reseller_id === null;
     }
 
     /**

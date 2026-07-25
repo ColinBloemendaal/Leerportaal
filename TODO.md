@@ -57,7 +57,7 @@ Legend: `[ ]` todo · `[x]` done · `[~]` in progress · `[!]` blocked (add a no
 - [x] `users.resellerklant_id` nullable FK
 - [x] Reference vertical slice (FormRequest → DTO → Action → Repository → Inertia Resource) built around `resellerklanten` — index + create, `/klanten`, now gated behind real `auth` middleware
 - [x] Login, logout, password reset, email verification (Fortify or hand-rolled) — hand-rolled by human decision, using the same Action/FormRequest/Controller pattern as everywhere else; login is tenant-aware (branded domain restricts to that reseller + platform staff, unbranded restricts to platform staff only)
-- [ ] 2FA (TOTP + recovery codes). Mandatory for platform roles, optional for others
+- [x] 2FA (TOTP + recovery codes). Mandatory for platform roles, optional for others. `reseller_id === null` used as a proxy for "platform role" until task 34 (spatie/laravel-permission) exists
 - [ ] Rate limiting on all auth endpoints
 - [ ] Session security: regeneration, secure cookies, sensible lifetime
 - [ ] Invite flow: reseller/klant invites user by email, signed branded link

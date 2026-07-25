@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Auth;
 use App\Actions\Auth\AuthenticateUser;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -18,10 +19,19 @@ final class LoginController extends Controller
         return Inertia::render('Auth/Login');
     }
 
-    public function store(LoginRequest $request, AuthenticateUser $authenticate): RedirectResponse
+    public function store(LoginRequest $request, AuthenticateUser $authenticate, StatefulGuard $guard): RedirectResponse
     {
-        $authenticate($request->toDto());
+        $data = $request->toDto();
+        $user = $authenticate($data);
 
+        if ($user->hasEnabledTwoFactorAuthentication()) {
+            $request->session()->put('login.id', $user->getKey());
+            $request->session()->put('login.remember', $data->remember);
+
+            return to_route('two-factor.challenge');
+        }
+
+        $guard->login($user, $data->remember);
         $request->session()->regenerate();
 
         return redirect()->intended('/');

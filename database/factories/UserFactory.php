@@ -6,6 +6,7 @@ namespace Database\Factories;
 
 use App\Models\Reseller;
 use App\Models\User;
+use App\Services\Auth\TwoFactorAuthenticator;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -53,5 +54,18 @@ final class UserFactory extends Factory
             'reseller_id' => null,
             'resellerklant_id' => null,
         ]);
+    }
+
+    public function twoFactorEnabled(): static
+    {
+        return $this->state(function (array $attributes): array {
+            $authenticator = app(TwoFactorAuthenticator::class);
+
+            return [
+                'two_factor_secret' => $authenticator->generateSecretKey(),
+                'two_factor_recovery_codes' => $authenticator->generateRecoveryCodes(),
+                'two_factor_confirmed_at' => now(),
+            ];
+        });
     }
 }

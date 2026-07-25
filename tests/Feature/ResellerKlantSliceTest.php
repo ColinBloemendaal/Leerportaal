@@ -43,7 +43,9 @@ it('rejects an empty name', function (): void {
 });
 
 it('denies platform staff (no reseller) from viewing klanten', function (): void {
-    $staff = User::factory()->platformStaff()->create();
+    // 2FA-enabled so the request reaches the policy check being tested,
+    // rather than being redirected to two-factor setup first.
+    $staff = User::factory()->platformStaff()->twoFactorEnabled()->create();
 
     $this->actingAs($staff)
         ->get('/klanten')
