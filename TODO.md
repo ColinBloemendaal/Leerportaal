@@ -55,8 +55,8 @@ Legend: `[ ]` todo · `[x]` done · `[~]` in progress · `[!]` blocked (add a no
 - [x] `users` table: one table, one guard, `reseller_id` nullable (null = platform staff)
 - [x] `resellerklanten` table + model, `reseller_id` scoped — done early (Tenancy core section above)
 - [x] `users.resellerklant_id` nullable FK
-- [x] Reference vertical slice (FormRequest → DTO → Action → Repository → Inertia Resource) built around `resellerklanten` — index + create, `/klanten`; not yet gated behind `auth` middleware since login doesn't exist (next task) — `can:` middleware still denies guests and platform staff
-- [ ] Login, logout, password reset, email verification (Fortify or hand-rolled)
+- [x] Reference vertical slice (FormRequest → DTO → Action → Repository → Inertia Resource) built around `resellerklanten` — index + create, `/klanten`, now gated behind real `auth` middleware
+- [x] Login, logout, password reset, email verification (Fortify or hand-rolled) — hand-rolled by human decision, using the same Action/FormRequest/Controller pattern as everywhere else; login is tenant-aware (branded domain restricts to that reseller + platform staff, unbranded restricts to platform staff only)
 - [ ] 2FA (TOTP + recovery codes). Mandatory for platform roles, optional for others
 - [ ] Rate limiting on all auth endpoints
 - [ ] Session security: regeneration, secure cookies, sensible lifetime

@@ -50,6 +50,6 @@ it('denies platform staff (no reseller) from viewing klanten', function (): void
         ->assertForbidden();
 });
 
-it('denies guests', function (): void {
-    $this->get('/klanten')->assertForbidden();
+it('redirects guests to login', function (): void {
+    $this->get('/klanten')->assertRedirect('/login');
 });

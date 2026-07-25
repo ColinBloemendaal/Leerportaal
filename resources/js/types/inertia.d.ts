@@ -4,6 +4,10 @@ declare module '@inertiajs/core' {
     export interface InertiaConfig {
         sharedPageProps: {
             appName: string;
+            flash: {
+                status: string | null;
+                success: string | null;
+            };
         };
     }
 }
