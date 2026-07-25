@@ -30,7 +30,7 @@ Legend: `[ ]` todo · `[x]` done · `[~]` in progress · `[!]` blocked (add a no
 - [x] Error pages (403/404/419/500) as Inertia pages
 - [!] Ploi deployment script + zero-downtime deploy, staging environment on Hetzner — deploy script and docs done (`deploy/ploi-deploy.sh`, `docs/deployment.md`); actually provisioning the Hetzner server, Ploi site, and staging environment needs your Ploi/Hetzner account access — see `docs/deployment.md` for the exact steps
 - [!] Queue worker (Redis) + Horizon, scheduler cron via Ploi — Horizon installed and configured, `QUEUE_CONNECTION=redis`; the actual queue worker daemon and scheduler cron registration are Ploi dashboard actions — see `docs/deployment.md`
-- [ ] Sentry (or equivalent) with PII redaction configured
+- [!] Sentry (or equivalent) with PII redaction configured — SDK installed and wired (`send_default_pii => false`, `SentryPiiRedactor` before_send hook, exception handler integration); a real `SENTRY_LARAVEL_DSN` needs your Sentry account
 
 ---
 
