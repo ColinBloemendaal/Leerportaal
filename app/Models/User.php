@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\Role;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -51,6 +52,7 @@ final class User extends Authenticatable implements MustVerifyEmail
             'two_factor_secret' => 'encrypted',
             'two_factor_recovery_codes' => 'encrypted:array',
             'two_factor_confirmed_at' => 'datetime',
+            'platform_role' => Role::class,
         ];
     }
 
@@ -66,6 +68,11 @@ final class User extends Authenticatable implements MustVerifyEmail
     public function requiresTwoFactorAuthentication(): bool
     {
         return $this->reseller_id === null;
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->platform_role === Role::SuperAdmin;
     }
 
     /**

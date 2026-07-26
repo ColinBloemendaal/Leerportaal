@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enums\Role;
 use App\Models\Reseller;
 use App\Models\User;
 use App\Services\Auth\TwoFactorAuthenticator;
@@ -53,6 +54,17 @@ final class UserFactory extends Factory
         return $this->state(fn (array $attributes): array => [
             'reseller_id' => null,
             'resellerklant_id' => null,
+        ]);
+    }
+
+    /**
+     * Implies platformStaff(): platform_role only makes sense with no
+     * reseller_id -- see App\Enums\Role's class docblock.
+     */
+    public function platformRole(Role $role = Role::SuperAdmin): static
+    {
+        return $this->platformStaff()->state(fn (array $attributes): array => [
+            'platform_role' => $role,
         ]);
     }
 

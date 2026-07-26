@@ -5,12 +5,20 @@ declare(strict_types=1);
 namespace App\Enums;
 
 /**
- * The full role set from TODO.md's "Roles & permissions" phase (task 34).
- * Not enforced anywhere yet -- spatie/laravel-permission isn't installed
- * until that task. Exists now only so the invite flow (task 33) has a
- * fixed set of values to store as the invitee's intended role; task 34
- * should seed these exact cases as permission roles rather than
- * reinventing the list.
+ * The full role set from TODO.md's "Roles & permissions" phase.
+ *
+ * Two different enforcement mechanisms, split by whether a reseller_id
+ * exists to scope by:
+ * - Reseller-side roles (resellerRoles() + klantRoles(), together
+ *   teamRoles()) are real spatie/laravel-permission roles, teams-scoped
+ *   by reseller_id -- seeded per reseller by
+ *   App\Actions\Permissions\SeedRolesForReseller.
+ * - Platform roles (platformRoles()) are stored directly on
+ *   users.platform_role instead. spatie's teams mode makes the team
+ *   foreign key NOT NULL and part of the pivot tables' composite primary
+ *   key, so platform staff (reseller_id null) structurally cannot be
+ *   assigned a teams-scoped role -- this was a deliberate choice to
+ *   avoid fighting that assumption (human decision), not an oversight.
  */
 enum Role: string
 {
@@ -65,5 +73,28 @@ enum Role: string
     public static function resellerRoles(): array
     {
         return [self::ResellerOwner, self::ResellerAdmin, self::ResellerAuthor, self::ResellerReporter];
+    }
+
+    /**
+     * Every reseller-side role, teams-scoped by reseller_id -- the set
+     * seeded as real spatie roles whenever a reseller is created. See
+     * App\Actions\Permissions\SeedRolesForReseller.
+     *
+     * @return list<self>
+     */
+    public static function teamRoles(): array
+    {
+        return [...self::resellerRoles(), ...self::klantRoles()];
+    }
+
+    /**
+     * Stored on users.platform_role, not as spatie roles -- see the class
+     * docblock for why.
+     *
+     * @return list<self>
+     */
+    public static function platformRoles(): array
+    {
+        return [self::SuperAdmin, self::PlatformAdmin, self::PlatformAuthor, self::Support];
     }
 }
