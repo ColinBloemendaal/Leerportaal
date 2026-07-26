@@ -29,4 +29,9 @@ final class UserInvitePolicy
     {
         return $user->reseller_id !== null && $user->reseller_id === $invite->reseller_id;
     }
+
+    public function restore(User $user, UserInvite $invite): bool
+    {
+        return $this->delete($user, $invite);
+    }
 }

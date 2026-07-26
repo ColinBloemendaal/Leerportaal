@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import AppLayout from '@/Layouts/AppLayout.vue';
-import type { PaginatedKlanten } from '@/types/klanten';
-import { useForm } from '@inertiajs/vue3';
+import type { PaginatedKlanten, ResellerKlant } from '@/types/klanten';
+import { router, useForm } from '@inertiajs/vue3';
 
 defineOptions({ layout: AppLayout });
 
 defineProps<{
     klanten: PaginatedKlanten;
+    trashed: ResellerKlant[];
 }>();
 
 const form = useForm({
@@ -17,6 +18,14 @@ function submit() {
     form.post('/klanten', {
         onSuccess: () => form.reset(),
     });
+}
+
+function destroy(klant: ResellerKlant) {
+    router.delete(`/klanten/${klant.id}`);
+}
+
+function restore(klant: ResellerKlant) {
+    router.post(`/klanten/${klant.id}/restore`);
 }
 </script>
 
@@ -44,15 +53,37 @@ function submit() {
         <thead>
             <tr>
                 <th scope="col">Naam</th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
             <tr v-for="klant in klanten.data" :key="klant.id">
                 <td>{{ klant.name }}</td>
+                <td>
+                    <button type="button" class="btn btn-sm btn-outline-danger" @click="destroy(klant)">
+                        Verwijderen
+                    </button>
+                </td>
             </tr>
             <tr v-if="klanten.data.length === 0">
-                <td class="text-muted">Nog geen klanten.</td>
+                <td colspan="2" class="text-muted">Nog geen klanten.</td>
             </tr>
         </tbody>
     </table>
+
+    <template v-if="trashed.length > 0">
+        <h2 class="h6 mt-4 mb-2">Verwijderde klanten</h2>
+        <table class="table">
+            <tbody>
+                <tr v-for="klant in trashed" :key="klant.id">
+                    <td>{{ klant.name }}</td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" @click="restore(klant)">
+                            Herstellen
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </template>
 </template>

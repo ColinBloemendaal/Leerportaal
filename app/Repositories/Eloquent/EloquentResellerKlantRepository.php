@@ -7,6 +7,7 @@ namespace App\Repositories\Eloquent;
 use App\Contracts\Repositories\ResellerKlantRepository;
 use App\Models\ResellerKlant;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 final class EloquentResellerKlantRepository implements ResellerKlantRepository
 {
@@ -16,5 +17,20 @@ final class EloquentResellerKlantRepository implements ResellerKlantRepository
             ->when($search !== null, fn ($query) => $query->where('name', 'like', "%{$search}%"))
             ->orderBy('name')
             ->paginate($perPage);
+    }
+
+    public function findById(int $id): ?ResellerKlant
+    {
+        return ResellerKlant::query()->find($id);
+    }
+
+    public function trashed(): Collection
+    {
+        return ResellerKlant::onlyTrashed()->orderByDesc('deleted_at')->get();
+    }
+
+    public function findTrashedById(int $id): ?ResellerKlant
+    {
+        return ResellerKlant::onlyTrashed()->whereKey($id)->first();
     }
 }

@@ -42,6 +42,40 @@ it('rejects an empty name', function (): void {
         ->assertSessionHasErrors('name');
 });
 
+it('soft deletes a klant and lists it as trashed', function (): void {
+    $klant = ResellerKlant::factory()->for($this->reseller, 'reseller')->create();
+
+    $this->actingAs($this->user)
+        ->delete("/klanten/{$klant->id}")
+        ->assertRedirect('/klanten');
+
+    $this->assertSoftDeleted('resellerklanten', ['id' => $klant->id]);
+
+    $this->actingAs($this->user)
+        ->get('/klanten')
+        ->assertInertia(fn (AssertableInertia $page) => $page->where('trashed.data.0.id', $klant->id));
+});
+
+it('restores a soft-deleted klant', function (): void {
+    $klant = ResellerKlant::factory()->for($this->reseller, 'reseller')->create();
+    $klant->delete();
+
+    $this->actingAs($this->user)
+        ->post("/klanten/{$klant->id}/restore")
+        ->assertRedirect('/klanten');
+
+    $this->assertDatabaseHas('resellerklanten', ['id' => $klant->id, 'deleted_at' => null]);
+});
+
+it('404s deleting a klant belonging to a different reseller (tenant scope hides it before the policy runs)', function (): void {
+    $otherReseller = Reseller::factory()->create();
+    $otherKlant = ResellerKlant::factory()->for($otherReseller, 'reseller')->create();
+
+    $this->actingAs($this->user)
+        ->delete("/klanten/{$otherKlant->id}")
+        ->assertNotFound();
+});
+
 it('denies platform staff (no reseller) from viewing klanten', function (): void {
     // 2FA-enabled so the request reaches the policy check being tested,
     // rather than being redirected to two-factor setup first.

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Actions\Invites\InviteUser;
+use App\Actions\Invites\RestoreInvite;
 use App\Actions\Invites\RevokeInvite;
 use App\Contracts\Repositories\ResellerKlantRepository;
 use App\Contracts\Repositories\UserInviteRepository;
@@ -22,6 +23,7 @@ final class InvitesController extends Controller
     {
         return Inertia::render('Invites/Index', [
             'invites' => UserInviteResource::collection($invites->pendingForCurrentReseller()),
+            'revoked' => UserInviteResource::collection($invites->revokedForCurrentReseller()),
             'klanten' => ResellerKlantResource::collection($resellerKlanten->paginate(perPage: 1000)),
             'klantRoles' => $this->roleOptions(Role::klantRoles()),
             'resellerRoles' => $this->roleOptions(Role::resellerRoles()),
@@ -58,5 +60,18 @@ final class InvitesController extends Controller
         $revokeInvite($userInvite);
 
         return to_route('invites.index')->with('success', __('Invite revoked.'));
+    }
+
+    public function restore(int $invite, UserInviteRepository $invites, RestoreInvite $restoreInvite): RedirectResponse
+    {
+        $userInvite = $invites->findRevokedById($invite);
+
+        abort_if($userInvite === null, 404);
+
+        $this->authorize('restore', $userInvite);
+
+        $restoreInvite($userInvite);
+
+        return to_route('invites.index')->with('success', __('Invite restored.'));
     }
 }

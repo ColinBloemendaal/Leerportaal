@@ -21,4 +21,11 @@ interface UserInviteRepository
     public function findPendingById(int $id): ?UserInvite;
 
     public function hasPendingInviteForEmail(string $email): bool;
+
+    /**
+     * @return Collection<int, UserInvite>
+     */
+    public function revokedForCurrentReseller(): Collection;
+
+    public function findRevokedById(int $id): ?UserInvite;
 }

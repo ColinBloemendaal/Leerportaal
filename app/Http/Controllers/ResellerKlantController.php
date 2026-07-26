@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Actions\ResellerKlanten\CreateResellerKlant;
+use App\Actions\ResellerKlanten\DeleteResellerKlant;
+use App\Actions\ResellerKlanten\RestoreResellerKlant;
 use App\Contracts\Repositories\ResellerKlantRepository;
 use App\Http\Requests\ResellerKlanten\StoreResellerKlantRequest;
 use App\Http\Resources\ResellerKlantResource;
@@ -23,6 +25,7 @@ final class ResellerKlantController extends Controller
             'klanten' => ResellerKlantResource::collection(
                 $resellerKlanten->paginate($search !== '' ? $search : null),
             ),
+            'trashed' => ResellerKlantResource::collection($resellerKlanten->trashed()),
         ]);
     }
 
@@ -31,5 +34,31 @@ final class ResellerKlantController extends Controller
         $createResellerKlant($request->toDto());
 
         return to_route('klanten.index')->with('success', __('Klant created.'));
+    }
+
+    public function destroy(int $klant, ResellerKlantRepository $resellerKlanten, DeleteResellerKlant $deleteResellerKlant): RedirectResponse
+    {
+        $resellerKlant = $resellerKlanten->findById($klant);
+
+        abort_if($resellerKlant === null, 404);
+
+        $this->authorize('delete', $resellerKlant);
+
+        $deleteResellerKlant($resellerKlant);
+
+        return to_route('klanten.index')->with('success', __('Klant deleted.'));
+    }
+
+    public function restore(int $klant, ResellerKlantRepository $resellerKlanten, RestoreResellerKlant $restoreResellerKlant): RedirectResponse
+    {
+        $resellerKlant = $resellerKlanten->findTrashedById($klant);
+
+        abort_if($resellerKlant === null, 404);
+
+        $this->authorize('restore', $resellerKlant);
+
+        $restoreResellerKlant($resellerKlant);
+
+        return to_route('klanten.index')->with('success', __('Klant restored.'));
     }
 }

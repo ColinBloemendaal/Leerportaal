@@ -110,6 +110,28 @@ it('revokes a pending invite', function (): void {
     expect(UserInvite::find($invite->id))->toBeNull();
 });
 
+it('lists revoked invites separately from pending ones', function (): void {
+    $invite = UserInvite::factory()->create(['reseller_id' => $this->reseller->id, 'name' => 'Revoked Person']);
+    $invite->delete();
+
+    $this->actingAs($this->user)
+        ->get('/invites')
+        ->assertInertia(fn ($page) => $page
+            ->where('revoked.data.0.name', 'Revoked Person')
+            ->has('invites.data', 0));
+});
+
+it('restores a revoked invite', function (): void {
+    $invite = UserInvite::factory()->create(['reseller_id' => $this->reseller->id]);
+    $invite->delete();
+
+    $this->actingAs($this->user)
+        ->post("/invites/{$invite->id}/restore")
+        ->assertRedirect('/invites');
+
+    $this->assertDatabaseHas('user_invites', ['id' => $invite->id, 'deleted_at' => null]);
+});
+
 it('denies platform staff (no reseller) from viewing invites', function (): void {
     $staff = User::factory()->platformStaff()->twoFactorEnabled()->create();
 

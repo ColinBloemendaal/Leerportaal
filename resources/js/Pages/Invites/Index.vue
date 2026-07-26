@@ -9,6 +9,7 @@ defineOptions({ layout: AppLayout });
 
 const props = defineProps<{
     invites: { data: UserInvite[] };
+    revoked: { data: UserInvite[] };
     klanten: PaginatedKlanten;
     klantRoles: { value: string; label: string }[];
     resellerRoles: { value: string; label: string }[];
@@ -31,6 +32,10 @@ function submit() {
 
 function revoke(invite: UserInvite) {
     router.delete(`/invites/${invite.id}`);
+}
+
+function restore(invite: UserInvite) {
+    router.post(`/invites/${invite.id}/restore`);
 }
 </script>
 
@@ -115,4 +120,21 @@ function revoke(invite: UserInvite) {
             </tr>
         </tbody>
     </table>
+
+    <template v-if="revoked.data.length > 0">
+        <h2 class="h6 mt-4 mb-2">Ingetrokken invites</h2>
+        <table class="table">
+            <tbody>
+                <tr v-for="invite in revoked.data" :key="invite.id">
+                    <td>{{ invite.name }}</td>
+                    <td>{{ invite.email }}</td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" @click="restore(invite)">
+                            Herstellen
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </template>
 </template>

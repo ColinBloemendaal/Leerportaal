@@ -33,4 +33,17 @@ final class EloquentUserInviteRepository implements UserInviteRepository
     {
         return UserInvite::query()->where('email', $email)->whereNull('accepted_at')->exists();
     }
+
+    /**
+     * @return Collection<int, UserInvite>
+     */
+    public function revokedForCurrentReseller(): Collection
+    {
+        return UserInvite::onlyTrashed()->orderByDesc('deleted_at')->get();
+    }
+
+    public function findRevokedById(int $id): ?UserInvite
+    {
+        return UserInvite::onlyTrashed()->whereKey($id)->first();
+    }
 }

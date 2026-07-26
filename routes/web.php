@@ -87,6 +87,10 @@ Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->grou
     Route::post('/klanten', [ResellerKlantController::class, 'store'])
         ->name('klanten.store');
 
+    Route::delete('/klanten/{klant}', [ResellerKlantController::class, 'destroy'])->name('klanten.destroy');
+
+    Route::post('/klanten/{klant}/restore', [ResellerKlantController::class, 'restore'])->name('klanten.restore');
+
     Route::get('/invites', [InvitesController::class, 'index'])
         ->middleware('can:viewAny,App\Models\UserInvite')
         ->name('invites.index');
@@ -94,6 +98,8 @@ Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->grou
     Route::post('/invites', [InvitesController::class, 'store'])->name('invites.store');
 
     Route::delete('/invites/{invite}', [InvitesController::class, 'destroy'])->name('invites.destroy');
+
+    Route::post('/invites/{invite}/restore', [InvitesController::class, 'restore'])->name('invites.restore');
 
     Route::post('/impersonate/{user}', [ImpersonationController::class, 'store'])
         ->middleware('throttle:impersonate')

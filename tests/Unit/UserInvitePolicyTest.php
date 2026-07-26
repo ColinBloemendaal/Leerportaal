@@ -44,3 +44,19 @@ it('denies deleting an invite that belongs to a different reseller', function ()
 
     expect($this->policy->delete($user, $invite))->toBeFalse();
 });
+
+it('allows restoring an invite that belongs to the same reseller', function (): void {
+    $reseller = Reseller::factory()->create();
+    $user = User::factory()->create(['reseller_id' => $reseller->id]);
+    $invite = UserInvite::factory()->create(['reseller_id' => $reseller->id]);
+
+    expect($this->policy->restore($user, $invite))->toBeTrue();
+});
+
+it('denies restoring an invite that belongs to a different reseller', function (): void {
+    $user = User::factory()->create();
+    $otherReseller = Reseller::factory()->create();
+    $invite = UserInvite::factory()->create(['reseller_id' => $otherReseller->id]);
+
+    expect($this->policy->restore($user, $invite))->toBeFalse();
+});
