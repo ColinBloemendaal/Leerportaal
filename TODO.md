@@ -82,7 +82,7 @@ Legend: `[ ]` todo · `[x]` done · `[~]` in progress · `[!]` blocked (add a no
 
 ## Phase 2 — Whitelabel Level 1
 
-- [ ] `reseller_themes` table: primary/secondary/accent colors, font family, logo, favicon, login background
+- [x] `reseller_themes` table: primary/secondary/accent colors, font family, logo, favicon, login background. Tenant-scoped like every other reseller-owned table (isolation test included); `primary_color` defaults to Bootstrap's own primary blue so an uncustomized reseller still renders sensibly. Upload/validation for logo/favicon/login background comes with the theme editor UI task -- this task is schema + model only
 - [ ] Runtime CSS custom property injection into layouts (no per-tenant build)
 - [ ] Bootstrap `_variables.scss` wired to CSS custom properties
 - [ ] Theme editor UI with live preview
