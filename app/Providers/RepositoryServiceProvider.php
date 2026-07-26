@@ -8,11 +8,13 @@ use App\Contracts\Repositories\CustomDomainRepository;
 use App\Contracts\Repositories\ImpersonationRepository;
 use App\Contracts\Repositories\ResellerKlantRepository;
 use App\Contracts\Repositories\ResellerRepository;
+use App\Contracts\Repositories\ResellerThemeRepository;
 use App\Contracts\Repositories\UserInviteRepository;
 use App\Repositories\Eloquent\EloquentCustomDomainRepository;
 use App\Repositories\Eloquent\EloquentImpersonationRepository;
 use App\Repositories\Eloquent\EloquentResellerKlantRepository;
 use App\Repositories\Eloquent\EloquentResellerRepository;
+use App\Repositories\Eloquent\EloquentResellerThemeRepository;
 use App\Repositories\Eloquent\EloquentUserInviteRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -31,5 +33,6 @@ final class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ResellerKlantRepository::class, EloquentResellerKlantRepository::class);
         $this->app->bind(UserInviteRepository::class, EloquentUserInviteRepository::class);
         $this->app->bind(ImpersonationRepository::class, EloquentImpersonationRepository::class);
+        $this->app->bind(ResellerThemeRepository::class, EloquentResellerThemeRepository::class);
     }
 }

@@ -8,6 +8,9 @@
 
         @vite(['resources/sass/app.scss', 'resources/js/app.ts'])
         @inertiaHead
+        @if (($themeCss ?? '') !== '')
+            <style>{!! $themeCss !!}</style>
+        @endif
     </head>
     <body>
         @inertia

@@ -48,6 +48,13 @@ arch('only actions, repositories, and models touch models directly')
         // Mailables shape their own view data from a model, the same job
         // Http\Resources does for Inertia props.
         'App\Mail',
+        // Services do pure calculation over domain models (CLAUDE.md §3a's
+        // own examples -- GradingService, AssignmentPricingService --
+        // fundamentally need to accept a Question/CourseAssignment to
+        // calculate over). Reads still belong in Repositories; this is
+        // about accepting an already-loaded model as an argument, not
+        // querying one directly.
+        'App\Services',
         'Database\Factories',
         'Database\Seeders',
     ]);

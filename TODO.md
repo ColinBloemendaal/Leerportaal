@@ -83,7 +83,7 @@ Legend: `[ ]` todo · `[x]` done · `[~]` in progress · `[!]` blocked (add a no
 ## Phase 2 — Whitelabel Level 1
 
 - [x] `reseller_themes` table: primary/secondary/accent colors, font family, logo, favicon, login background. Tenant-scoped like every other reseller-owned table (isolation test included); `primary_color` defaults to Bootstrap's own primary blue so an uncustomized reseller still renders sensibly. Upload/validation for logo/favicon/login background comes with the theme editor UI task -- this task is schema + model only
-- [ ] Runtime CSS custom property injection into layouts (no per-tenant build)
+- [x] Runtime CSS custom property injection into layouts (no per-tenant build). `App\Services\Theming\ThemeCssGenerator` renders `--reseller-*` custom properties from a `ResellerTheme`, re-validating every value itself (never trusts the database contents, since it's interpolating into a raw `<style>` block) -- added `App\Services` to the "who may touch Models" arch whitelist for this, since CLAUDE.md's own Service examples (GradingService, etc.) need the same. Wired via a `View::composer('app', ...)` in `AppServiceProvider`, computed fresh per request from `TenantContext`
 - [ ] Bootstrap `_variables.scss` wired to CSS custom properties
 - [ ] Theme editor UI with live preview
 - [ ] Contrast validation — warn when a chosen color pair fails WCAG AA

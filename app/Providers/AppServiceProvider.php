@@ -6,19 +6,23 @@ namespace App\Providers;
 
 use App\Contracts\Dns\DnsResolver;
 use App\Contracts\Ploi\PloiClient;
+use App\Contracts\Repositories\ResellerThemeRepository;
 use App\Policies\SuperAdminBypass;
 use App\Services\Dns\NativeDnsResolver;
 use App\Services\Ploi\HttpPloiClient;
+use App\Services\Theming\ThemeCssGenerator;
 use App\Tenancy\TenantContext;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Auth\Factory as AuthFactory;
 use Illuminate\Contracts\Auth\PasswordBroker;
 use Illuminate\Contracts\Auth\StatefulGuard;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Client\Factory as HttpFactory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\View as ViewFacade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 
@@ -60,6 +64,16 @@ final class AppServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         Gate::before($this->app->make(SuperAdminBypass::class));
+
+        // Runtime CSS custom property injection (CLAUDE.md §1: "no
+        // per-tenant CSS build step"), computed fresh per request from the
+        // current reseller's theme.
+        ViewFacade::composer('app', function (View $view): void {
+            $theme = $this->app->make(ResellerThemeRepository::class)->findForCurrentReseller();
+            $css = $this->app->make(ThemeCssGenerator::class)->generate($theme);
+
+            $view->with('themeCss', $css);
+        });
     }
 
     private function configureRateLimiting(): void
