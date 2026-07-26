@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use App\Contracts\Dns\DnsResolver;
 use App\Contracts\Ploi\PloiClient;
+use App\Policies\SuperAdminBypass;
 use App\Services\Dns\NativeDnsResolver;
 use App\Services\Ploi\HttpPloiClient;
 use App\Tenancy\TenantContext;
@@ -16,6 +17,7 @@ use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Client\Factory as HttpFactory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
@@ -56,6 +58,8 @@ final class AppServiceProvider extends ServiceProvider
         Model::preventSilentlyDiscardingAttributes(! $this->app->isProduction());
 
         $this->configureRateLimiting();
+
+        Gate::before($this->app->make(SuperAdminBypass::class));
     }
 
     private function configureRateLimiting(): void
