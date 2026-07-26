@@ -97,5 +97,14 @@ final class AppServiceProvider extends ServiceProvider
         RateLimiter::for('invite-accept', function (Request $request): Limit {
             return Limit::perMinute(10)->by((string) $request->ip());
         });
+
+        // A powerful, sensitive action -- keyed by the impersonator, not
+        // the target, since the same actor starting many sessions in a
+        // row (against different targets) is the pattern worth limiting.
+        RateLimiter::for('impersonate', function (Request $request): Limit {
+            $key = $request->user()?->getAuthIdentifier() ?? $request->ip();
+
+            return Limit::perMinute(5)->by((string) $key);
+        });
     }
 }

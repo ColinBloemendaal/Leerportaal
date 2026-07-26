@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\BlockDuringImpersonation;
+use App\Http\Middleware\EnforceImpersonationSessionLimit;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\ResolveTenant;
 use Illuminate\Foundation\Application;
@@ -19,10 +21,17 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         // Appended, not prepended: must run after EncryptCookies decrypts
         // the incoming reseller_slug cookie, and before HandleInertiaRequests
-        // in case shared props ever need tenant data.
+        // in case shared props ever need tenant data. Impersonation's
+        // session-limit check also runs before HandleInertiaRequests, so
+        // an expired session never gets shared as still-active.
         $middleware->web(append: [
             ResolveTenant::class,
+            EnforceImpersonationSessionLimit::class,
             HandleInertiaRequests::class,
+        ]);
+
+        $middleware->alias([
+            'block-during-impersonation' => BlockDuringImpersonation::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

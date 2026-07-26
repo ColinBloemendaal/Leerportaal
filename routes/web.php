@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ImpersonationController;
 use App\Http\Controllers\Auth\InviteAcceptController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
@@ -93,4 +94,10 @@ Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->grou
     Route::post('/invites', [InvitesController::class, 'store'])->name('invites.store');
 
     Route::delete('/invites/{invite}', [InvitesController::class, 'destroy'])->name('invites.destroy');
+
+    Route::post('/impersonate/{user}', [ImpersonationController::class, 'store'])
+        ->middleware('throttle:impersonate')
+        ->name('impersonate.start');
+
+    Route::delete('/impersonate', [ImpersonationController::class, 'destroy'])->name('impersonate.stop');
 });

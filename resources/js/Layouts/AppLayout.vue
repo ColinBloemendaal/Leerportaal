@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import ImpersonationBanner from '@/Components/ImpersonationBanner.vue';
 import { Link } from '@inertiajs/vue3';
 </script>
 
 <template>
     <div class="d-flex flex-column min-vh-100">
+        <ImpersonationBanner />
+
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
                 <Link href="/" class="navbar-brand">

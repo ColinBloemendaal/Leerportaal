@@ -8,6 +8,10 @@ declare module '@inertiajs/core' {
                 status: string | null;
                 success: string | null;
             };
+            impersonation: {
+                impersonatorName: string;
+                targetName: string;
+            } | null;
         };
     }
 }

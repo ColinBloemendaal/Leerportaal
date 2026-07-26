@@ -74,8 +74,8 @@ Legend: `[ ]` todo · `[x]` done · `[~]` in progress · `[!]` blocked (add a no
 
 - [x] Install `spatie/laravel-activitylog`
 - [x] `HasAuditLog` trait, applied to all user/content/billing models. Applied to every current model (`User`, `Reseller`, `ResellerKlant`, `UserInvite`, `CustomDomain`) -- no content/billing models exist yet, future ones should pick up the trait too. Uses `logUnguarded()` since every model uses `$guarded = []` rather than `$fillable`. Secrets (password, remember_token, two_factor_secret, two_factor_recovery_codes) are excluded globally via `config('activitylog.default_except_attributes')`, not per model, so nothing new can accidentally leak them by reusing a column name
-- [ ] Impersonation: start/stop, reason required, timestamped, session limit, UI banner
-- [ ] Block password change, billing, and permission changes while impersonating
+- [x] Impersonation: start/stop, reason required, timestamped, session limit, UI banner. Hierarchy by human decision: super-admin -> any reseller-side user; reseller staff -> their own klanten/cursisten (not fellow staff); klant-admin/klant-manager -> cursisten in their own klant only (the first real consumer of the spatie team roles seeded back in task 34/35). 15-minute hard session limit, enforced by `EnforceImpersonationSessionLimit` middleware in the `web` group. Platform staff can never be impersonated
+- [x] Block password change, billing, and permission changes while impersonating. `BlockDuringImpersonation` middleware (alias `block-during-impersonation`) built and tested, but not attached to any route yet -- none of those three areas has a route in this phase (self-service password change, billing, and permission-management UI are all later phases). Attach it to their routes once they exist
 - [ ] Soft deletes on all user-facing models + restore actions
 
 ---

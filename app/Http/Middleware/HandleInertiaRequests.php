@@ -44,6 +44,15 @@ final class HandleInertiaRequests extends Middleware
                 'status' => fn () => $request->session()->get('status'),
                 'success' => fn () => $request->session()->get('success'),
             ],
+            // Impersonation banner. Reads session values set by
+            // App\Actions\Auth\StartImpersonation directly, rather than
+            // querying the User record here -- this middleware isn't in
+            // the "who may touch Models" arch whitelist, and doesn't need
+            // to be for this.
+            'impersonation' => fn () => $request->session()->has('impersonation_id') ? [
+                'impersonatorName' => $request->session()->get('impersonator_name'),
+                'targetName' => $request->session()->get('impersonated_name'),
+            ] : null,
         ];
     }
 }
