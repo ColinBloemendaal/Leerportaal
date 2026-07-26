@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Concerns\HasAuditLog;
 use App\Concerns\TenantScoped;
 use App\Enums\Role;
 use Database\Factories\UserInviteFactory;
@@ -14,9 +15,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 final class UserInvite extends Model
 {
+    use HasAuditLog;
+
     /** @use HasFactory<UserInviteFactory> */
     use HasFactory;
-
     use SoftDeletes;
     use TenantScoped;
 

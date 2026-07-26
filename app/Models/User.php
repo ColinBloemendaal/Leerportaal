@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Concerns\HasAuditLog;
 use App\Enums\Role;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -22,9 +23,10 @@ use Spatie\Permission\Traits\HasRoles;
  */
 final class User extends Authenticatable implements MustVerifyEmail
 {
+    use HasAuditLog;
+
     /** @use HasFactory<UserFactory> */
     use HasFactory;
-
     use HasRoles;
     use Notifiable;
     use SoftDeletes;

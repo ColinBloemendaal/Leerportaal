@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Concerns\HasAuditLog;
 use App\Enums\ResellerStatus;
 use App\Events\Permissions\ResellerCreated;
 use Database\Factories\ResellerFactory;
@@ -16,9 +17,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 final class Reseller extends Model
 {
+    use HasAuditLog;
+
     /** @use HasFactory<ResellerFactory> */
     use HasFactory;
-
     use SoftDeletes;
 
     protected $guarded = [];

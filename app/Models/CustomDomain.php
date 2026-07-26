@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Concerns\HasAuditLog;
 use App\Concerns\TenantScoped;
 use App\Enums\CustomDomainStatus;
 use Database\Factories\CustomDomainFactory;
@@ -14,9 +15,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 final class CustomDomain extends Model
 {
+    use HasAuditLog;
+
     /** @use HasFactory<CustomDomainFactory> */
     use HasFactory;
-
     use SoftDeletes;
     use TenantScoped;
 

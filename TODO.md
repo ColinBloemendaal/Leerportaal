@@ -72,8 +72,8 @@ Legend: `[ ]` todo · `[x]` done · `[~]` in progress · `[!]` blocked (add a no
 
 ### Audit & impersonation
 
-- [ ] Install `spatie/laravel-activitylog`
-- [ ] `HasAuditLog` trait, applied to all user/content/billing models
+- [x] Install `spatie/laravel-activitylog`
+- [x] `HasAuditLog` trait, applied to all user/content/billing models. Applied to every current model (`User`, `Reseller`, `ResellerKlant`, `UserInvite`, `CustomDomain`) -- no content/billing models exist yet, future ones should pick up the trait too. Uses `logUnguarded()` since every model uses `$guarded = []` rather than `$fillable`. Secrets (password, remember_token, two_factor_secret, two_factor_recovery_codes) are excluded globally via `config('activitylog.default_except_attributes')`, not per model, so nothing new can accidentally leak them by reusing a column name
 - [ ] Impersonation: start/stop, reason required, timestamped, session limit, UI banner
 - [ ] Block password change, billing, and permission changes while impersonating
 - [ ] Soft deletes on all user-facing models + restore actions
