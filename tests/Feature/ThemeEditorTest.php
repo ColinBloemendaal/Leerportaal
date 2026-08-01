@@ -58,6 +58,38 @@ it('rejects an invalid hex color', function (): void {
         ->assertSessionHasErrors('primary_color');
 });
 
+it('persists custom css through the full FormRequest -> DTO -> Action -> Repository chain', function (): void {
+    $this->actingAs($this->user)
+        ->put('/settings/theme', [
+            'primary_color' => '#123456',
+            'custom_css' => '.btn { border-radius: 0; }',
+        ])
+        ->assertRedirect('/settings/theme');
+
+    $this->assertDatabaseHas('reseller_themes', [
+        'reseller_id' => $this->reseller->id,
+        'custom_css' => '.btn { border-radius: 0; }',
+    ]);
+});
+
+it('rejects custom css that exceeds the hard character limit', function (): void {
+    $this->actingAs($this->user)
+        ->put('/settings/theme', [
+            'primary_color' => '#123456',
+            'custom_css' => str_repeat('a', 10001),
+        ])
+        ->assertSessionHasErrors('custom_css');
+});
+
+it('rejects custom css that attempts to break out of the style block', function (): void {
+    $this->actingAs($this->user)
+        ->put('/settings/theme', [
+            'primary_color' => '#123456',
+            'custom_css' => 'body { color: red; } </style><script>alert(1)</script>',
+        ])
+        ->assertSessionHasErrors('custom_css');
+});
+
 it('uploads a logo and serves it via the public branding route', function (): void {
     Storage::fake('local');
 

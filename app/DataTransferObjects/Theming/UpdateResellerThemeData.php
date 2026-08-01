@@ -16,6 +16,7 @@ final readonly class UpdateResellerThemeData
         public ?UploadedFile $logo,
         public ?UploadedFile $favicon,
         public ?UploadedFile $loginBackground,
+        public ?string $customCss,
     ) {}
 
     /**
@@ -31,6 +32,7 @@ final readonly class UpdateResellerThemeData
             logo: $data['logo'] ?? null,
             favicon: $data['favicon'] ?? null,
             loginBackground: $data['login_background'] ?? null,
+            customCss: $data['custom_css'] ?? null,
         );
     }
 }

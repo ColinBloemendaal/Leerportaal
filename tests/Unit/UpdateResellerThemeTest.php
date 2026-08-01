@@ -32,6 +32,7 @@ it('creates a theme for a reseller that has none yet', function (): void {
         logo: null,
         favicon: null,
         loginBackground: null,
+        customCss: null,
     ));
 
     expect($theme->reseller_id)->toBe($reseller->id)
@@ -54,11 +55,30 @@ it('updates the existing theme in place rather than creating a duplicate', funct
         logo: null,
         favicon: null,
         loginBackground: null,
+        customCss: null,
     ));
 
     expect($theme->id)->toBe($existing->id)
         ->and($theme->primary_color)->toBe('#ffffff')
         ->and(ResellerTheme::query()->where('reseller_id', $reseller->id)->count())->toBe(1);
+});
+
+it('persists custom css alongside the other theme attributes', function (): void {
+    $reseller = Reseller::factory()->create();
+    app(TenantContext::class)->set($reseller);
+
+    $theme = (updateThemeAction())(new UpdateResellerThemeData(
+        primaryColor: '#112233',
+        secondaryColor: null,
+        accentColor: null,
+        fontFamily: null,
+        logo: null,
+        favicon: null,
+        loginBackground: null,
+        customCss: '.btn { border-radius: 0; }',
+    ));
+
+    expect($theme->custom_css)->toBe('.btn { border-radius: 0; }');
 });
 
 it('stores an uploaded logo on the private disk and records its path', function (): void {
@@ -74,6 +94,7 @@ it('stores an uploaded logo on the private disk and records its path', function 
         logo: UploadedFile::fake()->create('logo.png', 10, 'image/png'),
         favicon: null,
         loginBackground: null,
+        customCss: null,
     ));
 
     expect($theme->logo_path)->toBe("reseller-themes/{$reseller->id}/logo.png");
@@ -93,6 +114,7 @@ it('deletes the previous logo when a new one replaces it', function (): void {
         logo: UploadedFile::fake()->create('logo.png', 10, 'image/png'),
         favicon: null,
         loginBackground: null,
+        customCss: null,
     ));
     $oldPath = $first->logo_path;
 
@@ -104,6 +126,7 @@ it('deletes the previous logo when a new one replaces it', function (): void {
         logo: UploadedFile::fake()->create('logo.jpg', 10, 'image/jpeg'),
         favicon: null,
         loginBackground: null,
+        customCss: null,
     ));
 
     Storage::disk('local')->assertMissing($oldPath);
@@ -124,6 +147,7 @@ it('leaves existing assets untouched when no new file is uploaded', function ():
         logo: UploadedFile::fake()->create('logo.png', 10, 'image/png'),
         favicon: null,
         loginBackground: null,
+        customCss: null,
     ));
 
     $second = (updateThemeAction())(new UpdateResellerThemeData(
@@ -134,6 +158,7 @@ it('leaves existing assets untouched when no new file is uploaded', function ():
         logo: null,
         favicon: null,
         loginBackground: null,
+        customCss: null,
     ));
 
     expect($second->logo_path)->toBe($first->logo_path);

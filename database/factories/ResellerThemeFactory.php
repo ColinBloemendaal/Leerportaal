@@ -29,6 +29,7 @@ final class ResellerThemeFactory extends Factory
             'logo_path' => null,
             'favicon_path' => null,
             'login_background_path' => null,
+            'custom_css' => null,
         ];
     }
 }

@@ -39,6 +39,7 @@ final readonly class UpdateResellerTheme
                 'secondary_color' => $data->secondaryColor,
                 'accent_color' => $data->accentColor,
                 'font_family' => $data->fontFamily,
+                'custom_css' => $data->customCss,
             ],
         );
 

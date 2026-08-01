@@ -13,6 +13,7 @@ const props = defineProps<{
             secondary_color: string | null;
             accent_color: string | null;
             font_family: string | null;
+            custom_css: string | null;
         };
     };
     assetUrls: {
@@ -30,6 +31,7 @@ const form = useForm({
     logo: null as File | null,
     favicon: null as File | null,
     login_background: null as File | null,
+    custom_css: props.theme.data.custom_css ?? '',
 });
 
 function onFileChange(field: 'logo' | 'favicon' | 'login_background', event: Event) {
@@ -233,6 +235,21 @@ const secondaryContrastFailsAA = computed(
         </div>
 
         <div class="col-12">
+            <label for="custom_css" class="form-label">Custom CSS</label>
+            <textarea
+                id="custom_css"
+                v-model="form.custom_css"
+                class="form-control font-monospace"
+                :class="{ 'is-invalid': form.errors.custom_css }"
+                rows="6"
+                maxlength="10000"
+                placeholder=".btn { border-radius: 0; }"
+            ></textarea>
+            <div class="form-text">Advanced. Max 10,000 characters. Applied after all other theme settings.</div>
+            <div v-if="form.errors.custom_css" class="invalid-feedback d-block">{{ form.errors.custom_css }}</div>
+        </div>
+
+        <div class="col-12">
             <button type="submit" class="btn btn-primary" :disabled="form.processing">Save theme</button>
         </div>
     </form>
@@ -242,4 +259,16 @@ const secondaryContrastFailsAA = computed(
         <button type="button" class="btn btn-primary me-2">Primary button</button>
         <a href="#" class="link-primary">A link</a>
     </div>
+
+    <!--
+        Live preview only: the browser applies whatever is typed here to
+        the current document immediately, same as the color/font previews
+        above. This is not a security boundary -- the server-side
+        SafeCustomCss rule (and ThemeCssGenerator's defense-in-depth
+        re-check) are what actually gate what gets persisted and served
+        back to other visitors.
+    -->
+    <style>
+        {{ form.custom_css }}
+    </style>
 </template>

@@ -12,6 +12,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property ?string $secondary_color
  * @property ?string $accent_color
  * @property ?string $font_family
+ * @property ?string $custom_css
  */
 final class ResellerThemeResource extends JsonResource
 {
@@ -25,6 +26,7 @@ final class ResellerThemeResource extends JsonResource
             'secondary_color' => $this->secondary_color,
             'accent_color' => $this->accent_color,
             'font_family' => $this->font_family,
+            'custom_css' => $this->custom_css,
         ];
     }
 }

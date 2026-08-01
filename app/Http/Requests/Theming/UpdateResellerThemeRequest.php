@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests\Theming;
 
 use App\DataTransferObjects\Theming\UpdateResellerThemeData;
+use App\Rules\SafeCustomCss;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class UpdateResellerThemeRequest extends FormRequest
@@ -42,6 +43,11 @@ final class UpdateResellerThemeRequest extends FormRequest
                 'nullable', 'file', 'image', 'mimes:png,jpg,jpeg', 'max:5120',
                 'dimensions:min_width=800,min_height=600,max_width=4000,max_height=4000',
             ],
+
+            // Hard character limit + denylist of the specific vectors that
+            // matter for CSS rendered inside a raw <style> block -- see
+            // App\Rules\SafeCustomCss.
+            'custom_css' => ['nullable', 'string', 'max:10000', new SafeCustomCss],
         ];
     }
 

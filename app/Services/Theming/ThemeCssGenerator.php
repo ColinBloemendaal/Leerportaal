@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Theming;
 
 use App\Models\ResellerTheme;
+use App\Rules\SafeCustomCss;
 
 /**
  * Renders a reseller's theme as CSS custom properties, injected at
@@ -32,11 +33,11 @@ final readonly class ThemeCssGenerator
             $this->declaration('--reseller-font-family', $theme->font_family, $this->sanitizeFontFamily(...)),
         ]);
 
-        if ($declarations === []) {
-            return '';
-        }
+        $rootBlock = $declarations === [] ? '' : ':root { '.implode(' ', $declarations).' }';
 
-        return ':root { '.implode(' ', $declarations).' }';
+        $customCss = $this->sanitizeCustomCss($theme->custom_css);
+
+        return trim($rootBlock.($customCss !== null ? ' '.$customCss : ''));
     }
 
     /**
@@ -70,5 +71,22 @@ final readonly class ThemeCssGenerator
     private function sanitizeFontFamily(string $value): ?string
     {
         return preg_match('/^[\w\s,\'"-]+$/', $value) === 1 ? $value : null;
+    }
+
+    /**
+     * Defense in depth: re-runs the same denylist the write-side
+     * SafeCustomCss rule applies. The database is never trusted as the
+     * sole gate against a value that ends up interpolated into a raw
+     * <style> block -- if it somehow fails here, it's dropped silently
+     * rather than surfaced, since there is no user to show a validation
+     * error to at render time.
+     */
+    private function sanitizeCustomCss(?string $value): ?string
+    {
+        if ($value === null || $value === '') {
+            return null;
+        }
+
+        return (new SafeCustomCss)->firstViolation($value) === null ? $value : null;
     }
 }
