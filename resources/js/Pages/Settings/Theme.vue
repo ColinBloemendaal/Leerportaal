@@ -15,6 +15,11 @@ const props = defineProps<{
             font_family: string | null;
         };
     };
+    assetUrls: {
+        logo: string | null;
+        favicon: string | null;
+        login_background: string | null;
+    };
 }>();
 
 const form = useForm({
@@ -22,7 +27,15 @@ const form = useForm({
     secondary_color: props.theme.data.secondary_color ?? '',
     accent_color: props.theme.data.accent_color ?? '',
     font_family: props.theme.data.font_family ?? '',
+    logo: null as File | null,
+    favicon: null as File | null,
+    login_background: null as File | null,
 });
+
+function onFileChange(field: 'logo' | 'favicon' | 'login_background', event: Event) {
+    const input = event.target as HTMLInputElement;
+    form[field] = input.files?.[0] ?? null;
+}
 
 // Live preview: applies straight to the current document, the same
 // custom properties App\Services\Theming\ThemeCssGenerator injects
@@ -161,6 +174,62 @@ const secondaryContrastFailsAA = computed(
                 placeholder="Inter, system-ui, sans-serif"
             />
             <div v-if="form.errors.font_family" class="invalid-feedback">{{ form.errors.font_family }}</div>
+        </div>
+
+        <div class="col-12">
+            <label for="logo" class="form-label">Logo</label>
+            <img v-if="assetUrls.logo" :src="assetUrls.logo" alt="Current logo" class="d-block mb-2" height="48" />
+            <input
+                id="logo"
+                type="file"
+                class="form-control"
+                accept="image/png,image/jpeg"
+                :class="{ 'is-invalid': form.errors.logo }"
+                @change="onFileChange('logo', $event)"
+            />
+            <div v-if="form.errors.logo" class="invalid-feedback">{{ form.errors.logo }}</div>
+        </div>
+
+        <div class="col-12">
+            <label for="favicon" class="form-label">Favicon</label>
+            <img
+                v-if="assetUrls.favicon"
+                :src="assetUrls.favicon"
+                alt="Current favicon"
+                class="d-block mb-2"
+                height="24"
+            />
+            <input
+                id="favicon"
+                type="file"
+                class="form-control"
+                accept="image/png,image/x-icon"
+                :class="{ 'is-invalid': form.errors.favicon }"
+                @change="onFileChange('favicon', $event)"
+            />
+            <div v-if="form.errors.favicon" class="invalid-feedback">{{ form.errors.favicon }}</div>
+        </div>
+
+        <div class="col-12">
+            <label for="login_background" class="form-label">Login background</label>
+            <img
+                v-if="assetUrls.login_background"
+                :src="assetUrls.login_background"
+                alt="Current login background"
+                class="d-block mb-2"
+                style="max-width: 100%; max-height: 8rem"
+            />
+            <input
+                id="login_background"
+                type="file"
+                class="form-control"
+                accept="image/png,image/jpeg"
+                :class="{ 'is-invalid': form.errors.login_background }"
+                @change="onFileChange('login_background', $event)"
+            />
+            <div v-if="form.errors.login_background" class="invalid-feedback">
+                {{ form.errors.login_background }}
+            </div>
         </div>
 
         <div class="col-12">

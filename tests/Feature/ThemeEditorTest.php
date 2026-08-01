@@ -6,6 +6,8 @@ use App\Models\Reseller;
 use App\Models\ResellerTheme;
 use App\Models\User;
 use App\Tenancy\TenantContext;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Testing\AssertableInertia;
 
 beforeEach(function (): void {
@@ -54,6 +56,54 @@ it('rejects an invalid hex color', function (): void {
     $this->actingAs($this->user)
         ->put('/settings/theme', ['primary_color' => 'not-a-color'])
         ->assertSessionHasErrors('primary_color');
+});
+
+it('uploads a logo and serves it via the public branding route', function (): void {
+    Storage::fake('local');
+
+    $this->actingAs($this->user)
+        ->put('/settings/theme', [
+            'primary_color' => '#0d6efd',
+            'logo' => UploadedFile::fake()->image('logo.png', 64, 64),
+        ])
+        ->assertRedirect('/settings/theme');
+
+    $theme = ResellerTheme::query()->where('reseller_id', $this->reseller->id)->firstOrFail();
+    expect($theme->logo_path)->toBe("reseller-themes/{$this->reseller->id}/logo.png");
+
+    $this->get("/branding/{$this->reseller->slug}/logo")
+        ->assertOk()
+        ->assertHeader('Content-Type', 'image/png');
+});
+
+it('rejects a logo that is too small', function (): void {
+    Storage::fake('local');
+
+    $this->actingAs($this->user)
+        ->put('/settings/theme', [
+            'primary_color' => '#0d6efd',
+            'logo' => UploadedFile::fake()->image('logo.png', 10, 10),
+        ])
+        ->assertSessionHasErrors('logo');
+});
+
+it('rejects a logo with a disallowed file type', function (): void {
+    Storage::fake('local');
+
+    $this->actingAs($this->user)
+        ->put('/settings/theme', [
+            'primary_color' => '#0d6efd',
+            'logo' => UploadedFile::fake()->create('logo.pdf', 10, 'application/pdf'),
+        ])
+        ->assertSessionHasErrors('logo');
+});
+
+it('404s the branding route for a reseller with no logo uploaded', function (): void {
+    $this->get("/branding/{$this->reseller->slug}/logo")->assertNotFound();
+});
+
+it('404s the branding route for an unknown reseller slug', function (): void {
+    $this->get('/branding/does-not-exist/logo')->assertNotFound();
 });
 
 it('denies platform staff from viewing or updating the theme', function (): void {

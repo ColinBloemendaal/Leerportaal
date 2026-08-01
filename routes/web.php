@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\TenantLoginController;
 use App\Http\Controllers\Auth\TwoFactorAuthenticationController;
 use App\Http\Controllers\Auth\TwoFactorChallengeController;
 use App\Http\Controllers\InvitesController;
+use App\Http\Controllers\ResellerBrandingController;
 use App\Http\Controllers\ResellerKlantController;
 use App\Http\Controllers\ResellerThemeController;
 use App\Http\Middleware\EnsureTwoFactorAuthenticationIsEnabled;
@@ -23,6 +24,12 @@ Route::get('/', function () {
 });
 
 Route::get('/login/{slug}', TenantLoginController::class)->name('tenant.login');
+
+// Public, unauthenticated -- see App\Http\Controllers\ResellerBrandingController.
+Route::get('/branding/{reseller}/logo', [ResellerBrandingController::class, 'logo'])->name('branding.logo');
+Route::get('/branding/{reseller}/favicon', [ResellerBrandingController::class, 'favicon'])->name('branding.favicon');
+Route::get('/branding/{reseller}/login-background', [ResellerBrandingController::class, 'loginBackground'])
+    ->name('branding.login-background');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'create'])->name('login');

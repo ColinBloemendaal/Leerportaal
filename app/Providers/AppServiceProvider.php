@@ -16,6 +16,7 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Auth\Factory as AuthFactory;
 use Illuminate\Contracts\Auth\PasswordBroker;
 use Illuminate\Contracts\Auth\StatefulGuard;
+use Illuminate\Contracts\Filesystem\Factory as FilesystemFactory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Client\Factory as HttpFactory;
@@ -51,6 +52,10 @@ final class AppServiceProvider extends ServiceProvider
         // Illuminate\Auth\AuthServiceProvider doesn't bind this interface
         // either -- the default guard ('web') implements it.
         $this->app->bind(StatefulGuard::class, fn ($app) => $app->make(AuthFactory::class)->guard());
+
+        // Illuminate\Filesystem\FilesystemServiceProvider only registers
+        // the 'filesystem' string alias, not this interface.
+        $this->app->bind(FilesystemFactory::class, fn ($app) => $app->make('filesystem'));
     }
 
     /**

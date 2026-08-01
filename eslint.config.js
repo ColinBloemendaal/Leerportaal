@@ -1,6 +1,7 @@
 import js from '@eslint/js';
 import prettier from 'eslint-config-prettier';
 import vue from 'eslint-plugin-vue';
+import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
@@ -22,14 +23,10 @@ export default tseslint.config(
         files: ['**/*.vue', '**/*.ts'],
         languageOptions: {
             // These files run in the browser (Inertia pages/components),
-            // not Node -- without this, referencing `document`/`window`
-            // directly (rather than through an Inertia wrapper) is a lint
-            // error.
-            globals: {
-                document: 'readonly',
-                window: 'readonly',
-                navigator: 'readonly',
-            },
+            // not Node -- without this, referencing browser globals
+            // (document, window, File, ...) directly, rather than through
+            // an Inertia wrapper, is a lint error.
+            globals: globals.browser,
         },
     },
     {

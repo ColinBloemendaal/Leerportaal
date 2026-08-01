@@ -26,6 +26,22 @@ final class UpdateResellerThemeRequest extends FormRequest
             'secondary_color' => ['nullable', 'string', 'regex:'.self::HEX_COLOR],
             'accent_color' => ['nullable', 'string', 'regex:'.self::HEX_COLOR],
             'font_family' => ['nullable', 'string', 'max:255'],
+
+            // Type is validated by content (Laravel's `image`/`mimes` rules
+            // sniff actual file signatures, not the filename extension) --
+            // see CLAUDE.md §7. SVG is deliberately not accepted: its
+            // dimensions aren't reliably introspectable, which would make
+            // the dimensions rule either unreliably reject valid files or
+            // not actually check anything.
+            'logo' => [
+                'nullable', 'file', 'image', 'mimes:png,jpg,jpeg', 'max:2048',
+                'dimensions:min_width=32,min_height=32,max_width=2000,max_height=2000',
+            ],
+            'favicon' => ['nullable', 'file', 'mimes:png,ico', 'max:512'],
+            'login_background' => [
+                'nullable', 'file', 'image', 'mimes:png,jpg,jpeg', 'max:5120',
+                'dimensions:min_width=800,min_height=600,max_width=4000,max_height=4000',
+            ],
         ];
     }
 
