@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Mail;
 
+use App\Enums\MailTemplateType;
 use App\Models\ResellerMailTemplate;
 use App\Support\Mail\PlaceholderRenderer;
 use Illuminate\Mail\Mailables\Content;
@@ -47,5 +48,24 @@ final readonly class MailTemplateRenderer
         ])->render();
 
         return new Content(htmlString: $html);
+    }
+
+    /**
+     * A preview of what will actually send, using the type's sample
+     * placeholder values -- for the editor UI, not for sending.
+     *
+     * @return array{subject: string, bodyHtml: ?string}
+     */
+    public function renderPreview(MailTemplateType $type, ?ResellerMailTemplate $override): array
+    {
+        $sampleValues = $type->sampleValues();
+        $subjectTemplate = $override === null ? $type->defaultSubject() : $override->subject;
+
+        return [
+            'subject' => PlaceholderRenderer::render($subjectTemplate, $sampleValues),
+            'bodyHtml' => $override === null
+                ? null
+                : $this->markdown->toHtml(PlaceholderRenderer::render($override->body_markdown, $sampleValues)),
+        ];
     }
 }

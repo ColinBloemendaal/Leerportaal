@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests\Theming;
 
 use App\DataTransferObjects\Theming\UpdateResellerThemeData;
-use App\Rules\SafeCustomCss;
+use App\Rules\RejectsUnsafeMarkup;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class UpdateResellerThemeRequest extends FormRequest
@@ -46,8 +46,8 @@ final class UpdateResellerThemeRequest extends FormRequest
 
             // Hard character limit + denylist of the specific vectors that
             // matter for CSS rendered inside a raw <style> block -- see
-            // App\Rules\SafeCustomCss.
-            'custom_css' => ['nullable', 'string', 'max:10000', new SafeCustomCss],
+            // App\Rules\RejectsUnsafeMarkup.
+            'custom_css' => ['nullable', 'string', 'max:10000', new RejectsUnsafeMarkup],
 
             // The underlying "from" address always stays the platform's
             // own verified address (see App\Mail\Concerns\HasResellerBranding)

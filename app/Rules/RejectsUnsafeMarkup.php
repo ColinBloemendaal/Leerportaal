@@ -8,18 +8,22 @@ use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
 /**
- * Rejects (doesn't silently strip) constructs that would let a reseller
- * admin's custom CSS escape its <style> block or exfiltrate data --
- * CLAUDE.md §7. Rejection over silent stripping is deliberate: quietly
- * mangling what someone typed is worse UX than telling them why it was
- * refused, and safer than leaving a partially-stripped tag around.
+ * Rejects (doesn't silently strip) constructs that would let
+ * user-authored text escape its surrounding tag or exfiltrate data --
+ * CLAUDE.md §7. Used for both the theme's custom CSS field (escaping a
+ * <style> block) and reseller mail template bodies (escaping whatever
+ * markup wraps the rendered email) -- the vectors that matter are the
+ * same regardless of which context the text ends up in. Rejection over
+ * silent stripping is deliberate: quietly mangling what someone typed
+ * is worse UX than telling them why it was refused, and safer than
+ * leaving a partially-stripped tag around.
  *
- * Not a full CSS parser -- a denylist of the specific vectors that
- * matter for CSS rendered inside a raw <style> block: breaking out of
- * the tag entirely, loading external stylesheets/resources, and the
- * legacy IE script-execution vectors.
+ * Not a full parser -- a denylist of the specific vectors that matter
+ * for text rendered inside a raw HTML fragment: breaking out of the
+ * surrounding tag entirely, loading external stylesheets/resources, and
+ * the legacy IE script-execution vectors.
  */
-final class SafeCustomCss implements ValidationRule
+final class RejectsUnsafeMarkup implements ValidationRule
 {
     private const DANGEROUS_PATTERNS = [
         '/<\/style/i' => 'must not contain a closing </style> tag',

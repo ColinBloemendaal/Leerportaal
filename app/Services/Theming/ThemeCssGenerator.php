@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Theming;
 
 use App\Models\ResellerTheme;
-use App\Rules\SafeCustomCss;
+use App\Rules\RejectsUnsafeMarkup;
 
 /**
  * Renders a reseller's theme as CSS custom properties, injected at
@@ -75,8 +75,8 @@ final readonly class ThemeCssGenerator
 
     /**
      * Defense in depth: re-runs the same denylist the write-side
-     * SafeCustomCss rule applies. The database is never trusted as the
-     * sole gate against a value that ends up interpolated into a raw
+     * RejectsUnsafeMarkup rule applies. The database is never trusted as
+     * the sole gate against a value that ends up interpolated into a raw
      * <style> block -- if it somehow fails here, it's dropped silently
      * rather than surfaced, since there is no user to show a validation
      * error to at render time.
@@ -87,6 +87,6 @@ final readonly class ThemeCssGenerator
             return null;
         }
 
-        return (new SafeCustomCss)->firstViolation($value) === null ? $value : null;
+        return (new RejectsUnsafeMarkup)->firstViolation($value) === null ? $value : null;
     }
 }

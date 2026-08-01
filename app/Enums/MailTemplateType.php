@@ -48,4 +48,21 @@ enum MailTemplateType: string
             self::UserInvited => '{{ reseller_name }} invited you to Leerportaal',
         };
     }
+
+    /**
+     * Realistic-looking values for each placeholder, used to render a
+     * preview of a reseller's saved override in the editor UI.
+     *
+     * @return array<string, string>
+     */
+    public function sampleValues(): array
+    {
+        return match ($this) {
+            self::UserInvited => [
+                'reseller_name' => 'Acme Training',
+                'invitee_name' => 'Jane Doe',
+                'accept_url' => '#',
+            ],
+        };
+    }
 }

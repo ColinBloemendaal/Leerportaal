@@ -14,6 +14,7 @@ use App\Http\Controllers\Auth\TwoFactorChallengeController;
 use App\Http\Controllers\InvitesController;
 use App\Http\Controllers\ResellerBrandingController;
 use App\Http\Controllers\ResellerKlantController;
+use App\Http\Controllers\ResellerMailTemplateController;
 use App\Http\Controllers\ResellerThemeController;
 use App\Http\Middleware\EnsureTwoFactorAuthenticationIsEnabled;
 use Illuminate\Support\Facades\Route;
@@ -87,6 +88,13 @@ Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->grou
 
         Route::get('/theme', [ResellerThemeController::class, 'edit'])->name('theme.edit');
         Route::put('/theme', [ResellerThemeController::class, 'update'])->name('theme.update');
+
+        Route::get('/email-templates', [ResellerMailTemplateController::class, 'index'])
+            ->name('email-templates.index');
+        Route::get('/email-templates/{type}', [ResellerMailTemplateController::class, 'edit'])
+            ->name('email-templates.edit');
+        Route::put('/email-templates/{type}', [ResellerMailTemplateController::class, 'update'])
+            ->name('email-templates.update');
     });
 
     // Reference vertical slice (FormRequest -> DTO -> Action -> Repository
