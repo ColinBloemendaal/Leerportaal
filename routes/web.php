@@ -13,6 +13,7 @@ use App\Http\Controllers\Auth\TwoFactorAuthenticationController;
 use App\Http\Controllers\Auth\TwoFactorChallengeController;
 use App\Http\Controllers\InvitesController;
 use App\Http\Controllers\ResellerKlantController;
+use App\Http\Controllers\ResellerThemeController;
 use App\Http\Middleware\EnsureTwoFactorAuthenticationIsEnabled;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -76,6 +77,9 @@ Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->grou
         Route::post('/two-factor/recovery-codes', [RecoveryCodeController::class, 'store'])
             ->middleware('throttle:two-factor-manage')
             ->name('two-factor.recovery-codes');
+
+        Route::get('/theme', [ResellerThemeController::class, 'edit'])->name('theme.edit');
+        Route::put('/theme', [ResellerThemeController::class, 'update'])->name('theme.update');
     });
 
     // Reference vertical slice (FormRequest -> DTO -> Action -> Repository

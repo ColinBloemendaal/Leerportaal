@@ -13,4 +13,11 @@ interface ResellerThemeRepository
      * theme row yet -- both mean "render the unbranded defaults."
      */
     public function findForCurrentReseller(): ?ResellerTheme;
+
+    /**
+     * For the theme editor: a fresh, unsaved instance with the schema's
+     * own defaults when the current reseller has no theme row yet, so
+     * the edit form always has something to pre-fill from.
+     */
+    public function findForCurrentResellerOrDefault(): ResellerTheme;
 }

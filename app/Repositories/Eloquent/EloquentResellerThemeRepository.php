@@ -15,4 +15,12 @@ final class EloquentResellerThemeRepository implements ResellerThemeRepository
         // is a normal scoped read, not a bypass.
         return ResellerTheme::query()->first();
     }
+
+    public function findForCurrentResellerOrDefault(): ResellerTheme
+    {
+        return $this->findForCurrentReseller() ?? new ResellerTheme([
+            // Must match the reseller_themes migration's column default.
+            'primary_color' => '#0d6efd',
+        ]);
+    }
 }

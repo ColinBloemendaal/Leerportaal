@@ -19,6 +19,20 @@ export default tseslint.config(
         },
     },
     {
+        files: ['**/*.vue', '**/*.ts'],
+        languageOptions: {
+            // These files run in the browser (Inertia pages/components),
+            // not Node -- without this, referencing `document`/`window`
+            // directly (rather than through an Inertia wrapper) is a lint
+            // error.
+            globals: {
+                document: 'readonly',
+                window: 'readonly',
+                navigator: 'readonly',
+            },
+        },
+    },
+    {
         // Inertia page components are route-mirroring entry points, not
         // reusable components -- exempt from the multi-word rule per the
         // Vue style guide's own carve-out for root/page components.

@@ -1,0 +1,48 @@
+<?php
+
+declare(strict_types=1);
+
+use App\Actions\Theming\UpdateResellerTheme;
+use App\DataTransferObjects\Theming\UpdateResellerThemeData;
+use App\Models\Reseller;
+use App\Models\ResellerTheme;
+use App\Tenancy\TenantContext;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+uses(TestCase::class, RefreshDatabase::class);
+
+it('creates a theme for a reseller that has none yet', function (): void {
+    $reseller = Reseller::factory()->create();
+    app(TenantContext::class)->set($reseller);
+
+    $theme = (new UpdateResellerTheme(app(TenantContext::class)))(new UpdateResellerThemeData(
+        primaryColor: '#112233',
+        secondaryColor: '#445566',
+        accentColor: null,
+        fontFamily: null,
+    ));
+
+    expect($theme->reseller_id)->toBe($reseller->id)
+        ->and($theme->primary_color)->toBe('#112233')
+        ->and($theme->secondary_color)->toBe('#445566');
+
+    expect(ResellerTheme::query()->where('reseller_id', $reseller->id)->count())->toBe(1);
+});
+
+it('updates the existing theme in place rather than creating a duplicate', function (): void {
+    $reseller = Reseller::factory()->create();
+    app(TenantContext::class)->set($reseller);
+    $existing = ResellerTheme::factory()->for($reseller, 'reseller')->create(['primary_color' => '#000000']);
+
+    $theme = (new UpdateResellerTheme(app(TenantContext::class)))(new UpdateResellerThemeData(
+        primaryColor: '#ffffff',
+        secondaryColor: null,
+        accentColor: null,
+        fontFamily: null,
+    ));
+
+    expect($theme->id)->toBe($existing->id)
+        ->and($theme->primary_color)->toBe('#ffffff')
+        ->and(ResellerTheme::query()->where('reseller_id', $reseller->id)->count())->toBe(1);
+});
