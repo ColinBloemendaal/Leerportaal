@@ -2,4 +2,5 @@
 //
 // Set overrides here before Bootstrap's own variables are loaded in
 // app.scss. Runtime per-reseller theming (CSS custom properties, Phase 2)
-// is wired in separately — see CLAUDE.md §6.
+// is wired in separately, after Bootstrap loads — see _theme-overrides.scss
+// and CLAUDE.md §6.

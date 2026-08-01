@@ -1,0 +1,39 @@
+// Runtime per-reseller theming (CLAUDE.md §1: "no per-tenant CSS build
+// step"). App\Services\Theming\ThemeCssGenerator injects --reseller-*
+// custom properties into <head> per request (see resources/views/app.blade.php).
+// This file maps those onto the CSS custom properties Bootstrap 5.3
+// itself already exposes at :root (bootstrap/scss/_root.scss) and many
+// components consume live (rgba(var(--bs-primary-rgb), ...), var(--bs-btn-bg),
+// etc.) -- so overriding them here re-themes those consumers per request,
+// no rebuild required.
+//
+// Must load after Bootstrap so these declarations win the cascade.
+//
+// Known limitation, inherent to "no per-tenant build step": Bootstrap
+// computes hover/active/focus SHADE variants (e.g. --bs-btn-hover-bg) via
+// Sass color functions (shade-color(), tint-color()) at build time --
+// those are baked-in literal hex values, not live var() references, so
+// they can't follow a runtime color change. Full shade-variant
+// re-theming would need a real per-tenant build, which CLAUDE.md §1
+// explicitly rules out. Level 2 (block-based pages, Phase 9) may need to
+// revisit this if it becomes a real problem.
+//
+// The #{$primary}/#{$link-color}/#{$font-family-sans-serif} fallbacks
+// below are Bootstrap's own resolved build-time values -- what these
+// custom properties would already be, so an unbranded request or a
+// reseller with no theme renders identically to before this file existed.
+:root {
+    --bs-primary: var(--reseller-primary-color, #{$primary});
+    --bs-primary-rgb: rgb(from var(--reseller-primary-color, #{$primary}) r g b);
+
+    --bs-secondary: var(--reseller-secondary-color, #{$secondary});
+    --bs-secondary-rgb: rgb(from var(--reseller-secondary-color, #{$secondary}) r g b);
+
+    --bs-link-color: var(--reseller-primary-color, #{$link-color});
+    --bs-link-color-rgb: rgb(from var(--reseller-primary-color, #{$link-color}) r g b);
+    --bs-link-hover-color: var(--reseller-primary-color, #{$link-hover-color});
+    --bs-link-hover-color-rgb: rgb(from var(--reseller-primary-color, #{$link-hover-color}) r g b);
+
+    --bs-font-sans-serif: var(--reseller-font-family, #{inspect($font-family-sans-serif)});
+    --bs-body-font-family: var(--reseller-font-family, #{inspect($font-family-base)});
+}
