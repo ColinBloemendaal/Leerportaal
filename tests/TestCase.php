@@ -27,5 +27,8 @@ abstract class TestCase extends BaseTestCase
         $this->app->bind(PaymentGateway::class, FakePaymentGateway::class);
         $this->app->bind(DnsResolver::class, FakeDnsResolver::class);
         $this->app->bind(PloiClient::class, FakePloiClient::class);
+
+        // CI's php job never runs `npm run build`, so no manifest exists.
+        $this->withoutVite();
     }
 }
