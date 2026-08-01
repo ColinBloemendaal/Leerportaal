@@ -100,7 +100,7 @@ Legend: `[ ]` todo · `[x]` done · `[~]` in progress · `[!]` blocked (add a no
 
 Human decision on scope: the "sender name, reply-to" branding task above and this one both needed the same denylist rule, which was originally named `SafeCustomCss` -- renamed to `App\Rules\RejectsUnsafeMarkup` when it stopped being CSS-specific, with every call site (theme request/generator, this request) updated in the same commit as the rename.
 - [ ] Configurable footer content, support email, terms/privacy URLs
-- [ ] Feature test: reseller A's theme never leaks into reseller B's render
+- [x] Feature test: reseller A's theme never leaks into reseller B's render. Added to `tests/Feature/ThemeInjectionTest.php`: renders as reseller B (with A and B both having distinct themes, including a `custom_css` value unique to A), asserts B's own primary color appears and A's color/custom CSS do not -- the existing tests in that file only covered single-reseller and unbranded-fallback cases, none exercised two resellers in the same test
 
 ---
 
