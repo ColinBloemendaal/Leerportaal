@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Contracts\Repositories\ResellerThemeRepository;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -53,6 +54,23 @@ final class HandleInertiaRequests extends Middleware
                 'impersonatorName' => $request->session()->get('impersonator_name'),
                 'targetName' => $request->session()->get('impersonated_name'),
             ] : null,
+
+            'footer' => fn () => $this->footerProps(),
+        ];
+    }
+
+    /**
+     * @return array<string, ?string>
+     */
+    private function footerProps(): array
+    {
+        $theme = app(ResellerThemeRepository::class)->findForCurrentReseller();
+
+        return [
+            'text' => $theme?->footer_text,
+            'supportEmail' => $theme?->support_email,
+            'termsUrl' => $theme?->terms_url,
+            'privacyUrl' => $theme?->privacy_url,
         ];
     }
 }

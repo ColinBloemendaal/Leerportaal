@@ -42,6 +42,10 @@ final readonly class UpdateResellerTheme
                 'custom_css' => $data->customCss,
                 'sender_name' => $data->senderName,
                 'reply_to_email' => $data->replyToEmail,
+                'footer_text' => $data->footerText,
+                'support_email' => $data->supportEmail,
+                'terms_url' => $data->termsUrl,
+                'privacy_url' => $data->privacyUrl,
             ],
         );
 

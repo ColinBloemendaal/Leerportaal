@@ -32,6 +32,10 @@ final class ResellerThemeFactory extends Factory
             'custom_css' => null,
             'sender_name' => null,
             'reply_to_email' => null,
+            'footer_text' => null,
+            'support_email' => null,
+            'terms_url' => null,
+            'privacy_url' => null,
         ];
     }
 }

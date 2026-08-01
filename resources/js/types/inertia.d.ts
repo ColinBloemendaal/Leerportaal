@@ -12,6 +12,12 @@ declare module '@inertiajs/core' {
                 impersonatorName: string;
                 targetName: string;
             } | null;
+            footer: {
+                text: string | null;
+                supportEmail: string | null;
+                termsUrl: string | null;
+                privacyUrl: string | null;
+            };
         };
     }
 }

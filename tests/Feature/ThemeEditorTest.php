@@ -115,6 +115,44 @@ it('rejects an invalid reply-to email address', function (): void {
         ->assertSessionHasErrors('reply_to_email');
 });
 
+it('persists footer content through the full FormRequest -> DTO -> Action -> Repository chain', function (): void {
+    $this->actingAs($this->user)
+        ->put('/settings/theme', [
+            'primary_color' => '#123456',
+            'footer_text' => '© Acme Training. All rights reserved.',
+            'support_email' => 'support@acme.example',
+            'terms_url' => 'https://acme.example/terms',
+            'privacy_url' => 'https://acme.example/privacy',
+        ])
+        ->assertRedirect('/settings/theme');
+
+    $this->assertDatabaseHas('reseller_themes', [
+        'reseller_id' => $this->reseller->id,
+        'footer_text' => '© Acme Training. All rights reserved.',
+        'support_email' => 'support@acme.example',
+        'terms_url' => 'https://acme.example/terms',
+        'privacy_url' => 'https://acme.example/privacy',
+    ]);
+});
+
+it('rejects an invalid terms url', function (): void {
+    $this->actingAs($this->user)
+        ->put('/settings/theme', [
+            'primary_color' => '#123456',
+            'terms_url' => 'not-a-url',
+        ])
+        ->assertSessionHasErrors('terms_url');
+});
+
+it('rejects footer text that attempts to break out of the wrapping markup', function (): void {
+    $this->actingAs($this->user)
+        ->put('/settings/theme', [
+            'primary_color' => '#123456',
+            'footer_text' => '<script>alert(1)</script>',
+        ])
+        ->assertSessionHasErrors('footer_text');
+});
+
 it('uploads a logo and serves it via the public branding route', function (): void {
     Storage::fake('local');
 

@@ -16,6 +16,10 @@ const props = defineProps<{
             custom_css: string | null;
             sender_name: string | null;
             reply_to_email: string | null;
+            footer_text: string | null;
+            support_email: string | null;
+            terms_url: string | null;
+            privacy_url: string | null;
         };
     };
     assetUrls: {
@@ -36,6 +40,10 @@ const form = useForm({
     custom_css: props.theme.data.custom_css ?? '',
     sender_name: props.theme.data.sender_name ?? '',
     reply_to_email: props.theme.data.reply_to_email ?? '',
+    footer_text: props.theme.data.footer_text ?? '',
+    support_email: props.theme.data.support_email ?? '',
+    terms_url: props.theme.data.terms_url ?? '',
+    privacy_url: props.theme.data.privacy_url ?? '',
 });
 
 function onFileChange(field: 'logo' | 'favicon' | 'login_background', event: Event) {
@@ -282,6 +290,60 @@ const secondaryContrastFailsAA = computed(
         </div>
 
         <div class="col-12">
+            <label for="footer_text" class="form-label">Footer text</label>
+            <textarea
+                id="footer_text"
+                v-model="form.footer_text"
+                class="form-control"
+                :class="{ 'is-invalid': form.errors.footer_text }"
+                rows="2"
+                maxlength="1000"
+                placeholder="© Your organization. All rights reserved."
+            ></textarea>
+            <div class="form-text">Shown at the bottom of every page.</div>
+            <div v-if="form.errors.footer_text" class="invalid-feedback d-block">{{ form.errors.footer_text }}</div>
+        </div>
+
+        <div class="col-12">
+            <label for="support_email" class="form-label">Support email</label>
+            <input
+                id="support_email"
+                v-model="form.support_email"
+                type="email"
+                class="form-control"
+                :class="{ 'is-invalid': form.errors.support_email }"
+                placeholder="support@yourdomain.example"
+            />
+            <div v-if="form.errors.support_email" class="invalid-feedback">{{ form.errors.support_email }}</div>
+        </div>
+
+        <div class="col-12">
+            <label for="terms_url" class="form-label">Terms of service URL</label>
+            <input
+                id="terms_url"
+                v-model="form.terms_url"
+                type="url"
+                class="form-control"
+                :class="{ 'is-invalid': form.errors.terms_url }"
+                placeholder="https://yourdomain.example/terms"
+            />
+            <div v-if="form.errors.terms_url" class="invalid-feedback">{{ form.errors.terms_url }}</div>
+        </div>
+
+        <div class="col-12">
+            <label for="privacy_url" class="form-label">Privacy policy URL</label>
+            <input
+                id="privacy_url"
+                v-model="form.privacy_url"
+                type="url"
+                class="form-control"
+                :class="{ 'is-invalid': form.errors.privacy_url }"
+                placeholder="https://yourdomain.example/privacy"
+            />
+            <div v-if="form.errors.privacy_url" class="invalid-feedback">{{ form.errors.privacy_url }}</div>
+        </div>
+
+        <div class="col-12">
             <button type="submit" class="btn btn-primary" :disabled="form.processing">Save theme</button>
         </div>
     </form>
@@ -296,7 +358,7 @@ const secondaryContrastFailsAA = computed(
         Live preview only: the browser applies whatever is typed here to
         the current document immediately, same as the color/font previews
         above. This is not a security boundary -- the server-side
-        SafeCustomCss rule (and ThemeCssGenerator's defense-in-depth
+        RejectsUnsafeMarkup rule (and ThemeCssGenerator's defense-in-depth
         re-check) are what actually gate what gets persisted and served
         back to other visitors.
     -->

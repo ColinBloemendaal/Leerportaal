@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AppFooter from '@/Components/AppFooter.vue';
 import ImpersonationBanner from '@/Components/ImpersonationBanner.vue';
 import { Link } from '@inertiajs/vue3';
 </script>
@@ -36,5 +37,7 @@ import { Link } from '@inertiajs/vue3';
         <main class="flex-grow-1 container py-4">
             <slot />
         </main>
+
+        <AppFooter />
     </div>
 </template>

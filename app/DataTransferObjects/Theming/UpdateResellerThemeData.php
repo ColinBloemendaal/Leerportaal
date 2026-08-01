@@ -19,6 +19,10 @@ final readonly class UpdateResellerThemeData
         public ?string $customCss,
         public ?string $senderName,
         public ?string $replyToEmail,
+        public ?string $footerText,
+        public ?string $supportEmail,
+        public ?string $termsUrl,
+        public ?string $privacyUrl,
     ) {}
 
     /**
@@ -37,6 +41,10 @@ final readonly class UpdateResellerThemeData
             customCss: $data['custom_css'] ?? null,
             senderName: $data['sender_name'] ?? null,
             replyToEmail: $data['reply_to_email'] ?? null,
+            footerText: $data['footer_text'] ?? null,
+            supportEmail: $data['support_email'] ?? null,
+            termsUrl: $data['terms_url'] ?? null,
+            privacyUrl: $data['privacy_url'] ?? null,
         );
     }
 }

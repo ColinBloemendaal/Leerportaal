@@ -54,6 +54,11 @@ final class UpdateResellerThemeRequest extends FormRequest
             // -- only the display name and reply-to are reseller-configurable.
             'sender_name' => ['nullable', 'string', 'max:255'],
             'reply_to_email' => ['nullable', 'string', 'email:rfc', 'max:255'],
+
+            'footer_text' => ['nullable', 'string', 'max:1000', new RejectsUnsafeMarkup],
+            'support_email' => ['nullable', 'string', 'email:rfc', 'max:255'],
+            'terms_url' => ['nullable', 'string', 'url', 'max:255'],
+            'privacy_url' => ['nullable', 'string', 'url', 'max:255'],
         ];
     }
 

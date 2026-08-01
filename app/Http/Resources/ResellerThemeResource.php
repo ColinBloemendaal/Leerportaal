@@ -15,6 +15,10 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property ?string $custom_css
  * @property ?string $sender_name
  * @property ?string $reply_to_email
+ * @property ?string $footer_text
+ * @property ?string $support_email
+ * @property ?string $terms_url
+ * @property ?string $privacy_url
  */
 final class ResellerThemeResource extends JsonResource
 {
@@ -31,6 +35,10 @@ final class ResellerThemeResource extends JsonResource
             'custom_css' => $this->custom_css,
             'sender_name' => $this->sender_name,
             'reply_to_email' => $this->reply_to_email,
+            'footer_text' => $this->footer_text,
+            'support_email' => $this->support_email,
+            'terms_url' => $this->terms_url,
+            'privacy_url' => $this->privacy_url,
         ];
     }
 }
