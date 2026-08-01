@@ -48,6 +48,12 @@ final class UpdateResellerThemeRequest extends FormRequest
             // matter for CSS rendered inside a raw <style> block -- see
             // App\Rules\SafeCustomCss.
             'custom_css' => ['nullable', 'string', 'max:10000', new SafeCustomCss],
+
+            // The underlying "from" address always stays the platform's
+            // own verified address (see App\Mail\Concerns\HasResellerBranding)
+            // -- only the display name and reply-to are reseller-configurable.
+            'sender_name' => ['nullable', 'string', 'max:255'],
+            'reply_to_email' => ['nullable', 'string', 'email:rfc', 'max:255'],
         ];
     }
 

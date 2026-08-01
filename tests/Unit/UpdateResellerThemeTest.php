@@ -33,6 +33,8 @@ it('creates a theme for a reseller that has none yet', function (): void {
         favicon: null,
         loginBackground: null,
         customCss: null,
+        senderName: null,
+        replyToEmail: null,
     ));
 
     expect($theme->reseller_id)->toBe($reseller->id)
@@ -56,6 +58,8 @@ it('updates the existing theme in place rather than creating a duplicate', funct
         favicon: null,
         loginBackground: null,
         customCss: null,
+        senderName: null,
+        replyToEmail: null,
     ));
 
     expect($theme->id)->toBe($existing->id)
@@ -76,9 +80,32 @@ it('persists custom css alongside the other theme attributes', function (): void
         favicon: null,
         loginBackground: null,
         customCss: '.btn { border-radius: 0; }',
+        senderName: null,
+        replyToEmail: null,
     ));
 
     expect($theme->custom_css)->toBe('.btn { border-radius: 0; }');
+});
+
+it('persists email branding alongside the other theme attributes', function (): void {
+    $reseller = Reseller::factory()->create();
+    app(TenantContext::class)->set($reseller);
+
+    $theme = (updateThemeAction())(new UpdateResellerThemeData(
+        primaryColor: '#112233',
+        secondaryColor: null,
+        accentColor: null,
+        fontFamily: null,
+        logo: null,
+        favicon: null,
+        loginBackground: null,
+        customCss: null,
+        senderName: 'Acme Training',
+        replyToEmail: 'support@acme.example',
+    ));
+
+    expect($theme->sender_name)->toBe('Acme Training')
+        ->and($theme->reply_to_email)->toBe('support@acme.example');
 });
 
 it('stores an uploaded logo on the private disk and records its path', function (): void {
@@ -95,6 +122,8 @@ it('stores an uploaded logo on the private disk and records its path', function 
         favicon: null,
         loginBackground: null,
         customCss: null,
+        senderName: null,
+        replyToEmail: null,
     ));
 
     expect($theme->logo_path)->toBe("reseller-themes/{$reseller->id}/logo.png");
@@ -115,6 +144,8 @@ it('deletes the previous logo when a new one replaces it', function (): void {
         favicon: null,
         loginBackground: null,
         customCss: null,
+        senderName: null,
+        replyToEmail: null,
     ));
     $oldPath = $first->logo_path;
 
@@ -127,6 +158,8 @@ it('deletes the previous logo when a new one replaces it', function (): void {
         favicon: null,
         loginBackground: null,
         customCss: null,
+        senderName: null,
+        replyToEmail: null,
     ));
 
     Storage::disk('local')->assertMissing($oldPath);
@@ -148,6 +181,8 @@ it('leaves existing assets untouched when no new file is uploaded', function ():
         favicon: null,
         loginBackground: null,
         customCss: null,
+        senderName: null,
+        replyToEmail: null,
     ));
 
     $second = (updateThemeAction())(new UpdateResellerThemeData(
@@ -159,6 +194,8 @@ it('leaves existing assets untouched when no new file is uploaded', function ():
         favicon: null,
         loginBackground: null,
         customCss: null,
+        senderName: null,
+        replyToEmail: null,
     ));
 
     expect($second->logo_path)->toBe($first->logo_path);

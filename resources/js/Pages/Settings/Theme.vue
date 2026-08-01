@@ -14,6 +14,8 @@ const props = defineProps<{
             accent_color: string | null;
             font_family: string | null;
             custom_css: string | null;
+            sender_name: string | null;
+            reply_to_email: string | null;
         };
     };
     assetUrls: {
@@ -32,6 +34,8 @@ const form = useForm({
     favicon: null as File | null,
     login_background: null as File | null,
     custom_css: props.theme.data.custom_css ?? '',
+    sender_name: props.theme.data.sender_name ?? '',
+    reply_to_email: props.theme.data.reply_to_email ?? '',
 });
 
 function onFileChange(field: 'logo' | 'favicon' | 'login_background', event: Event) {
@@ -247,6 +251,34 @@ const secondaryContrastFailsAA = computed(
             ></textarea>
             <div class="form-text">Advanced. Max 10,000 characters. Applied after all other theme settings.</div>
             <div v-if="form.errors.custom_css" class="invalid-feedback d-block">{{ form.errors.custom_css }}</div>
+        </div>
+
+        <div class="col-12">
+            <label for="sender_name" class="form-label">Email sender name</label>
+            <input
+                id="sender_name"
+                v-model="form.sender_name"
+                type="text"
+                class="form-control"
+                :class="{ 'is-invalid': form.errors.sender_name }"
+                placeholder="Your organization name"
+            />
+            <div class="form-text">Shown as the sender name on emails. The sending address itself stays fixed.</div>
+            <div v-if="form.errors.sender_name" class="invalid-feedback">{{ form.errors.sender_name }}</div>
+        </div>
+
+        <div class="col-12">
+            <label for="reply_to_email" class="form-label">Reply-to email</label>
+            <input
+                id="reply_to_email"
+                v-model="form.reply_to_email"
+                type="email"
+                class="form-control"
+                :class="{ 'is-invalid': form.errors.reply_to_email }"
+                placeholder="support@yourdomain.example"
+            />
+            <div class="form-text">Where replies to your emails should land.</div>
+            <div v-if="form.errors.reply_to_email" class="invalid-feedback">{{ form.errors.reply_to_email }}</div>
         </div>
 
         <div class="col-12">

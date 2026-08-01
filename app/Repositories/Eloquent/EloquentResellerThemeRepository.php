@@ -23,4 +23,14 @@ final class EloquentResellerThemeRepository implements ResellerThemeRepository
             'primary_color' => '#0d6efd',
         ]);
     }
+
+    public function findForReseller(int $resellerId): ?ResellerTheme
+    {
+        // Explicitly parameterized by the caller's own reseller ID, so
+        // bypassing ambient TenantContext here doesn't weaken isolation --
+        // it sidesteps a case where that context is simply never set
+        // (queue workers), not a case where the caller doesn't know which
+        // tenant it wants.
+        return ResellerTheme::query()->withoutTenantScope()->where('reseller_id', $resellerId)->first();
+    }
 }

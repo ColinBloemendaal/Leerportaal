@@ -40,6 +40,8 @@ final readonly class UpdateResellerTheme
                 'accent_color' => $data->accentColor,
                 'font_family' => $data->fontFamily,
                 'custom_css' => $data->customCss,
+                'sender_name' => $data->senderName,
+                'reply_to_email' => $data->replyToEmail,
             ],
         );
 

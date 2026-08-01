@@ -90,6 +90,31 @@ it('rejects custom css that attempts to break out of the style block', function 
         ->assertSessionHasErrors('custom_css');
 });
 
+it('persists email branding through the full FormRequest -> DTO -> Action -> Repository chain', function (): void {
+    $this->actingAs($this->user)
+        ->put('/settings/theme', [
+            'primary_color' => '#123456',
+            'sender_name' => 'Acme Support Team',
+            'reply_to_email' => 'support@acme.example',
+        ])
+        ->assertRedirect('/settings/theme');
+
+    $this->assertDatabaseHas('reseller_themes', [
+        'reseller_id' => $this->reseller->id,
+        'sender_name' => 'Acme Support Team',
+        'reply_to_email' => 'support@acme.example',
+    ]);
+});
+
+it('rejects an invalid reply-to email address', function (): void {
+    $this->actingAs($this->user)
+        ->put('/settings/theme', [
+            'primary_color' => '#123456',
+            'reply_to_email' => 'not-an-email',
+        ])
+        ->assertSessionHasErrors('reply_to_email');
+});
+
 it('uploads a logo and serves it via the public branding route', function (): void {
     Storage::fake('local');
 

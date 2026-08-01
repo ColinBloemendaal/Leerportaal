@@ -17,6 +17,8 @@ final readonly class UpdateResellerThemeData
         public ?UploadedFile $favicon,
         public ?UploadedFile $loginBackground,
         public ?string $customCss,
+        public ?string $senderName,
+        public ?string $replyToEmail,
     ) {}
 
     /**
@@ -33,6 +35,8 @@ final readonly class UpdateResellerThemeData
             favicon: $data['favicon'] ?? null,
             loginBackground: $data['login_background'] ?? null,
             customCss: $data['custom_css'] ?? null,
+            senderName: $data['sender_name'] ?? null,
+            replyToEmail: $data['reply_to_email'] ?? null,
         );
     }
 }
