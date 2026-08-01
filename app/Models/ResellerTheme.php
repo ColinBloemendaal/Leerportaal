@@ -18,6 +18,7 @@ final class ResellerTheme extends Model
 
     /** @use HasFactory<ResellerThemeFactory> */
     use HasFactory;
+
     use SoftDeletes;
     use TenantScoped;
 

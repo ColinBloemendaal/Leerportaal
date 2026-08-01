@@ -278,7 +278,7 @@ If a controller method is longer than about 10 lines, logic has leaked into the 
 
 ## 4. PHP conventions
 
-- PHP 8.3+. `declare(strict_types=1);` at the top of every file.
+- PHP 8.5+. `declare(strict_types=1);` at the top of every file.
 - Type everything: params, returns, properties. No `mixed` unless genuinely unavoidable.
 - Final classes by default. Only remove `final` when something actually extends it.
 - Constructor property promotion. Readonly where possible.

@@ -18,6 +18,7 @@ final class ResellerKlant extends Model
 
     /** @use HasFactory<ResellerKlantFactory> */
     use HasFactory;
+
     use SoftDeletes;
     use TenantScoped;
 

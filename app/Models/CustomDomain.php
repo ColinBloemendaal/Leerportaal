@@ -19,6 +19,7 @@ final class CustomDomain extends Model
 
     /** @use HasFactory<CustomDomainFactory> */
     use HasFactory;
+
     use SoftDeletes;
     use TenantScoped;
 

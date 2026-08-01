@@ -19,6 +19,7 @@ final class UserInvite extends Model
 
     /** @use HasFactory<UserInviteFactory> */
     use HasFactory;
+
     use SoftDeletes;
     use TenantScoped;
 

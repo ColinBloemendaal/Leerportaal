@@ -6,7 +6,7 @@
     "keywords": ["laravel", "framework"],
     "license": "proprietary",
     "require": {
-        "php": "^8.3",
+        "php": "^8.5",
         "bacon/bacon-qr-code": "^3.1",
         "inertiajs/inertia-laravel": "^3.1",
         "laravel/framework": "^12.0",

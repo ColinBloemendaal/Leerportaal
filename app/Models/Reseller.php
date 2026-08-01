@@ -21,6 +21,7 @@ final class Reseller extends Model
 
     /** @use HasFactory<ResellerFactory> */
     use HasFactory;
+
     use SoftDeletes;
 
     protected $guarded = [];
