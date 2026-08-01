@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import AppLayout from '@/Layouts/AppLayout.vue';
+import { meetsWcagAA } from '@/lib/contrast';
 import { useForm } from '@inertiajs/vue3';
-import { watch } from 'vue';
+import { computed, watch } from 'vue';
 
 defineOptions({ layout: AppLayout });
 
@@ -61,6 +62,15 @@ watch(
 function submit() {
     form.put('/settings/theme');
 }
+
+// WCAG AA warning, not a blocker: Bootstrap renders white text on
+// primary/secondary backgrounds by default (buttons, badges), so that's
+// the pairing worth checking. null means "not a valid hex color yet" --
+// no warning while the user is still typing.
+const primaryContrastFailsAA = computed(() => meetsWcagAA(form.primary_color, '#ffffff') === false);
+const secondaryContrastFailsAA = computed(
+    () => form.secondary_color !== '' && meetsWcagAA(form.secondary_color, '#ffffff') === false,
+);
 </script>
 
 <template>
@@ -88,6 +98,9 @@ function submit() {
             <div v-if="form.errors.primary_color" class="invalid-feedback d-block">
                 {{ form.errors.primary_color }}
             </div>
+            <p v-if="primaryContrastFailsAA" class="text-warning small mb-0 mt-1">
+                Warning: white text on this color fails WCAG AA contrast (4.5:1) -- may be hard to read on buttons.
+            </p>
         </div>
 
         <div class="col-12">
@@ -111,6 +124,9 @@ function submit() {
             <div v-if="form.errors.secondary_color" class="invalid-feedback d-block">
                 {{ form.errors.secondary_color }}
             </div>
+            <p v-if="secondaryContrastFailsAA" class="text-warning small mb-0 mt-1">
+                Warning: white text on this color fails WCAG AA contrast (4.5:1) -- may be hard to read on buttons.
+            </p>
         </div>
 
         <div class="col-12">
