@@ -17,3 +17,7 @@ export interface MultipleResponsePayload {
     options: MultipleResponseOption[];
     correct_option_ids: string[];
 }
+
+export interface TrueFalsePayload {
+    correct_answer: boolean;
+}
