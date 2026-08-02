@@ -61,4 +61,12 @@ final class CourseCategory extends Model implements HasTranslatableFields
     {
         return $this->hasMany(self::class, 'parent_id');
     }
+
+    /**
+     * @return HasMany<Course, $this>
+     */
+    public function courses(): HasMany
+    {
+        return $this->hasMany(Course::class);
+    }
 }

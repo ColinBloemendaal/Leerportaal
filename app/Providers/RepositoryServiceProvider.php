@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Contracts\Repositories\CertificateRepository;
+use App\Contracts\Repositories\CourseAccessGrantRepository;
 use App\Contracts\Repositories\CourseAssignmentRepository;
 use App\Contracts\Repositories\CourseCategoryRepository;
 use App\Contracts\Repositories\CourseRepository;
@@ -18,6 +19,7 @@ use App\Contracts\Repositories\ResellerRepository;
 use App\Contracts\Repositories\ResellerThemeRepository;
 use App\Contracts\Repositories\UserInviteRepository;
 use App\Repositories\Eloquent\EloquentCertificateRepository;
+use App\Repositories\Eloquent\EloquentCourseAccessGrantRepository;
 use App\Repositories\Eloquent\EloquentCourseAssignmentRepository;
 use App\Repositories\Eloquent\EloquentCourseCategoryRepository;
 use App\Repositories\Eloquent\EloquentCourseRepository;
@@ -55,5 +57,6 @@ final class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(QuestionRepository::class, EloquentQuestionRepository::class);
         $this->app->bind(CertificateRepository::class, EloquentCertificateRepository::class);
         $this->app->bind(CourseAssignmentRepository::class, EloquentCourseAssignmentRepository::class);
+        $this->app->bind(CourseAccessGrantRepository::class, EloquentCourseAccessGrantRepository::class);
     }
 }

@@ -68,6 +68,14 @@ final class Course extends Model implements HasTranslatableFields
     }
 
     /**
+     * @return BelongsTo<CourseCategory, $this>
+     */
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(CourseCategory::class, 'course_category_id');
+    }
+
+    /**
      * @return BelongsTo<Course, $this>
      */
     public function repeatsFrom(): BelongsTo

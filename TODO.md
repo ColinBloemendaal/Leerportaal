@@ -173,14 +173,14 @@ Human decision on scope: the "sender name, reply-to" branding task above and thi
 
 ## Phase 6 — Access control matrix
 
-- [ ] Platform → reseller: grant catalog course or whole category access
+- [x] Platform → reseller: grant catalog course or whole category access. Added nullable `courses.course_category_id` (deferred from Phase 3 until a real consumer needed it -- this is that consumer), `course_access_grants` (reseller_id, nullable course_id/course_category_id -- exactly one, enforced by a `saving` guard throwing `InvalidCourseAccessGrantException`, mirroring `Quiz`'s module/lesson pattern). `App\Models\CourseAccessGrant` is single-owner `TenantScoped` (the reseller being granted access always owns the grant row). `App\Contracts\Repositories\CourseAccessGrantRepository`/`EloquentCourseAccessGrantRepository::activeGrantsForReseller()` explicitly bypasses the tenant scope (documented) since callers -- platform admins explaining another reseller's access -- have no ambient tenant context of their own. `App\Services\Access\CourseAccessChecker::explain()`/`resellerHasAccess()` computes effective access dynamically (own course, or an active direct grant, or an active grant on the course's *current* `course_category_id`) rather than snapshotting anything. `App\Actions\Access\GrantCourseAccess`/`RevokeCourseAccess` (revoke sets `revoked_at`, never deletes).
 - [ ] Reseller → resellerklant: which courses a klant may assign
-- [ ] Klant → cursist: actual assignment (Phase 5)
-- [ ] Category-level grants that cascade to new courses added later
-- [ ] Access changes are audit-logged with before/after
-- [ ] Revoking access does not delete progress or certificates
-- [ ] Effective-access debug view: "why can this user see this course?"
-- [ ] Tests for every level of the matrix
+- [x] Klant → cursist: actual assignment (Phase 5). Already built in Phase 5 -- `App\Actions\Courses\AssignCourseToCursist`/`BulkAssignCourseToCursists`/`AssignCourseToGroup`. Checkbox recorded here since this line is the matrix's third level.
+- [x] Category-level grants that cascade to new courses added later. Satisfied by construction: `CourseAccessChecker` reads `Course::course_category_id` live on every check rather than snapshotting category membership at grant time. Proven by `CourseAccessCheckerTest`'s "cascades a category grant to a course added to the category after the grant was made" case, which creates the course *after* the grant already exists.
+- [x] Access changes are audit-logged with before/after. `CourseAccessGrant` uses the same `HasAuditLog` trait (spatie/laravel-activitylog) as every other model in this codebase -- generic behavior already covered by `HasAuditLogTest`, not re-tested per model.
+- [x] Revoking access does not delete progress or certificates. True by construction -- `CourseAccessGrant` has no relationship to `CourseAssignment`/`BlockProgress`/`Certificate` at all. Proven explicitly by `RevokeCourseAccessTest`'s "does not touch existing assignments, progress, or certificates when access is revoked" case.
+- [x] Effective-access debug view: "why can this user see this course?". Backend calculation only (`CourseAccessChecker::explain()` returns a `CourseAccessExplanationData` DTO with the reason via the new `CourseAccessReason` enum) -- no consuming admin page yet, same "no consuming page" pattern used for admin-only features earlier in this codebase; the real page is Phase 7's admin panel.
+- [ ] Tests for every level of the matrix. Level 1 (platform → reseller) fully covered: `CourseAccessGrantTest`, `CourseAccessGrantIsolationTest`, `GrantCourseAccessTest`, `RevokeCourseAccessTest`, `CourseAccessCheckerTest`, `EloquentCourseAccessGrantRepositoryTest`. Levels 2-3 pending their own tasks above.
 
 ---
 

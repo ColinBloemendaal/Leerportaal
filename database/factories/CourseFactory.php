@@ -6,6 +6,7 @@ namespace Database\Factories;
 
 use App\Enums\CourseStatus;
 use App\Models\Course;
+use App\Models\CourseCategory;
 use App\Models\Reseller;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -28,6 +29,7 @@ final class CourseFactory extends Factory
             // Platform (catalog) course by default -- pass ->forReseller()
             // for a reseller-owned one.
             'reseller_id' => null,
+            'course_category_id' => null,
             'title' => $title,
             'slug' => Str::slug($title).'-'.fake()->unique()->numberBetween(1000, 9999),
             'description' => fake()->paragraph(),
@@ -51,5 +53,12 @@ final class CourseFactory extends Factory
     public function published(): self
     {
         return $this->state(['status' => CourseStatus::Published]);
+    }
+
+    public function inCategory(?int $categoryId = null): self
+    {
+        return $this->state([
+            'course_category_id' => $categoryId ?? CourseCategory::factory(),
+        ]);
     }
 }
