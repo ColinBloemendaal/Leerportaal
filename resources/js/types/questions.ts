@@ -40,3 +40,13 @@ export interface EssayPayload {
     min_words: number | null;
     max_words: number | null;
 }
+
+export interface MatchingPair {
+    id: string;
+    left: string;
+    right: string;
+}
+
+export interface MatchingPayload {
+    pairs: MatchingPair[];
+}
