@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Casts\CourseCompletionRuleCast;
 use App\Casts\MoneyCast;
 use App\Concerns\HasAuditLog;
 use App\Contracts\HasTranslatableFields;
@@ -54,6 +55,7 @@ final class Course extends Model implements HasTranslatableFields
             'reseller_set_price_cents' => MoneyCast::class,
             'platform_price_cents' => MoneyCast::class,
             'price_floor_override_cents' => MoneyCast::class,
+            'completion_rule' => CourseCompletionRuleCast::class,
         ];
     }
 
