@@ -21,8 +21,8 @@ use Illuminate\Support\Facades\Schema;
  * (reseller_id null) with reseller-owned rows, so they can't use the
  * fail-closed TenantScoped trait the way single-ownership tables do.
  * Reseller-scoped queries for these are explicit elsewhere instead --
- * User via ad-hoc queries, CourseCategory via
- * App\Repositories\Eloquent\EloquentCourseCategoryRepository. See
+ * User via ad-hoc queries, CourseCategory and Course via their
+ * respective visibleToCurrentReseller() repository methods. See
  * CLAUDE.md §3.
  */
 final class TenancyAuditCommand extends Command
@@ -33,6 +33,7 @@ final class TenancyAuditCommand extends Command
     private const EXEMPT = [
         'App\Models\User',
         'App\Models\CourseCategory',
+        'App\Models\Course',
     ];
 
     /**
