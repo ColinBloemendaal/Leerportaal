@@ -10,6 +10,7 @@ use App\Questions\Types\MultipleChoiceQuestion;
 use App\Questions\Types\DropdownInTextQuestion;
 use App\Questions\Types\EssayQuestion;
 use App\Questions\Types\FillInBlankQuestion;
+use App\Questions\Types\HotspotImageQuestion;
 use App\Questions\Types\MatchingQuestion;
 use App\Questions\Types\MultipleResponseQuestion;
 use App\Questions\Types\NumericQuestion;
@@ -44,6 +45,7 @@ final class QuestionTypeRegistry
         QuestionTypeEnum::FillInBlank->value => FillInBlankQuestion::class,
         QuestionTypeEnum::DropdownInText->value => DropdownInTextQuestion::class,
         QuestionTypeEnum::Numeric->value => NumericQuestion::class,
+        QuestionTypeEnum::HotspotImage->value => HotspotImageQuestion::class,
     ];
 
     public function resolve(QuestionTypeEnum $type): QuestionType

@@ -86,3 +86,18 @@ export interface NumericPayload {
     correct_answer: number;
     tolerance: number;
 }
+
+export interface HotspotRegion {
+    id: string;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    label: string;
+}
+
+export interface HotspotImagePayload {
+    image_url: string;
+    regions: HotspotRegion[];
+    correct_region_ids: string[];
+}
