@@ -20,6 +20,7 @@ use App\Contracts\Repositories\ResellerKlantRepository;
 use App\Contracts\Repositories\ResellerMailTemplateRepository;
 use App\Contracts\Repositories\ResellerRepository;
 use App\Contracts\Repositories\ResellerThemeRepository;
+use App\Contracts\Repositories\SavedFilterRepository;
 use App\Contracts\Repositories\UserInviteRepository;
 use App\Repositories\Eloquent\EloquentCertificateRepository;
 use App\Repositories\Eloquent\EloquentCourseAccessGrantRepository;
@@ -37,6 +38,7 @@ use App\Repositories\Eloquent\EloquentResellerKlantRepository;
 use App\Repositories\Eloquent\EloquentResellerMailTemplateRepository;
 use App\Repositories\Eloquent\EloquentResellerRepository;
 use App\Repositories\Eloquent\EloquentResellerThemeRepository;
+use App\Repositories\Eloquent\EloquentSavedFilterRepository;
 use App\Repositories\Eloquent\EloquentUserInviteRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -67,5 +69,6 @@ final class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ResellerKlantCourseGrantRepository::class, EloquentResellerKlantCourseGrantRepository::class);
         $this->app->bind(PlatformDashboardRepository::class, EloquentPlatformDashboardRepository::class);
         $this->app->bind(ResellerDashboardRepository::class, EloquentResellerDashboardRepository::class);
+        $this->app->bind(SavedFilterRepository::class, EloquentSavedFilterRepository::class);
     }
 }
