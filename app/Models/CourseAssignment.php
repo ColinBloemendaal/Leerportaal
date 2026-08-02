@@ -12,6 +12,7 @@ use Database\Factories\CourseAssignmentFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -78,5 +79,13 @@ final class CourseAssignment extends Model
     public function assignedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'assigned_by_user_id');
+    }
+
+    /**
+     * @return HasMany<BlockProgress, $this>
+     */
+    public function blockProgress(): HasMany
+    {
+        return $this->hasMany(BlockProgress::class);
     }
 }
