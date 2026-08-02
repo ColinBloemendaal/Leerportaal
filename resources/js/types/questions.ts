@@ -50,3 +50,12 @@ export interface MatchingPair {
 export interface MatchingPayload {
     pairs: MatchingPair[];
 }
+
+export interface OrderingItem {
+    id: string;
+    text: string;
+}
+
+export interface OrderingPayload {
+    items: OrderingItem[];
+}

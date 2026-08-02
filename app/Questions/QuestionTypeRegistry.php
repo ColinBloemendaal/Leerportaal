@@ -11,6 +11,7 @@ use App\Questions\Types\EssayQuestion;
 use App\Questions\Types\MatchingQuestion;
 use App\Questions\Types\MultipleResponseQuestion;
 use App\Questions\Types\OpenShortQuestion;
+use App\Questions\Types\OrderingQuestion;
 use App\Questions\Types\TrueFalseQuestion;
 use OutOfBoundsException;
 
@@ -36,6 +37,7 @@ final class QuestionTypeRegistry
         QuestionTypeEnum::OpenShort->value => OpenShortQuestion::class,
         QuestionTypeEnum::Essay->value => EssayQuestion::class,
         QuestionTypeEnum::Matching->value => MatchingQuestion::class,
+        QuestionTypeEnum::Ordering->value => OrderingQuestion::class,
     ];
 
     public function resolve(QuestionTypeEnum $type): QuestionType
