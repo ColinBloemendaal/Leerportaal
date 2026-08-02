@@ -39,3 +39,11 @@ it('carries optional feedback', function (): void {
 
     expect($result->feedback)->toBe('Check your calculation.');
 });
+
+it('has no points and no correctness verdict when not applicable', function (): void {
+    $result = GradeResult::notApplicable();
+
+    expect($result->pointsAwarded)->toBeNull()
+        ->and($result->requiresManualGrading)->toBeFalse()
+        ->and($result->isCorrect())->toBeNull();
+});

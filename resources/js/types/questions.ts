@@ -122,3 +122,12 @@ export interface DragDropImagePayload {
     draggable_items: DraggableItem[];
     correct_placements: Record<string, string>;
 }
+
+export interface LikertScalePoint {
+    value: string;
+    label: string;
+}
+
+export interface LikertPayload {
+    scale: LikertScalePoint[];
+}

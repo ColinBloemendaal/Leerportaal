@@ -39,11 +39,22 @@ final readonly class GradeResult
     }
 
     /**
-     * Null when grading is still pending (manual grading types).
+     * For question types with no concept of correctness at all (e.g.
+     * likert, a non-scored survey scale) -- distinct from
+     * pendingManualGrading: nothing will ever grade this, not "not yet".
+     */
+    public static function notApplicable(): self
+    {
+        return new self(null, 0.0, false);
+    }
+
+    /**
+     * Null whenever there's no score to compare -- grading still
+     * pending (manual types) or not applicable at all (e.g. likert).
      */
     public function isCorrect(): ?bool
     {
-        if ($this->requiresManualGrading) {
+        if ($this->pointsAwarded === null) {
             return null;
         }
 

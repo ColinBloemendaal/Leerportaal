@@ -12,6 +12,7 @@ use App\Questions\Types\DropdownInTextQuestion;
 use App\Questions\Types\EssayQuestion;
 use App\Questions\Types\FillInBlankQuestion;
 use App\Questions\Types\HotspotImageQuestion;
+use App\Questions\Types\LikertQuestion;
 use App\Questions\Types\MatchingQuestion;
 use App\Questions\Types\MultipleResponseQuestion;
 use App\Questions\Types\NumericQuestion;
@@ -48,6 +49,7 @@ final class QuestionTypeRegistry
         QuestionTypeEnum::Numeric->value => NumericQuestion::class,
         QuestionTypeEnum::HotspotImage->value => HotspotImageQuestion::class,
         QuestionTypeEnum::DragDropImage->value => DragDropImageQuestion::class,
+        QuestionTypeEnum::Likert->value => LikertQuestion::class,
     ];
 
     public function resolve(QuestionTypeEnum $type): QuestionType
