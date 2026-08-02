@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Casts\MoneyCast;
 use App\Concerns\HasAuditLog;
+use App\Contracts\HasTranslatableFields;
 use App\Enums\CourseStatus;
 use Database\Factories\CourseFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -22,7 +23,7 @@ use Spatie\Translatable\HasTranslations;
  * strict, fails-closed TenantScope doesn't support. Visibility is
  * composed explicitly in App\Repositories\Eloquent\EloquentCourseRepository.
  */
-final class Course extends Model
+final class Course extends Model implements HasTranslatableFields
 {
     use HasAuditLog;
 

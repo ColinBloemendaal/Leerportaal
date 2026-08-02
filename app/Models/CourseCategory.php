@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Concerns\HasAuditLog;
+use App\Contracts\HasTranslatableFields;
 use Database\Factories\CourseCategoryFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -20,7 +21,7 @@ use Spatie\Translatable\HasTranslations;
  * doesn't support. Visibility is composed explicitly in
  * App\Repositories\Eloquent\EloquentCourseCategoryRepository instead.
  */
-final class CourseCategory extends Model
+final class CourseCategory extends Model implements HasTranslatableFields
 {
     use HasAuditLog;
 
