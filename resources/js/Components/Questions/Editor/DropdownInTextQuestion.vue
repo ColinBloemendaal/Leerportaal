@@ -27,7 +27,9 @@ function updateCorrectOption(id: string, correct_option: string): void {
 
 <template>
     <div class="mb-3">
-        <label for="dropdown-in-text-template" class="form-label">Template (use {{ '{{id}}' }} for each blank)</label>
+        <label for="dropdown-in-text-template" class="form-label"
+            >Template (use &#123;&#123;id&#125;&#125; for each blank)</label
+        >
         <textarea id="dropdown-in-text-template" v-model="template" class="form-control" rows="3"></textarea>
     </div>
     <div class="mb-3">

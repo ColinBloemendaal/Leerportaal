@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { FileUploadPayload } from '@/types/questions';
 
-const props = defineProps<{ payload: FileUploadPayload; questionId: string | number }>();
+defineProps<{ payload: FileUploadPayload; questionId: string | number }>();
 
 // Just the file picker -- actually persisting the upload (to Media, tied
 // to a quiz attempt) is the quiz_attempts/question_answers task's job,

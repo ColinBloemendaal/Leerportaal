@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import type { MatchingPayload } from '@/types/questions';
+import { computed } from 'vue';
 
 const props = defineProps<{ payload: MatchingPayload; questionId: string | number }>();
 

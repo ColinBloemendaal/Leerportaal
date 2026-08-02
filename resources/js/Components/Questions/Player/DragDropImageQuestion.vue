@@ -35,7 +35,9 @@ function itemText(id: string): string {
             </span>
         </div>
         <div v-for="zone in payload.drop_zones" :key="zone.id" class="mb-2 row align-items-center">
-            <label class="col-auto col-form-label" :for="`question-${questionId}-zone-${zone.id}`">{{ zone.label }}</label>
+            <label class="col-auto col-form-label" :for="`question-${questionId}-zone-${zone.id}`">{{
+                zone.label
+            }}</label>
             <div class="col-auto">
                 <select
                     :id="`question-${questionId}-zone-${zone.id}`"

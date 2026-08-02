@@ -51,7 +51,7 @@ function toggleCorrect(id: string, checked: boolean): void {
                     @input="updateRegion(region.id, 'label', ($event.target as HTMLInputElement).value)"
                 />
             </div>
-            <div v-for="field in (['x', 'y', 'width', 'height'] as const)" :key="field" class="col">
+            <div v-for="field in ['x', 'y', 'width', 'height'] as const" :key="field" class="col">
                 <input
                     type="number"
                     class="form-control"

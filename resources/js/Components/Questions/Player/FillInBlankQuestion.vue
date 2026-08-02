@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import type { FillInBlankPayload } from '@/types/questions';
+import { computed } from 'vue';
 
 const props = defineProps<{ payload: FillInBlankPayload; questionId: string | number }>();
 

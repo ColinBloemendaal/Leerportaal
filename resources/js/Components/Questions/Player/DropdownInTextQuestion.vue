@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import type { DropdownInTextPayload } from '@/types/questions';
+import { computed } from 'vue';
 
 const props = defineProps<{ payload: DropdownInTextPayload; questionId: string | number }>();
 

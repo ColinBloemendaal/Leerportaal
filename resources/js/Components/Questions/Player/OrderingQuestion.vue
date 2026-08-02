@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import type { OrderingPayload } from '@/types/questions';
+import { computed } from 'vue';
 
 const props = defineProps<{ payload: OrderingPayload; questionId: string | number }>();
 
@@ -26,7 +26,11 @@ function move(index: number, direction: -1 | 1): void {
 
 <template>
     <ol class="list-group list-group-numbered" :aria-label="`Order the items for question ${questionId}`">
-        <li v-for="(id, index) in orderedIds" :key="id" class="list-group-item d-flex justify-content-between align-items-center">
+        <li
+            v-for="(id, index) in orderedIds"
+            :key="id"
+            class="list-group-item d-flex justify-content-between align-items-center"
+        >
             {{ itemText(id) }}
             <span>
                 <button

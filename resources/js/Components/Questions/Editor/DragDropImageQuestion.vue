@@ -12,8 +12,9 @@ function addZone(): void {
 
 function removeZone(id: string): void {
     dropZones.value = dropZones.value.filter((zone) => zone.id !== id);
-    const { [id]: _removed, ...rest } = correctPlacements.value;
-    correctPlacements.value = rest;
+    correctPlacements.value = Object.fromEntries(
+        Object.entries(correctPlacements.value).filter(([zoneId]) => zoneId !== id),
+    );
 }
 
 function updateZone(id: string, field: keyof DropZone, value: string | number): void {
@@ -67,7 +68,7 @@ function setCorrectItem(zoneId: string, itemId: string): void {
                     @input="updateZone(zone.id, 'label', ($event.target as HTMLInputElement).value)"
                 />
             </div>
-            <div v-for="field in (['x', 'y', 'width', 'height'] as const)" :key="field" class="col">
+            <div v-for="field in ['x', 'y', 'width', 'height'] as const" :key="field" class="col">
                 <input
                     type="number"
                     class="form-control"

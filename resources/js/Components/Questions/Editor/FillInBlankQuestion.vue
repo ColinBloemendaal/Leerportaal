@@ -27,7 +27,9 @@ function toggleCaseSensitive(id: string, caseSensitive: boolean): void {
 
 <template>
     <div class="mb-3">
-        <label for="fill-in-blank-template" class="form-label">Template (use {{ '{{id}}' }} for each blank)</label>
+        <label for="fill-in-blank-template" class="form-label"
+            >Template (use &#123;&#123;id&#125;&#125; for each blank)</label
+        >
         <textarea id="fill-in-blank-template" v-model="template" class="form-control" rows="3"></textarea>
     </div>
     <div class="mb-3">

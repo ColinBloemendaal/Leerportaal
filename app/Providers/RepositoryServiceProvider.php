@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Contracts\Repositories\CertificateRepository;
 use App\Contracts\Repositories\CourseCategoryRepository;
 use App\Contracts\Repositories\CourseRepository;
 use App\Contracts\Repositories\CustomDomainRepository;
@@ -15,6 +16,7 @@ use App\Contracts\Repositories\ResellerMailTemplateRepository;
 use App\Contracts\Repositories\ResellerRepository;
 use App\Contracts\Repositories\ResellerThemeRepository;
 use App\Contracts\Repositories\UserInviteRepository;
+use App\Repositories\Eloquent\EloquentCertificateRepository;
 use App\Repositories\Eloquent\EloquentCourseCategoryRepository;
 use App\Repositories\Eloquent\EloquentCourseRepository;
 use App\Repositories\Eloquent\EloquentCustomDomainRepository;
@@ -49,5 +51,6 @@ final class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(CourseRepository::class, EloquentCourseRepository::class);
         $this->app->bind(MediaRepository::class, EloquentMediaRepository::class);
         $this->app->bind(QuestionRepository::class, EloquentQuestionRepository::class);
+        $this->app->bind(CertificateRepository::class, EloquentCertificateRepository::class);
     }
 }

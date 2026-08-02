@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\TenantLoginController;
 use App\Http\Controllers\Auth\TwoFactorAuthenticationController;
 use App\Http\Controllers\Auth\TwoFactorChallengeController;
+use App\Http\Controllers\CertificateVerificationController;
 use App\Http\Controllers\InvitesController;
 use App\Http\Controllers\ResellerBrandingController;
 use App\Http\Controllers\ResellerKlantController;
@@ -31,6 +32,10 @@ Route::get('/branding/{reseller}/logo', [ResellerBrandingController::class, 'log
 Route::get('/branding/{reseller}/favicon', [ResellerBrandingController::class, 'favicon'])->name('branding.favicon');
 Route::get('/branding/{reseller}/login-background', [ResellerBrandingController::class, 'loginBackground'])
     ->name('branding.login-background');
+
+// Public, unauthenticated -- see App\Http\Controllers\CertificateVerificationController.
+Route::get('/certificates/verify/{code}', [CertificateVerificationController::class, 'show'])
+    ->name('certificates.verify');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'create'])->name('login');
