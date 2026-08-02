@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Casts\QuizSettingsCast;
 use App\Concerns\HasAuditLog;
 use App\Enums\QuizType;
 use App\Exceptions\InvalidQuizParentException;
@@ -37,7 +38,7 @@ final class Quiz extends Model
     {
         return [
             'type' => QuizType::class,
-            'settings' => 'array',
+            'settings' => QuizSettingsCast::class,
         ];
     }
 

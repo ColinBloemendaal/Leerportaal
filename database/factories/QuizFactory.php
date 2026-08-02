@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\DataTransferObjects\Quizzes\QuizSettingsData;
 use App\Enums\QuizType;
 use App\Models\Lesson;
 use App\Models\Module;
@@ -43,5 +44,10 @@ final class QuizFactory extends Factory
     public function exam(): self
     {
         return $this->state(['type' => QuizType::Exam]);
+    }
+
+    public function withSettings(QuizSettingsData $settings): self
+    {
+        return $this->state(['settings' => $settings]);
     }
 }
