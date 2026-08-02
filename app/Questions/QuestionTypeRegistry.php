@@ -1,0 +1,36 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Questions;
+
+use App\Enums\QuestionTypeEnum;
+use App\Questions\Contracts\QuestionType;
+use OutOfBoundsException;
+
+/**
+ * Adding a question type = one QuestionTypeEnum case (already complete
+ * -- all 14 exist) + one entry here + one class implementing
+ * QuestionType + two Vue components. Mirrors App\Blocks\BlockTypeRegistry.
+ *
+ * Unlike blocks (all 7 types built in one commit), each question type is
+ * its own separate TODO.md task/commit, so MAP starts empty and gains
+ * one entry per type as that type's task lands -- an empty/partial map
+ * is a valid, expected intermediate state here, not a bug.
+ */
+final class QuestionTypeRegistry
+{
+    /**
+     * @var array<string, class-string<QuestionType>>
+     */
+    private const MAP = [];
+
+    public function resolve(QuestionTypeEnum $type): QuestionType
+    {
+        if (! isset(self::MAP[$type->value])) {
+            throw new OutOfBoundsException("No QuestionType implementation registered for [{$type->value}] yet.");
+        }
+
+        return app(self::MAP[$type->value]);
+    }
+}

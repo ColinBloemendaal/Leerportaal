@@ -55,6 +55,11 @@ arch('only actions, repositories, and models touch models directly')
         // about accepting an already-loaded model as an argument, not
         // querying one directly.
         'App\Services',
+        // QuestionType::grade() takes the Question model directly per
+        // CLAUDE.md §5's own literal signature -- same reasoning as
+        // App\Services above, just declared on an interface/its
+        // implementations instead of a service class.
+        'App\Questions',
         'Database\Factories',
         'Database\Seeders',
     ]);
