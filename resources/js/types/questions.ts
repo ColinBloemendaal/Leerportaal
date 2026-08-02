@@ -29,3 +29,14 @@ export interface OpenShortPayload {
     case_sensitive: boolean;
     acceptable_answers: string[];
 }
+
+export interface EssayRubricCriterion {
+    criterion: string;
+    points: number;
+}
+
+export interface EssayPayload {
+    rubric: EssayRubricCriterion[];
+    min_words: number | null;
+    max_words: number | null;
+}
