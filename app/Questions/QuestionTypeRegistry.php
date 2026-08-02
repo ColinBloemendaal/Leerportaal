@@ -7,6 +7,7 @@ namespace App\Questions;
 use App\Enums\QuestionTypeEnum;
 use App\Questions\Contracts\QuestionType;
 use App\Questions\Types\MultipleChoiceQuestion;
+use App\Questions\Types\DragDropImageQuestion;
 use App\Questions\Types\DropdownInTextQuestion;
 use App\Questions\Types\EssayQuestion;
 use App\Questions\Types\FillInBlankQuestion;
@@ -46,6 +47,7 @@ final class QuestionTypeRegistry
         QuestionTypeEnum::DropdownInText->value => DropdownInTextQuestion::class,
         QuestionTypeEnum::Numeric->value => NumericQuestion::class,
         QuestionTypeEnum::HotspotImage->value => HotspotImageQuestion::class,
+        QuestionTypeEnum::DragDropImage->value => DragDropImageQuestion::class,
     ];
 
     public function resolve(QuestionTypeEnum $type): QuestionType

@@ -101,3 +101,24 @@ export interface HotspotImagePayload {
     regions: HotspotRegion[];
     correct_region_ids: string[];
 }
+
+export interface DropZone {
+    id: string;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    label: string;
+}
+
+export interface DraggableItem {
+    id: string;
+    text: string;
+}
+
+export interface DragDropImagePayload {
+    image_url: string;
+    drop_zones: DropZone[];
+    draggable_items: DraggableItem[];
+    correct_placements: Record<string, string>;
+}
