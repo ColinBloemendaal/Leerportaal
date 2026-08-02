@@ -13,6 +13,7 @@ use App\Contracts\Repositories\CustomDomainRepository;
 use App\Contracts\Repositories\ImpersonationRepository;
 use App\Contracts\Repositories\MediaRepository;
 use App\Contracts\Repositories\QuestionRepository;
+use App\Contracts\Repositories\ResellerKlantCourseGrantRepository;
 use App\Contracts\Repositories\ResellerKlantRepository;
 use App\Contracts\Repositories\ResellerMailTemplateRepository;
 use App\Contracts\Repositories\ResellerRepository;
@@ -27,6 +28,7 @@ use App\Repositories\Eloquent\EloquentCustomDomainRepository;
 use App\Repositories\Eloquent\EloquentImpersonationRepository;
 use App\Repositories\Eloquent\EloquentMediaRepository;
 use App\Repositories\Eloquent\EloquentQuestionRepository;
+use App\Repositories\Eloquent\EloquentResellerKlantCourseGrantRepository;
 use App\Repositories\Eloquent\EloquentResellerKlantRepository;
 use App\Repositories\Eloquent\EloquentResellerMailTemplateRepository;
 use App\Repositories\Eloquent\EloquentResellerRepository;
@@ -58,5 +60,6 @@ final class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(CertificateRepository::class, EloquentCertificateRepository::class);
         $this->app->bind(CourseAssignmentRepository::class, EloquentCourseAssignmentRepository::class);
         $this->app->bind(CourseAccessGrantRepository::class, EloquentCourseAccessGrantRepository::class);
+        $this->app->bind(ResellerKlantCourseGrantRepository::class, EloquentResellerKlantCourseGrantRepository::class);
     }
 }
