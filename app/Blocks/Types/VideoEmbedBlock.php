@@ -5,13 +5,20 @@ declare(strict_types=1);
 namespace App\Blocks\Types;
 
 use App\Blocks\Contracts\BlockType;
+use App\Enums\VideoProvider;
+use App\Rules\AllowedVideoProvider;
+use Illuminate\Validation\Rule;
 
 /**
  * External hosting only (Vimeo/Mux/YouTube unlisted) -- no self-hosted
- * video, per CLAUDE.md §3. `url` is the embed URL; `provider` is a
- * free-form hint for the player component, not validated against a
- * fixed list, since the actual provider set is a product decision for
- * whoever builds the player UI, not this schema-level type definition.
+ * video, per CLAUDE.md §3. `url` must resolve to one of
+ * App\Enums\VideoProvider (enforced by App\Rules\AllowedVideoProvider,
+ * not just documented) -- the block's content shape already can't hold
+ * an uploaded file, but that alone doesn't stop someone pointing it at
+ * an arbitrary self-hosted stream. `provider` is an optional explicit
+ * override of the same enum, for when auto-detection from the URL
+ * isn't enough (e.g. a Mux playback URL that doesn't obviously say
+ * "mux").
  */
 final class VideoEmbedBlock implements BlockType
 {
@@ -26,8 +33,8 @@ final class VideoEmbedBlock implements BlockType
     public function contentRules(): array
     {
         return [
-            'url' => ['required', 'string', 'url', 'max:2048'],
-            'provider' => ['nullable', 'string', 'max:50'],
+            'url' => ['required', 'string', 'url', 'max:2048', new AllowedVideoProvider],
+            'provider' => ['nullable', 'string', Rule::enum(VideoProvider::class)],
         ];
     }
 

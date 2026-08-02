@@ -62,6 +62,24 @@ it('rejects video embed content with a non-url value', function (): void {
     expect($validator->fails())->toBeTrue();
 });
 
+it('rejects video embed content pointing at a self-hosted stream', function (): void {
+    $validator = Validator::make(
+        ['url' => 'https://cdn.example.com/videos/lesson-1.mp4'],
+        (new VideoEmbedBlock)->contentRules(),
+    );
+
+    expect($validator->fails())->toBeTrue();
+});
+
+it('rejects video embed content with an unrecognized provider value', function (): void {
+    $validator = Validator::make(
+        ['url' => 'https://vimeo.com/123456', 'provider' => 'self-hosted'],
+        (new VideoEmbedBlock)->contentRules(),
+    );
+
+    expect($validator->fails())->toBeTrue();
+});
+
 it('passes valid file download content', function (): void {
     $validator = Validator::make(
         ['url' => 'https://example.com/handout.pdf', 'label' => 'Handout'],
