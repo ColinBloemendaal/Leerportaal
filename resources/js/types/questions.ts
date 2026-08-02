@@ -21,3 +21,11 @@ export interface MultipleResponsePayload {
 export interface TrueFalsePayload {
     correct_answer: boolean;
 }
+
+export type OpenShortMatchMode = 'exact' | 'contains' | 'regex';
+
+export interface OpenShortPayload {
+    match_mode: OpenShortMatchMode;
+    case_sensitive: boolean;
+    acceptable_answers: string[];
+}

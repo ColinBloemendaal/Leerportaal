@@ -8,6 +8,7 @@ use App\Enums\QuestionTypeEnum;
 use App\Questions\Contracts\QuestionType;
 use App\Questions\Types\MultipleChoiceQuestion;
 use App\Questions\Types\MultipleResponseQuestion;
+use App\Questions\Types\OpenShortQuestion;
 use App\Questions\Types\TrueFalseQuestion;
 use OutOfBoundsException;
 
@@ -30,6 +31,7 @@ final class QuestionTypeRegistry
         QuestionTypeEnum::MultipleChoice->value => MultipleChoiceQuestion::class,
         QuestionTypeEnum::MultipleResponse->value => MultipleResponseQuestion::class,
         QuestionTypeEnum::TrueFalse->value => TrueFalseQuestion::class,
+        QuestionTypeEnum::OpenShort->value => OpenShortQuestion::class,
     ];
 
     public function resolve(QuestionTypeEnum $type): QuestionType
