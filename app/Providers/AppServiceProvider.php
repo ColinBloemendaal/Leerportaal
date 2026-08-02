@@ -7,9 +7,11 @@ namespace App\Providers;
 use App\Contracts\Dns\DnsResolver;
 use App\Contracts\Ploi\PloiClient;
 use App\Contracts\Repositories\ResellerThemeRepository;
+use App\Contracts\Storage\StorageMetering;
 use App\Policies\SuperAdminBypass;
 use App\Services\Dns\NativeDnsResolver;
 use App\Services\Ploi\HttpPloiClient;
+use App\Services\Storage\EloquentStorageMeteringService;
 use App\Services\Theming\ThemeCssGenerator;
 use App\Tenancy\TenantContext;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -36,6 +38,7 @@ final class AppServiceProvider extends ServiceProvider
     {
         $this->app->scoped(TenantContext::class);
         $this->app->bind(DnsResolver::class, NativeDnsResolver::class);
+        $this->app->bind(StorageMetering::class, EloquentStorageMeteringService::class);
 
         $this->app->bind(PloiClient::class, fn ($app): HttpPloiClient => new HttpPloiClient(
             $app->make(HttpFactory::class),

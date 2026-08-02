@@ -23,4 +23,9 @@ final class EloquentMediaRepository implements MediaRepository
             })
             ->get();
     }
+
+    public function totalBytesForReseller(int $resellerId): int
+    {
+        return (int) Media::query()->where('reseller_id', $resellerId)->sum('size_bytes');
+    }
 }

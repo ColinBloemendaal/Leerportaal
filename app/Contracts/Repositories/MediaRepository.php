@@ -17,4 +17,13 @@ interface MediaRepository
      * @return Collection<int, Media>
      */
     public function visibleToCurrentReseller(): Collection;
+
+    /**
+     * Sum of size_bytes for that reseller's own media only (never
+     * platform media -- platform storage isn't billed to any reseller).
+     * Explicitly parameterized, not ambient-tenant-scoped, so it can be
+     * used for any reseller (e.g. platform admin reporting), not just
+     * the current one.
+     */
+    public function totalBytesForReseller(int $resellerId): int;
 }

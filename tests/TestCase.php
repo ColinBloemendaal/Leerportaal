@@ -7,10 +7,12 @@ namespace Tests;
 use App\Contracts\Billing\PaymentGateway;
 use App\Contracts\Dns\DnsResolver;
 use App\Contracts\Ploi\PloiClient;
+use App\Contracts\Storage\StorageMetering;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Tests\Fakes\FakeDnsResolver;
 use Tests\Fakes\FakePaymentGateway;
 use Tests\Fakes\FakePloiClient;
+use Tests\Fakes\FakeStorageMetering;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -27,6 +29,7 @@ abstract class TestCase extends BaseTestCase
         $this->app->bind(PaymentGateway::class, FakePaymentGateway::class);
         $this->app->bind(DnsResolver::class, FakeDnsResolver::class);
         $this->app->bind(PloiClient::class, FakePloiClient::class);
+        $this->app->bind(StorageMetering::class, FakeStorageMetering::class);
 
         // CI's php job never runs `npm run build`, so no manifest exists.
         $this->withoutVite();
