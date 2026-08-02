@@ -57,6 +57,23 @@ it('passes a valid payload', function (): void {
     expect($validator->passes())->toBeTrue();
 });
 
+it('requires every drop zone to have a text label for the keyboard alternative', function (): void {
+    $validator = Validator::make(
+        [
+            'image_url' => 'https://example.com/map.png',
+            'drop_zones' => [
+                ['id' => 'z1', 'x' => 0, 'y' => 0, 'width' => 10, 'height' => 10],
+                ['id' => 'z2', 'x' => 20, 'y' => 20, 'width' => 10, 'height' => 10, 'label' => 'Zone 2'],
+            ],
+            'draggable_items' => [['id' => 'a', 'text' => 'A'], ['id' => 'b', 'text' => 'B']],
+            'correct_placements' => ['z1' => 'a', 'z2' => 'b'],
+        ],
+        dragDropImageQuestion()->payloadRules(),
+    );
+
+    expect($validator->fails())->toBeTrue();
+});
+
 it('grades placing every item in its correct zone as fully correct', function (): void {
     $result = dragDropImageQuestion()->grade(dragDropImageQuestionModel(), [
         'zone-1' => 'item-a', 'zone-2' => 'item-b',
