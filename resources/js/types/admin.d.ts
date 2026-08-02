@@ -7,3 +7,11 @@ export interface PlatformDashboardStats {
     storageUsedBytes: number;
     storageIncludedBytes: number;
 }
+
+export interface ResellerDashboardStats {
+    klantCount: number;
+    cursistCount: number;
+    assignmentCount: number;
+    billedSpend: { cents: number };
+    pendingSpend: { cents: number };
+}

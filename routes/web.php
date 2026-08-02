@@ -16,6 +16,7 @@ use App\Http\Controllers\CursistDashboardController;
 use App\Http\Controllers\InvitesController;
 use App\Http\Controllers\PlatformDashboardController;
 use App\Http\Controllers\ResellerBrandingController;
+use App\Http\Controllers\ResellerDashboardController;
 use App\Http\Controllers\ResellerKlantController;
 use App\Http\Controllers\ResellerMailTemplateController;
 use App\Http\Controllers\ResellerThemeController;
@@ -137,5 +138,9 @@ Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->grou
 
     Route::prefix('admin/platform')->name('admin.platform.')->group(function () {
         Route::get('/', [PlatformDashboardController::class, 'index'])->name('dashboard');
+    });
+
+    Route::prefix('admin/reseller')->name('admin.reseller.')->group(function () {
+        Route::get('/', [ResellerDashboardController::class, 'index'])->name('dashboard');
     });
 });

@@ -14,6 +14,7 @@ use App\Contracts\Repositories\ImpersonationRepository;
 use App\Contracts\Repositories\MediaRepository;
 use App\Contracts\Repositories\PlatformDashboardRepository;
 use App\Contracts\Repositories\QuestionRepository;
+use App\Contracts\Repositories\ResellerDashboardRepository;
 use App\Contracts\Repositories\ResellerKlantCourseGrantRepository;
 use App\Contracts\Repositories\ResellerKlantRepository;
 use App\Contracts\Repositories\ResellerMailTemplateRepository;
@@ -30,6 +31,7 @@ use App\Repositories\Eloquent\EloquentImpersonationRepository;
 use App\Repositories\Eloquent\EloquentMediaRepository;
 use App\Repositories\Eloquent\EloquentPlatformDashboardRepository;
 use App\Repositories\Eloquent\EloquentQuestionRepository;
+use App\Repositories\Eloquent\EloquentResellerDashboardRepository;
 use App\Repositories\Eloquent\EloquentResellerKlantCourseGrantRepository;
 use App\Repositories\Eloquent\EloquentResellerKlantRepository;
 use App\Repositories\Eloquent\EloquentResellerMailTemplateRepository;
@@ -64,5 +66,6 @@ final class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(CourseAccessGrantRepository::class, EloquentCourseAccessGrantRepository::class);
         $this->app->bind(ResellerKlantCourseGrantRepository::class, EloquentResellerKlantCourseGrantRepository::class);
         $this->app->bind(PlatformDashboardRepository::class, EloquentPlatformDashboardRepository::class);
+        $this->app->bind(ResellerDashboardRepository::class, EloquentResellerDashboardRepository::class);
     }
 }
