@@ -123,4 +123,20 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Seeded Super Admin
+    |--------------------------------------------------------------------------
+    |
+    | Optional platform super-admin created by DatabaseSeeder. Left unset,
+    | the seeder skips it. Real values belong in .env only -- never commit
+    | credentials into a seeder file. See CLAUDE.md §7.
+    |
+    */
+
+    'admin_seed' => [
+        'email' => env('ADMIN_SEED_EMAIL'),
+        'password' => env('ADMIN_SEED_PASSWORD'),
+    ],
+
 ];
