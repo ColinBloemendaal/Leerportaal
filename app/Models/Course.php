@@ -69,4 +69,12 @@ final class Course extends Model
     {
         return $this->hasMany(self::class, 'repeats_from_course_id');
     }
+
+    /**
+     * @return HasMany<Module, $this>
+     */
+    public function modules(): HasMany
+    {
+        return $this->hasMany(Module::class);
+    }
 }
