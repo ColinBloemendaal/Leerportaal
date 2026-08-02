@@ -156,7 +156,7 @@ Human decision on scope: the "sender name, reply-to" branding task above and thi
 
 ## Phase 5 — Enrollment, progress, certificates
 
-- [ ] `course_assignments` table: user, course, assigned_by, assigned_at, first_opened_at, revoked_at, billing state
+- [x] `course_assignments` table: user, course, assigned_by, assigned_at, first_opened_at, revoked_at, billing state. This is the billable event per CLAUDE.md §11, and unlike `Course`/`Question`/`Media`, a `CourseAssignment` always belongs to exactly one reseller (a cursist and their assignments are never platform-shared) -- so it uses `TenantScoped` normally, not the mixed-ownership repository pattern, with a full `tests/Tenancy` isolation test. `first_opened_at`/`revoked_at` are both nullable timestamps stored independently, exactly matching §11's revocation rule wording ("free within 14 days *if never opened*") -- the actual free-vs-billed decision logic and price calculation (`AssignmentPricingService`, `AssignCourseToCursist`, CLAUDE.md §3a's own worked example for this exact table) is deliberately not built yet: schema + model only, matching this phase's own task breakdown (the next lines are "Assignment UI" and the rest of enrollment, which is where the actual assignment-creation flow belongs). New `App\Enums\AssignmentBillingState` (`pending`/`billed`/`waived`) tracks invoicing status only -- real invoice generation is Phase 8's job
 - [ ] Assignment UI: individual, bulk, by group
 - [ ] `groups` per resellerklant, group-based assignment
 - [ ] Progress tracking per block/lesson/module, resume where left off
