@@ -17,7 +17,7 @@ final readonly class SiblingOrderingService
 {
     /**
      * @param HasMany<*, *> $siblings scoped to the parent already, e.g. $course->modules()
-     * @param list<int> $orderedIds every sibling's ID, in the desired order
+     * @param  list<int>  $orderedIds  every sibling's ID, in the desired order
      */
     public function reorder(HasMany $siblings, array $orderedIds): void
     {

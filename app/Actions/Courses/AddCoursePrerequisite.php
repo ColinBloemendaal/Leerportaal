@@ -15,11 +15,11 @@ final readonly class AddCoursePrerequisite
     public function __invoke(Course $course, Course $prerequisite): void
     {
         if ($course->is($prerequisite)) {
-            throw CircularCoursePrerequisiteException::between($course, $prerequisite);
+            throw CircularCoursePrerequisiteException::between($course->id, $prerequisite->id);
         }
 
         if ($this->dependsOn($prerequisite, $course)) {
-            throw CircularCoursePrerequisiteException::between($course, $prerequisite);
+            throw CircularCoursePrerequisiteException::between($course->id, $prerequisite->id);
         }
 
         $this->db->transaction(function () use ($course, $prerequisite): void {
