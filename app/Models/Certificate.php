@@ -36,6 +36,7 @@ final class Certificate extends Model
     {
         return [
             'issued_at' => 'immutable_datetime',
+            'expires_at' => 'immutable_datetime',
         ];
     }
 

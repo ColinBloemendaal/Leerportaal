@@ -16,9 +16,9 @@ use Tests\TestCase;
 
 uses(TestCase::class, RefreshDatabase::class);
 
-function completedAssignment(): array
+function completedAssignment(?int $certificateValidityMonths = null): array
 {
-    $course = Course::factory()->create();
+    $course = Course::factory()->create(['certificate_validity_months' => $certificateValidityMonths]);
     $module = Module::factory()->for($course)->create();
     $lesson = Lesson::factory()->for($module)->create();
     $block = Block::factory()->for($lesson)->create();
@@ -49,6 +49,24 @@ it('issues a certificate with a unique verification code and stores the PDF', fu
         ->and($certificate->pdf_path)->toBe("certificates/{$certificate->verification_code}.pdf");
 
     Storage::disk('s3')->assertExists($certificate->pdf_path);
+});
+
+it('leaves expires_at null when the course has no certificate validity period', function (): void {
+    Storage::fake('s3');
+    [$assignment] = completedAssignment(certificateValidityMonths: null);
+
+    $certificate = app(IssueCertificate::class)($assignment);
+
+    expect($certificate->expires_at)->toBeNull();
+});
+
+it('computes expires_at from the course certificate validity period', function (): void {
+    Storage::fake('s3');
+    [$assignment] = completedAssignment(certificateValidityMonths: 12);
+
+    $certificate = app(IssueCertificate::class)($assignment);
+
+    expect($certificate->issued_at->diffInMonths($certificate->expires_at))->toBe(12.0);
 });
 
 it('generates a different verification code for a different assignment', function (): void {

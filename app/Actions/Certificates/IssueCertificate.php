@@ -66,10 +66,15 @@ final readonly class IssueCertificate
             throw new RuntimeException('Failed to store the generated certificate PDF.');
         }
 
+        $issuedAt = now();
+
         return Certificate::query()->create([
             'course_assignment_id' => $assignment->id,
             'verification_code' => $verificationCode,
-            'issued_at' => now(),
+            'issued_at' => $issuedAt,
+            'expires_at' => $course->certificate_validity_months === null
+                ? null
+                : $issuedAt->copy()->addMonths($course->certificate_validity_months),
             'pdf_disk' => self::DISK,
             'pdf_path' => $path,
         ]);
