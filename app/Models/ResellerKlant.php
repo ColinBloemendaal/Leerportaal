@@ -42,4 +42,15 @@ final class ResellerKlant extends Model
     {
         return $this->hasMany(Group::class);
     }
+
+    /**
+     * Users belonging to this klant -- cursisten, not the reseller's own
+     * staff (who have no resellerklant_id).
+     *
+     * @return HasMany<User, $this>
+     */
+    public function cursisten(): HasMany
+    {
+        return $this->hasMany(User::class, 'resellerklant_id');
+    }
 }

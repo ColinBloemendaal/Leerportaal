@@ -6,6 +6,7 @@ namespace App\Repositories\Eloquent;
 
 use App\Contracts\Repositories\ResellerKlantRepository;
 use App\Models\ResellerKlant;
+use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
@@ -22,6 +23,11 @@ final class EloquentResellerKlantRepository implements ResellerKlantRepository
     public function findById(int $id): ?ResellerKlant
     {
         return ResellerKlant::query()->find($id);
+    }
+
+    public function findOwnKlant(User $user): ?ResellerKlant
+    {
+        return $user->resellerklant_id === null ? null : $this->findById($user->resellerklant_id);
     }
 
     public function trashed(): Collection

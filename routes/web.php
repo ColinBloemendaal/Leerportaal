@@ -14,6 +14,7 @@ use App\Http\Controllers\Auth\TwoFactorChallengeController;
 use App\Http\Controllers\CertificateVerificationController;
 use App\Http\Controllers\CursistDashboardController;
 use App\Http\Controllers\InvitesController;
+use App\Http\Controllers\KlantDashboardController;
 use App\Http\Controllers\PlatformDashboardController;
 use App\Http\Controllers\ResellerBrandingController;
 use App\Http\Controllers\ResellerDashboardController;
@@ -142,5 +143,9 @@ Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->grou
 
     Route::prefix('admin/reseller')->name('admin.reseller.')->group(function () {
         Route::get('/', [ResellerDashboardController::class, 'index'])->name('dashboard');
+    });
+
+    Route::prefix('admin/klant')->name('admin.klant.')->group(function () {
+        Route::get('/', [KlantDashboardController::class, 'index'])->name('dashboard');
     });
 });

@@ -15,3 +15,16 @@ export interface ResellerDashboardStats {
     billedSpend: { cents: number };
     pendingSpend: { cents: number };
 }
+
+export interface KlantCursistSummary {
+    userId: number;
+    name: string;
+    assignedCount: number;
+    inProgressCount: number;
+    completedCount: number;
+}
+
+export interface KlantDashboardStats {
+    cursistCount: number;
+    cursisten: KlantCursistSummary[];
+}
