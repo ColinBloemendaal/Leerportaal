@@ -42,4 +42,12 @@ final class Lesson extends Model
     {
         return $this->hasMany(Block::class);
     }
+
+    /**
+     * @return HasMany<Quiz, $this>
+     */
+    public function quizzes(): HasMany
+    {
+        return $this->hasMany(Quiz::class);
+    }
 }

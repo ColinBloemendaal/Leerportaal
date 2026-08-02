@@ -42,4 +42,12 @@ final class Module extends Model
     {
         return $this->hasMany(Lesson::class);
     }
+
+    /**
+     * @return HasMany<Quiz, $this>
+     */
+    public function quizzes(): HasMany
+    {
+        return $this->hasMany(Quiz::class);
+    }
 }
