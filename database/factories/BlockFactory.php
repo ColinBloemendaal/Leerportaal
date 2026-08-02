@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Enums\BlockType;
+use App\Enums\BlockTypeEnum;
 use App\Models\Block;
 use App\Models\Lesson;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -23,7 +23,7 @@ final class BlockFactory extends Factory
     {
         return [
             'lesson_id' => Lesson::factory(),
-            'type' => BlockType::RichText,
+            'type' => BlockTypeEnum::RichText,
             'content' => ['html' => '<p>'.fake()->sentence().'</p>'],
             'order' => 0,
         ];

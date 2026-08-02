@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Concerns\HasAuditLog;
-use App\Enums\BlockType;
+use App\Enums\BlockTypeEnum;
 use Database\Factories\BlockFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -33,7 +33,7 @@ final class Block extends Model
     protected function casts(): array
     {
         return [
-            'type' => BlockType::class,
+            'type' => BlockTypeEnum::class,
             'content' => 'array',
         ];
     }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Enums\BlockType;
+use App\Enums\BlockTypeEnum;
 use App\Models\Block;
 use App\Models\Course;
 use App\Models\Lesson;
@@ -26,15 +26,15 @@ it('builds the full course -> module -> lesson -> block hierarchy', function ():
         ->and($lesson->blocks)->toHaveCount(1);
 });
 
-it('casts block type to the BlockType enum and content to an array', function (): void {
+it('casts block type to the BlockTypeEnum and content to an array', function (): void {
     $block = Block::factory()->create([
-        'type' => BlockType::Callout,
+        'type' => BlockTypeEnum::Callout,
         'content' => ['text' => 'Heads up', 'variant' => 'warning'],
     ]);
 
     $fresh = $block->fresh();
 
-    expect($fresh?->type)->toBe(BlockType::Callout)
+    expect($fresh?->type)->toBe(BlockTypeEnum::Callout)
         ->and($fresh?->content)->toBe(['text' => 'Heads up', 'variant' => 'warning']);
 });
 

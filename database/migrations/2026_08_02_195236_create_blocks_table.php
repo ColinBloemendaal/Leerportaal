@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('lesson_id')->constrained()->cascadeOnDelete();
 
-            // App\Enums\BlockType. Per-type payload shape/validation is
+            // App\Enums\BlockTypeEnum. Per-type payload shape/validation is
             // the "Block types" task, not this one -- content just needs
             // to exist as a generic slot for it to fill in.
             $table->string('type');
