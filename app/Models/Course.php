@@ -12,6 +12,7 @@ use Database\Factories\CourseFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Translatable\HasTranslations;
@@ -85,5 +86,35 @@ final class Course extends Model implements HasTranslatableFields
     public function modules(): HasMany
     {
         return $this->hasMany(Module::class);
+    }
+
+    /**
+     * Courses that must be completed before this one.
+     *
+     * @return BelongsToMany<Course, $this>
+     */
+    public function prerequisites(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            self::class,
+            'course_prerequisites',
+            'course_id',
+            'prerequisite_course_id',
+        )->withTimestamps();
+    }
+
+    /**
+     * Courses that list this one as a prerequisite.
+     *
+     * @return BelongsToMany<Course, $this>
+     */
+    public function requiredFor(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            self::class,
+            'course_prerequisites',
+            'prerequisite_course_id',
+            'course_id',
+        )->withTimestamps();
     }
 }
