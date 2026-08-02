@@ -12,6 +12,7 @@ use App\Contracts\Repositories\CourseRepository;
 use App\Contracts\Repositories\CustomDomainRepository;
 use App\Contracts\Repositories\ImpersonationRepository;
 use App\Contracts\Repositories\MediaRepository;
+use App\Contracts\Repositories\PlatformDashboardRepository;
 use App\Contracts\Repositories\QuestionRepository;
 use App\Contracts\Repositories\ResellerKlantCourseGrantRepository;
 use App\Contracts\Repositories\ResellerKlantRepository;
@@ -27,6 +28,7 @@ use App\Repositories\Eloquent\EloquentCourseRepository;
 use App\Repositories\Eloquent\EloquentCustomDomainRepository;
 use App\Repositories\Eloquent\EloquentImpersonationRepository;
 use App\Repositories\Eloquent\EloquentMediaRepository;
+use App\Repositories\Eloquent\EloquentPlatformDashboardRepository;
 use App\Repositories\Eloquent\EloquentQuestionRepository;
 use App\Repositories\Eloquent\EloquentResellerKlantCourseGrantRepository;
 use App\Repositories\Eloquent\EloquentResellerKlantRepository;
@@ -61,5 +63,6 @@ final class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(CourseAssignmentRepository::class, EloquentCourseAssignmentRepository::class);
         $this->app->bind(CourseAccessGrantRepository::class, EloquentCourseAccessGrantRepository::class);
         $this->app->bind(ResellerKlantCourseGrantRepository::class, EloquentResellerKlantCourseGrantRepository::class);
+        $this->app->bind(PlatformDashboardRepository::class, EloquentPlatformDashboardRepository::class);
     }
 }

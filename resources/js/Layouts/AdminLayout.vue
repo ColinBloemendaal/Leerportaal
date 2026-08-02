@@ -14,7 +14,9 @@ import { Link } from '@inertiajs/vue3';
                 </Link>
 
                 <ul class="nav nav-pills flex-column">
-                    <slot name="nav" />
+                    <li class="nav-item">
+                        <Link href="/admin/platform" class="nav-link text-white">Dashboard</Link>
+                    </li>
                 </ul>
             </aside>
 

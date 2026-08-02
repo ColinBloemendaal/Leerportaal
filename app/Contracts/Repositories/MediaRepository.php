@@ -26,4 +26,10 @@ interface MediaRepository
      * the current one.
      */
     public function totalBytesForReseller(int $resellerId): int;
+
+    /**
+     * Sum of size_bytes across every media row, platform and reseller
+     * owned alike -- for the platform admin dashboard's storage figure.
+     */
+    public function totalBytesAcrossPlatform(): int;
 }

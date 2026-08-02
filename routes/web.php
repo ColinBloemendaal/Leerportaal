@@ -14,6 +14,7 @@ use App\Http\Controllers\Auth\TwoFactorChallengeController;
 use App\Http\Controllers\CertificateVerificationController;
 use App\Http\Controllers\CursistDashboardController;
 use App\Http\Controllers\InvitesController;
+use App\Http\Controllers\PlatformDashboardController;
 use App\Http\Controllers\ResellerBrandingController;
 use App\Http\Controllers\ResellerKlantController;
 use App\Http\Controllers\ResellerMailTemplateController;
@@ -133,4 +134,8 @@ Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->grou
     Route::delete('/impersonate', [ImpersonationController::class, 'destroy'])->name('impersonate.stop');
 
     Route::get('/dashboard', [CursistDashboardController::class, 'index'])->name('dashboard');
+
+    Route::prefix('admin/platform')->name('admin.platform.')->group(function () {
+        Route::get('/', [PlatformDashboardController::class, 'index'])->name('dashboard');
+    });
 });

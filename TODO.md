@@ -186,7 +186,7 @@ Human decision on scope: the "sender name, reply-to" branding task above and thi
 
 ## Phase 7 — Admin panel & reporting
 
-- [ ] Platform admin dashboard: resellers, users, courses, revenue, storage
+- [x] Platform admin dashboard: resellers, users, courses, revenue, storage. `App\Contracts\Repositories\PlatformDashboardRepository`/`EloquentPlatformDashboardRepository` (reseller/user/course counts, revenue by `AssignmentBillingState` -- explicitly bypasses the tenant scope, documented, since a platform-wide total spans every reseller by definition). Added `MediaRepository::totalBytesAcrossPlatform()` for the storage figure. `App\Services\Reporting\PlatformDashboardService::snapshot()` composes those with `StorageMetering::includedBytes()` (platform total capacity = per-reseller allowance × reseller count) into `PlatformDashboardData`, passed straight to Inertia as a DTO (no Resource wrapper needed). `PlatformDashboardController` authorizes via the existing `ResellerPolicy::viewAny` (`$this->authorize('viewAny', 'App\Models\Reseller')`, string form -- controllers can't import `App\Models` directly, see `LayeringTest`) since viewing platform-wide stats is exactly the same access boundary as viewing resellers themselves; no new Policy/Gate needed. `GET /admin/platform`, `Admin/Platform/Dashboard.vue`. **Fixed a latent bug found while building this**: `AdminLayout.vue`'s `<slot name="nav">` was dead code -- Inertia's persistent-layout wrapping (`defineOptions({ layout })`) only ever forwards a single default slot from page to layout, so a page can never actually fill a named slot on it. Nothing had exercised `AdminLayout` before this task. Replaced with a nav list rendered directly in the layout.
 - [ ] Reseller admin dashboard: klanten, cursisten, assignments, spend
 - [ ] Klant dashboard: cursisten, progress, completions
 - [ ] Generic filter/sort/search layer reusable across every index (query builder + saved filters)
@@ -197,6 +197,7 @@ Human decision on scope: the "sender name, reply-to" branding task above and thi
 - [ ] Exports: CSV/XLSX for every index, queued for large sets, expiring signed download links
 - [ ] Scheduled reports emailed to klant admins
 - [ ] Platform health: queue depth, failed jobs, storage, error rate
+- [ ] vue-i18n is not actually installed/configured anywhere yet, despite CLAUDE.md §6 requiring it for every user-facing string. Every existing page (`Klanten/Index.vue`, `Dashboard.vue`, etc.) hardcodes strings in one language or the other. Discovered while building the Phase 7 admin dashboard -- out of scope to retrofit inline (it's a codebase-wide setup + a pass over every existing page), so tracked here per CLAUDE.md §0 rule 6 rather than done ad hoc. New Phase 7 admin pages will follow the existing (non-compliant) hardcoded-string convention for now, for consistency with their sibling pages, until this is addressed as its own task.
 
 ---
 
