@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Translatable\HasTranslations;
 
 /**
  * Deliberately does NOT use TenantScoped: a row is either platform-owned
@@ -26,9 +27,15 @@ final class CourseCategory extends Model
     /** @use HasFactory<CourseCategoryFactory> */
     use HasFactory;
 
+    use HasTranslations;
     use SoftDeletes;
 
     protected $guarded = [];
+
+    /**
+     * @var list<string>
+     */
+    public array $translatable = ['name'];
 
     /**
      * @return BelongsTo<Reseller, $this>

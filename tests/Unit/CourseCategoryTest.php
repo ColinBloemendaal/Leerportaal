@@ -49,3 +49,15 @@ it('soft deletes', function (): void {
     expect(CourseCategory::find($category->id))->toBeNull()
         ->and(CourseCategory::withTrashed()->find($category->id))->not->toBeNull();
 });
+
+it('stores name per locale', function (): void {
+    $category = CourseCategory::factory()->create();
+    $category->setTranslation('name', 'nl', 'Nederlandse naam');
+    $category->setTranslation('name', 'en', 'English name');
+    $category->save();
+
+    $fresh = $category->fresh();
+
+    expect($fresh?->getTranslation('name', 'nl'))->toBe('Nederlandse naam')
+        ->and($fresh?->getTranslation('name', 'en'))->toBe('English name');
+});

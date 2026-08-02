@@ -72,3 +72,25 @@ it('soft deletes', function (): void {
     expect(Course::find($course->id))->toBeNull()
         ->and(Course::withTrashed()->find($course->id))->not->toBeNull();
 });
+
+it('stores title and description per locale', function (): void {
+    $course = Course::factory()->create();
+    $course->setTranslation('title', 'nl', 'Nederlandse titel');
+    $course->setTranslation('title', 'en', 'English title');
+    $course->setTranslation('description', 'nl', 'Nederlandse beschrijving');
+    $course->setTranslation('description', 'en', 'English description');
+    $course->save();
+
+    $fresh = $course->fresh();
+
+    expect($fresh?->getTranslation('title', 'nl'))->toBe('Nederlandse titel')
+        ->and($fresh?->getTranslation('title', 'en'))->toBe('English title')
+        ->and($fresh?->getTranslation('description', 'nl'))->toBe('Nederlandse beschrijving')
+        ->and($fresh?->getTranslation('description', 'en'))->toBe('English description');
+});
+
+it('stores a plain string assignment under the current app locale', function (): void {
+    $course = Course::factory()->create(['title' => 'Default locale title']);
+
+    expect($course->fresh()?->getTranslation('title', app()->getLocale()))->toBe('Default locale title');
+});

@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Translatable\HasTranslations;
 
 /**
  * Deliberately does NOT use TenantScoped -- same reasoning as
@@ -28,9 +29,15 @@ final class Course extends Model
     /** @use HasFactory<CourseFactory> */
     use HasFactory;
 
+    use HasTranslations;
     use SoftDeletes;
 
     protected $guarded = [];
+
+    /**
+     * @var list<string>
+     */
+    public array $translatable = ['title', 'description'];
 
     /**
      * @return array<string, string>
