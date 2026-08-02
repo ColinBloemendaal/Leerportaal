@@ -17,10 +17,13 @@ use Illuminate\Support\Facades\Schema;
  * broken. Platform-owned models need no explicit exemption -- they simply
  * have no reseller_id column, so neither check applies to them.
  *
- * User is the one deliberate exception: one table mixes platform staff
- * (reseller_id null) and reseller-owned rows, so it can't use the
+ * Deliberate exceptions: tables that mix platform-owned rows
+ * (reseller_id null) with reseller-owned rows, so they can't use the
  * fail-closed TenantScoped trait the way single-ownership tables do.
- * Reseller-scoped user queries are explicit elsewhere. See CLAUDE.md §3.
+ * Reseller-scoped queries for these are explicit elsewhere instead --
+ * User via ad-hoc queries, CourseCategory via
+ * App\Repositories\Eloquent\EloquentCourseCategoryRepository. See
+ * CLAUDE.md §3.
  */
 final class TenancyAuditCommand extends Command
 {
@@ -29,6 +32,7 @@ final class TenancyAuditCommand extends Command
      */
     private const EXEMPT = [
         'App\Models\User',
+        'App\Models\CourseCategory',
     ];
 
     /**
