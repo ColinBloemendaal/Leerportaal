@@ -8,6 +8,7 @@ use App\Enums\QuestionTypeEnum;
 use App\Questions\Contracts\QuestionType;
 use App\Questions\Types\MultipleChoiceQuestion;
 use App\Questions\Types\EssayQuestion;
+use App\Questions\Types\FillInBlankQuestion;
 use App\Questions\Types\MatchingQuestion;
 use App\Questions\Types\MultipleResponseQuestion;
 use App\Questions\Types\OpenShortQuestion;
@@ -38,6 +39,7 @@ final class QuestionTypeRegistry
         QuestionTypeEnum::Essay->value => EssayQuestion::class,
         QuestionTypeEnum::Matching->value => MatchingQuestion::class,
         QuestionTypeEnum::Ordering->value => OrderingQuestion::class,
+        QuestionTypeEnum::FillInBlank->value => FillInBlankQuestion::class,
     ];
 
     public function resolve(QuestionTypeEnum $type): QuestionType

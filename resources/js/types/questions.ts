@@ -59,3 +59,14 @@ export interface OrderingItem {
 export interface OrderingPayload {
     items: OrderingItem[];
 }
+
+export interface FillInBlankBlank {
+    id: string;
+    acceptable_answers: string[];
+    case_sensitive: boolean;
+}
+
+export interface FillInBlankPayload {
+    template: string;
+    blanks: FillInBlankBlank[];
+}
