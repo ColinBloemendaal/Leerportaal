@@ -7,6 +7,7 @@ use App\Models\QuestionAnswer;
 use App\Models\Quiz;
 use App\Models\QuizAttempt;
 use App\Models\User;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -27,7 +28,7 @@ it('enforces one attempt number per user per quiz', function (): void {
 
     QuizAttempt::factory()->for($quiz)->for($user)->create(['attempt_number' => 1]);
     QuizAttempt::factory()->for($quiz)->for($user)->create(['attempt_number' => 1]);
-})->throws(Illuminate\Database\QueryException::class);
+})->throws(QueryException::class);
 
 it('allows the same user multiple distinct attempt numbers on the same quiz', function (): void {
     $quiz = Quiz::factory()->create();
@@ -59,4 +60,4 @@ it('prevents two answers for the same question within one attempt', function ():
 
     QuestionAnswer::factory()->for($attempt, 'quizAttempt')->for($question)->create();
     QuestionAnswer::factory()->for($attempt, 'quizAttempt')->for($question)->create();
-})->throws(Illuminate\Database\QueryException::class);
+})->throws(QueryException::class);

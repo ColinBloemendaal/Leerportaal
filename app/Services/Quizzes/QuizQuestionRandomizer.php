@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Quizzes;
 
+use App\DataTransferObjects\Quizzes\QuizSettingsData;
 use App\Models\Question;
 use App\Models\Quiz;
 use Illuminate\Support\Collection;
@@ -29,7 +30,12 @@ final readonly class QuizQuestionRandomizer
     public function questionsFor(Quiz $quiz): Collection
     {
         $questions = $quiz->questions()->get();
-        $settings = $quiz->settings;
+        // Larastan types Quiz::$settings as nullable, following the
+        // underlying column's nullability, even though QuizSettingsCast::get()
+        // always returns a real (if empty) QuizSettingsData -- this
+        // fallback matches that actual runtime guarantee rather than
+        // working around the type.
+        $settings = $quiz->settings ?? new QuizSettingsData;
 
         if ($settings->questionPoolSize !== null && $settings->questionPoolSize < $questions->count()) {
             $questions = $questions->random($settings->questionPoolSize);

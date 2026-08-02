@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Services\Grading;
 
+use App\DataTransferObjects\Quizzes\QuizSettingsData;
 use App\Models\Question;
 use App\Models\QuestionAnswer;
 use App\Models\QuizAttempt;
 use App\Questions\QuestionTypeRegistry;
-use Illuminate\Support\Carbon;
+use LogicException;
 
 /**
  * Auto-grades what can be auto-graded, leaves the rest pending for a
@@ -32,7 +33,17 @@ final readonly class GradingService
             return $answer;
         }
 
+        // BelongsTo::question() is typed nullable by Larastan regardless
+        // of the FK being required -- a genuine runtime guard, not a
+        // cast/@var override, satisfies both PHPStan and the actual
+        // data-integrity requirement (an answer must reference a
+        // question).
         $question = $answer->question;
+
+        if ($question === null) {
+            throw new LogicException("QuestionAnswer #{$answer->id} has no Question.");
+        }
+
         $type = $this->registry->resolve($question->type);
         $result = $type->grade($question, $answer->answer);
 
@@ -41,7 +52,7 @@ final readonly class GradingService
         $answer->is_correct = $result->isCorrect;
         $answer->requires_manual_grading = $result->requiresManualGrading;
         $answer->feedback = $result->feedback ?? $this->cannedFeedback($question, $result->isCorrect);
-        $answer->graded_at = $result->requiresManualGrading ? null : Carbon::now();
+        $answer->graded_at = $result->requiresManualGrading ? null : now()->toImmutable();
         $answer->save();
 
         return $answer;
@@ -70,7 +81,7 @@ final readonly class GradingService
         $answer->points_awarded = $pointsAwarded;
         $answer->is_correct = $pointsAwarded >= $answer->points_possible;
         $answer->feedback = $feedback;
-        $answer->graded_at = Carbon::now();
+        $answer->graded_at = now()->toImmutable();
         $answer->save();
 
         return $answer;
@@ -79,6 +90,11 @@ final readonly class GradingService
     public function gradeAttempt(QuizAttempt $attempt): QuizAttempt
     {
         $attempt->loadMissing('quiz');
+        $quiz = $attempt->quiz;
+
+        if ($quiz === null) {
+            throw new LogicException("QuizAttempt #{$attempt->id} has no Quiz.");
+        }
 
         $answers = $attempt->answers()->with('question')->get()
             ->map(fn (QuestionAnswer $answer): QuestionAnswer => $this->gradeAnswer($answer));
@@ -90,7 +106,10 @@ final readonly class GradingService
         $attempt->score = (float) $answers->sum(fn (QuestionAnswer $answer): float => $answer->points_awarded ?? 0.0);
         $attempt->max_score = (float) $answers->sum('points_possible');
 
-        $passThreshold = $attempt->quiz->settings->passThresholdPercent;
+        // See QuizQuestionRandomizer for why this fallback exists despite
+        // QuizSettingsCast::get() never actually returning null.
+        $settings = $quiz->settings ?? new QuizSettingsData;
+        $passThreshold = $settings->passThresholdPercent;
 
         $attempt->passed = match (true) {
             $hasPendingManualGrading, $passThreshold === null, $attempt->max_score <= 0.0 => null,
