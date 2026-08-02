@@ -9,6 +9,7 @@ use App\Models\Course;
 use App\Models\CourseAssignment;
 use App\Models\Reseller;
 use App\Models\User;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -31,6 +32,8 @@ final class CourseAssignmentFactory extends Factory
             'assigned_at' => now(),
             'first_opened_at' => null,
             'revoked_at' => null,
+            'deadline_at' => null,
+            'reminder_days_before' => [7, 1],
             'billing_state' => AssignmentBillingState::Pending,
         ];
     }
@@ -43,5 +46,10 @@ final class CourseAssignmentFactory extends Factory
     public function revoked(): self
     {
         return $this->state(fn (): array => ['revoked_at' => now()]);
+    }
+
+    public function withDeadline(DateTimeInterface $deadline): self
+    {
+        return $this->state(fn (): array => ['deadline_at' => $deadline]);
     }
 }
