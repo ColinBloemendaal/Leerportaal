@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\TenantLoginController;
 use App\Http\Controllers\Auth\TwoFactorAuthenticationController;
 use App\Http\Controllers\Auth\TwoFactorChallengeController;
 use App\Http\Controllers\CertificateVerificationController;
+use App\Http\Controllers\CursistDashboardController;
 use App\Http\Controllers\InvitesController;
 use App\Http\Controllers\ResellerBrandingController;
 use App\Http\Controllers\ResellerKlantController;
@@ -130,4 +131,6 @@ Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->grou
         ->name('impersonate.start');
 
     Route::delete('/impersonate', [ImpersonationController::class, 'destroy'])->name('impersonate.stop');
+
+    Route::get('/dashboard', [CursistDashboardController::class, 'index'])->name('dashboard');
 });
