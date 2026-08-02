@@ -102,4 +102,14 @@ final class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(QuizAttempt::class);
     }
+
+    /**
+     * Courses assigned to this user as a cursist.
+     *
+     * @return HasMany<CourseAssignment, $this>
+     */
+    public function courseAssignments(): HasMany
+    {
+        return $this->hasMany(CourseAssignment::class);
+    }
 }

@@ -126,4 +126,12 @@ final class Course extends Model implements HasTranslatableFields
     {
         return $this->belongsToMany(Tag::class)->withTimestamps();
     }
+
+    /**
+     * @return HasMany<CourseAssignment, $this>
+     */
+    public function assignments(): HasMany
+    {
+        return $this->hasMany(CourseAssignment::class);
+    }
 }

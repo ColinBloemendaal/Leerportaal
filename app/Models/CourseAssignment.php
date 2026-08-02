@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Casts\MoneyCast;
 use App\Concerns\HasAuditLog;
 use App\Concerns\TenantScoped;
 use App\Enums\AssignmentBillingState;
@@ -41,6 +42,7 @@ final class CourseAssignment extends Model
             'first_opened_at' => 'immutable_datetime',
             'revoked_at' => 'immutable_datetime',
             'billing_state' => AssignmentBillingState::class,
+            'price_cents' => MoneyCast::class,
         ];
     }
 
