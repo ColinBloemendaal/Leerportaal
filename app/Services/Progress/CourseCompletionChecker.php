@@ -22,7 +22,10 @@ final readonly class CourseCompletionChecker
 
     public function isComplete(CourseAssignment $assignment, Course $course): bool
     {
-        $rule = $course->completion_rule;
+        // See App\Services\Quizzes\QuizQuestionRandomizer for why this
+        // fallback exists despite CourseCompletionRuleCast::get() never
+        // actually returning null.
+        $rule = $course->completion_rule ?? new CourseCompletionRuleData;
 
         return match ($rule->type) {
             CourseCompletionRuleType::AllLessons => $this->progress->courseCompletionPercent($assignment, $course) >= 100.0,

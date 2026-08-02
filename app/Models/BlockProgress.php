@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Concerns\HasAuditLog;
+use Database\Factories\BlockProgressFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,7 +18,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 final class BlockProgress extends Model
 {
     use HasAuditLog;
+
+    /** @use HasFactory<BlockProgressFactory> */
     use HasFactory;
+
     use SoftDeletes;
 
     protected $guarded = [];

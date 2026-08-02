@@ -38,12 +38,12 @@ final readonly class AssignmentPricingService
 
     private function catalogPriceCents(Course $course): int
     {
-        return $course->platform_price_cents?->cents ?? 0;
+        return $course->platform_price_cents === null ? 0 : $course->platform_price_cents->cents;
     }
 
     private function resellerPriceCents(Course $course): int
     {
-        $setPrice = $course->reseller_set_price_cents?->cents ?? 0;
+        $setPrice = $course->reseller_set_price_cents === null ? 0 : $course->reseller_set_price_cents->cents;
         $percentage = (int) round($setPrice * self::RESELLER_PERCENTAGE);
 
         return max($percentage, self::RESELLER_FLOOR_CENTS);
