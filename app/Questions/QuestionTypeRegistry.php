@@ -6,6 +6,7 @@ namespace App\Questions;
 
 use App\Enums\QuestionTypeEnum;
 use App\Questions\Contracts\QuestionType;
+use App\Questions\Types\MultipleChoiceQuestion;
 use OutOfBoundsException;
 
 /**
@@ -23,7 +24,9 @@ final class QuestionTypeRegistry
     /**
      * @var array<string, class-string<QuestionType>>
      */
-    private const MAP = [];
+    private const MAP = [
+        QuestionTypeEnum::MultipleChoice->value => MultipleChoiceQuestion::class,
+    ];
 
     public function resolve(QuestionTypeEnum $type): QuestionType
     {
