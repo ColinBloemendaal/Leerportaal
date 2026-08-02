@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -89,5 +90,13 @@ final class CourseAssignment extends Model
     public function blockProgress(): HasMany
     {
         return $this->hasMany(BlockProgress::class);
+    }
+
+    /**
+     * @return HasOne<Certificate, $this>
+     */
+    public function certificate(): HasOne
+    {
+        return $this->hasOne(Certificate::class);
     }
 }
