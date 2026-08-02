@@ -48,6 +48,7 @@ final class Course extends Model implements HasTranslatableFields
         return [
             'status' => CourseStatus::class,
             'available_locales' => 'array',
+            'published_at' => 'immutable_datetime',
             'reseller_set_price_cents' => MoneyCast::class,
             'platform_price_cents' => MoneyCast::class,
             'price_floor_override_cents' => MoneyCast::class,
