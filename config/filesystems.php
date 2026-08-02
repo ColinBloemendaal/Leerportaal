@@ -47,6 +47,13 @@ return [
             'report' => false,
         ],
 
+        // The reseller media library disk -- CLAUDE.md §3 "S3-compatible
+        // storage, private disk + signed URLs". AWS_ENDPOINT +
+        // AWS_USE_PATH_STYLE_ENDPOINT already make this work against any
+        // S3-compatible provider (e.g. Hetzner Object Storage), not just
+        // AWS itself. 'visibility' => 'private' so nothing here is ever
+        // world-readable by default -- access is always via
+        // App\Services\Media\MediaUrlSigner's temporary signed URLs.
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
@@ -56,6 +63,7 @@ return [
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
+            'visibility' => 'private',
             'throw' => false,
             'report' => false,
         ],

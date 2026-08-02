@@ -8,6 +8,7 @@ use App\Contracts\Repositories\CourseCategoryRepository;
 use App\Contracts\Repositories\CourseRepository;
 use App\Contracts\Repositories\CustomDomainRepository;
 use App\Contracts\Repositories\ImpersonationRepository;
+use App\Contracts\Repositories\MediaRepository;
 use App\Contracts\Repositories\ResellerKlantRepository;
 use App\Contracts\Repositories\ResellerMailTemplateRepository;
 use App\Contracts\Repositories\ResellerRepository;
@@ -17,6 +18,7 @@ use App\Repositories\Eloquent\EloquentCourseCategoryRepository;
 use App\Repositories\Eloquent\EloquentCourseRepository;
 use App\Repositories\Eloquent\EloquentCustomDomainRepository;
 use App\Repositories\Eloquent\EloquentImpersonationRepository;
+use App\Repositories\Eloquent\EloquentMediaRepository;
 use App\Repositories\Eloquent\EloquentResellerKlantRepository;
 use App\Repositories\Eloquent\EloquentResellerMailTemplateRepository;
 use App\Repositories\Eloquent\EloquentResellerRepository;
@@ -43,5 +45,6 @@ final class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ResellerMailTemplateRepository::class, EloquentResellerMailTemplateRepository::class);
         $this->app->bind(CourseCategoryRepository::class, EloquentCourseCategoryRepository::class);
         $this->app->bind(CourseRepository::class, EloquentCourseRepository::class);
+        $this->app->bind(MediaRepository::class, EloquentMediaRepository::class);
     }
 }
