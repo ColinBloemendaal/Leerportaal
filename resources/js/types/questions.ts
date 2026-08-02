@@ -131,3 +131,8 @@ export interface LikertScalePoint {
 export interface LikertPayload {
     scale: LikertScalePoint[];
 }
+
+export interface FileUploadPayload {
+    allowed_mime_types: string[];
+    max_size_bytes: number | null;
+}

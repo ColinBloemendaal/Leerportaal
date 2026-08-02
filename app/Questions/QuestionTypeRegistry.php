@@ -10,6 +10,7 @@ use App\Questions\Types\MultipleChoiceQuestion;
 use App\Questions\Types\DragDropImageQuestion;
 use App\Questions\Types\DropdownInTextQuestion;
 use App\Questions\Types\EssayQuestion;
+use App\Questions\Types\FileUploadQuestion;
 use App\Questions\Types\FillInBlankQuestion;
 use App\Questions\Types\HotspotImageQuestion;
 use App\Questions\Types\LikertQuestion;
@@ -50,6 +51,7 @@ final class QuestionTypeRegistry
         QuestionTypeEnum::HotspotImage->value => HotspotImageQuestion::class,
         QuestionTypeEnum::DragDropImage->value => DragDropImageQuestion::class,
         QuestionTypeEnum::Likert->value => LikertQuestion::class,
+        QuestionTypeEnum::FileUpload->value => FileUploadQuestion::class,
     ];
 
     public function resolve(QuestionTypeEnum $type): QuestionType
