@@ -6,19 +6,24 @@ namespace App\Models;
 
 use App\Concerns\HasAuditLog;
 use App\Contracts\HasTranslatableFields;
+use App\Enums\QuestionTypeEnum;
 use Database\Factories\QuestionFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Translatable\HasTranslations;
 
 /**
- * No reseller_id / TenantScoped: ownership lives on Course, inherited
- * transitively through quiz -> module|lesson -> course. `type` is a
- * plain string for now, not yet cast to an enum -- QuestionTypeEnum is
- * the next task's job, per CLAUDE.md §5's own split between the fixed
- * set of type names and the per-type behaviour classes.
+ * A reusable question-bank entry, not owned by any single quiz --
+ * attachment to a quiz (and per-quiz ordering) lives entirely in the
+ * quiz_questions pivot via quizzes(), so the same question can be
+ * reused across many quizzes. Deliberately does NOT use TenantScoped,
+ * same mixed-ownership reasoning as Course/CourseCategory/Media:
+ * reseller_id null = a platform-shared bank question, set = one
+ * reseller's own. Visibility is composed explicitly in
+ * App\Repositories\Eloquent\EloquentQuestionRepository.
  */
 final class Question extends Model implements HasTranslatableFields
 {
@@ -43,16 +48,27 @@ final class Question extends Model implements HasTranslatableFields
     protected function casts(): array
     {
         return [
+            'type' => QuestionTypeEnum::class,
             'settings' => 'array',
             'payload' => 'array',
         ];
     }
 
     /**
-     * @return BelongsTo<Quiz, $this>
+     * @return BelongsTo<Reseller, $this>
      */
-    public function quiz(): BelongsTo
+    public function reseller(): BelongsTo
     {
-        return $this->belongsTo(Quiz::class);
+        return $this->belongsTo(Reseller::class);
+    }
+
+    /**
+     * @return BelongsToMany<Quiz, $this>
+     */
+    public function quizzes(): BelongsToMany
+    {
+        return $this->belongsToMany(Quiz::class, 'quiz_questions')
+            ->withPivot('order')
+            ->withTimestamps();
     }
 }

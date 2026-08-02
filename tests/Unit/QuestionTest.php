@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\QuestionTypeEnum;
 use App\Models\Question;
 use App\Models\Quiz;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -9,11 +10,27 @@ use Tests\TestCase;
 
 uses(TestCase::class, RefreshDatabase::class);
 
-it('belongs to a quiz', function (): void {
-    $quiz = Quiz::factory()->create();
-    $question = Question::factory()->for($quiz)->create();
+it('is a platform-shared bank question by default', function (): void {
+    $question = Question::factory()->create();
 
-    expect($question->quiz->is($quiz))->toBeTrue();
+    expect($question->reseller_id)->toBeNull();
+});
+
+it('can be attached to more than one quiz, reused across them', function (): void {
+    $question = Question::factory()->create();
+    $quizA = Quiz::factory()->create();
+    $quizB = Quiz::factory()->forModule()->create();
+
+    $quizA->questions()->attach($question->id, ['order' => 0]);
+    $quizB->questions()->attach($question->id, ['order' => 0]);
+
+    expect($question->quizzes()->count())->toBe(2);
+});
+
+it('casts type to the QuestionTypeEnum', function (): void {
+    $question = Question::factory()->create(['type' => 'true_false']);
+
+    expect($question->fresh()->type)->toBe(QuestionTypeEnum::TrueFalse);
 });
 
 it('stores prompt as translatable content', function (): void {
