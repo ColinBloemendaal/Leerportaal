@@ -49,6 +49,7 @@ final class Course extends Model implements HasTranslatableFields
         return [
             'status' => CourseStatus::class,
             'available_locales' => 'array',
+            'learning_objectives' => 'array',
             'published_at' => 'immutable_datetime',
             'reseller_set_price_cents' => MoneyCast::class,
             'platform_price_cents' => MoneyCast::class,
@@ -116,5 +117,13 @@ final class Course extends Model implements HasTranslatableFields
             'prerequisite_course_id',
             'course_id',
         )->withTimestamps();
+    }
+
+    /**
+     * @return BelongsToMany<Tag, $this>
+     */
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class)->withTimestamps();
     }
 }
