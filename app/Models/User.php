@@ -10,6 +10,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -92,7 +93,11 @@ final class User extends Authenticatable implements MustVerifyEmail
      */
     public function resellerKlant(): BelongsTo
     {
-        return $this->belongsTo(ResellerKlant::class);
+        // Explicit FK: Eloquent's default inference from the relation
+        // name would guess reseller_klant_id, but the actual column
+        // (matching the resellerklanten table's own spelling) has no
+        // underscore between "reseller" and "klant".
+        return $this->belongsTo(ResellerKlant::class, 'resellerklant_id');
     }
 
     /**
@@ -111,5 +116,13 @@ final class User extends Authenticatable implements MustVerifyEmail
     public function courseAssignments(): HasMany
     {
         return $this->hasMany(CourseAssignment::class);
+    }
+
+    /**
+     * @return BelongsToMany<Group, $this>
+     */
+    public function groups(): BelongsToMany
+    {
+        return $this->belongsToMany(Group::class, 'group_members')->withTimestamps();
     }
 }

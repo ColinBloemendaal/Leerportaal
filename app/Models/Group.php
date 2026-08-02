@@ -6,40 +6,29 @@ namespace App\Models;
 
 use App\Concerns\HasAuditLog;
 use App\Concerns\TenantScoped;
-use App\Enums\Role;
-use Database\Factories\UserInviteFactory;
+use Database\Factories\GroupFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-final class UserInvite extends Model
+/**
+ * Single-owner (always belongs to exactly one reseller, via its
+ * resellerklant), so this uses TenantScoped normally -- same reasoning
+ * as CourseAssignment.
+ */
+final class Group extends Model
 {
     use HasAuditLog;
 
-    /** @use HasFactory<UserInviteFactory> */
+    /** @use HasFactory<GroupFactory> */
     use HasFactory;
 
     use SoftDeletes;
     use TenantScoped;
 
     protected $guarded = [];
-
-    /**
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'role' => Role::class,
-            'accepted_at' => 'datetime',
-        ];
-    }
-
-    public function isPending(): bool
-    {
-        return $this->accepted_at === null;
-    }
 
     /**
      * @return BelongsTo<Reseller, $this>
@@ -60,10 +49,10 @@ final class UserInvite extends Model
     }
 
     /**
-     * @return BelongsTo<User, $this>
+     * @return BelongsToMany<User, $this>
      */
-    public function invitedBy(): BelongsTo
+    public function members(): BelongsToMany
     {
-        return $this->belongsTo(User::class, 'invited_by_user_id');
+        return $this->belongsToMany(User::class, 'group_members')->withTimestamps();
     }
 }
