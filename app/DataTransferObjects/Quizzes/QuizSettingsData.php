@@ -18,6 +18,7 @@ final readonly class QuizSettingsData
         public ?int $passThresholdPercent = null,
         public ?int $cooldownMinutesBetweenAttempts = null,
         public ?int $questionPoolSize = null,
+        public bool $shuffleQuestions = false,
     ) {}
 
     /**
@@ -31,6 +32,7 @@ final readonly class QuizSettingsData
             passThresholdPercent: $data['pass_threshold_percent'] ?? null,
             cooldownMinutesBetweenAttempts: $data['cooldown_minutes_between_attempts'] ?? null,
             questionPoolSize: $data['question_pool_size'] ?? null,
+            shuffleQuestions: $data['shuffle_questions'] ?? false,
         );
     }
 }

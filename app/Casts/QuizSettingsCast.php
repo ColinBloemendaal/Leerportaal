@@ -46,6 +46,7 @@ final class QuizSettingsCast implements CastsAttributes
             'pass_threshold_percent' => $settings->passThresholdPercent,
             'cooldown_minutes_between_attempts' => $settings->cooldownMinutesBetweenAttempts,
             'question_pool_size' => $settings->questionPoolSize,
+            'shuffle_questions' => $settings->shuffleQuestions,
         ], JSON_THROW_ON_ERROR);
     }
 }
