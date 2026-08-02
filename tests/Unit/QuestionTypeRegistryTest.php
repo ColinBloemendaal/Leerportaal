@@ -10,7 +10,7 @@ use Tests\TestCase;
 uses(TestCase::class);
 
 it('throws for a type that has no registered implementation yet', function (): void {
-    expect(fn () => (new QuestionTypeRegistry)->resolve(QuestionTypeEnum::DropdownInText))
+    expect(fn () => (new QuestionTypeRegistry)->resolve(QuestionTypeEnum::Numeric))
         ->toThrow(OutOfBoundsException::class);
 });
 

@@ -70,3 +70,14 @@ export interface FillInBlankPayload {
     template: string;
     blanks: FillInBlankBlank[];
 }
+
+export interface DropdownInTextBlank {
+    id: string;
+    options: string[];
+    correct_option: string;
+}
+
+export interface DropdownInTextPayload {
+    template: string;
+    blanks: DropdownInTextBlank[];
+}
