@@ -81,3 +81,8 @@ export interface DropdownInTextPayload {
     template: string;
     blanks: DropdownInTextBlank[];
 }
+
+export interface NumericPayload {
+    correct_answer: number;
+    tolerance: number;
+}

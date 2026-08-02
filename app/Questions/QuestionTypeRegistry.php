@@ -12,6 +12,7 @@ use App\Questions\Types\EssayQuestion;
 use App\Questions\Types\FillInBlankQuestion;
 use App\Questions\Types\MatchingQuestion;
 use App\Questions\Types\MultipleResponseQuestion;
+use App\Questions\Types\NumericQuestion;
 use App\Questions\Types\OpenShortQuestion;
 use App\Questions\Types\OrderingQuestion;
 use App\Questions\Types\TrueFalseQuestion;
@@ -42,6 +43,7 @@ final class QuestionTypeRegistry
         QuestionTypeEnum::Ordering->value => OrderingQuestion::class,
         QuestionTypeEnum::FillInBlank->value => FillInBlankQuestion::class,
         QuestionTypeEnum::DropdownInText->value => DropdownInTextQuestion::class,
+        QuestionTypeEnum::Numeric->value => NumericQuestion::class,
     ];
 
     public function resolve(QuestionTypeEnum $type): QuestionType
