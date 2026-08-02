@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\DataTransferObjects\Quizzes;
 
+use App\Enums\FeedbackVisibility;
+
 /**
  * The typed shape of Quiz::$settings (a JSON column) -- see
  * App\Casts\QuizSettingsCast for the array <-> DTO conversion; this
@@ -19,6 +21,7 @@ final readonly class QuizSettingsData
         public ?int $cooldownMinutesBetweenAttempts = null,
         public ?int $questionPoolSize = null,
         public bool $shuffleQuestions = false,
+        public FeedbackVisibility $feedbackVisibility = FeedbackVisibility::AfterSubmission,
     ) {}
 
     /**
@@ -33,6 +36,9 @@ final readonly class QuizSettingsData
             cooldownMinutesBetweenAttempts: $data['cooldown_minutes_between_attempts'] ?? null,
             questionPoolSize: $data['question_pool_size'] ?? null,
             shuffleQuestions: $data['shuffle_questions'] ?? false,
+            feedbackVisibility: isset($data['feedback_visibility'])
+                ? FeedbackVisibility::from($data['feedback_visibility'])
+                : FeedbackVisibility::AfterSubmission,
         );
     }
 }

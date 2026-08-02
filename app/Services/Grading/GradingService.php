@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Grading;
 
+use App\Models\Question;
 use App\Models\QuestionAnswer;
 use App\Models\QuizAttempt;
 use App\Questions\QuestionTypeRegistry;
@@ -39,10 +40,29 @@ final readonly class GradingService
         $answer->points_possible = $result->pointsPossible;
         $answer->is_correct = $result->isCorrect;
         $answer->requires_manual_grading = $result->requiresManualGrading;
+        $answer->feedback = $result->feedback ?? $this->cannedFeedback($question, $result->isCorrect);
         $answer->graded_at = $result->requiresManualGrading ? null : Carbon::now();
         $answer->save();
 
         return $answer;
+    }
+
+    /**
+     * Per-question canned feedback lives in `settings` (not `payload`,
+     * which is type-specific), so it's a cross-cutting concept every
+     * type can carry regardless of its own payload shape:
+     * {"feedback": {"correct": "...", "incorrect": "..."}}. Only used
+     * when the type's own GradeResult didn't already supply feedback.
+     */
+    private function cannedFeedback(Question $question, ?bool $isCorrect): ?string
+    {
+        if ($isCorrect === null) {
+            return null;
+        }
+
+        $key = $isCorrect ? 'correct' : 'incorrect';
+
+        return $question->settings['feedback'][$key] ?? null;
     }
 
     public function gradeManually(QuestionAnswer $answer, float $pointsAwarded, ?string $feedback = null): QuestionAnswer

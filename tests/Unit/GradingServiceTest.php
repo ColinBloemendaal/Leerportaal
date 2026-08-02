@@ -62,6 +62,29 @@ it('re-grading an auto-graded answer recomputes it (regrade capability)', functi
     expect($regraded->is_correct)->toBeFalse();
 });
 
+it('applies canned per-question feedback based on correctness', function (): void {
+    $question = Question::factory()->create([
+        'type' => 'true_false',
+        'points' => 2,
+        'payload' => ['correct_answer' => true],
+        'settings' => ['feedback' => ['correct' => 'Nice work!', 'incorrect' => 'Review the material.']],
+    ]);
+    $correctAnswer = QuestionAnswer::factory()->for($question)->create(['answer' => true, 'points_possible' => 2]);
+    $incorrectAnswer = QuestionAnswer::factory()->for($question)->create(['answer' => false, 'points_possible' => 2]);
+
+    expect(gradingService()->gradeAnswer($correctAnswer)->feedback)->toBe('Nice work!')
+        ->and(gradingService()->gradeAnswer($incorrectAnswer)->feedback)->toBe('Review the material.');
+});
+
+it('leaves feedback null when the question has no canned feedback configured', function (): void {
+    $question = Question::factory()->create([
+        'type' => 'true_false', 'points' => 2, 'payload' => ['correct_answer' => true],
+    ]);
+    $answer = QuestionAnswer::factory()->for($question)->create(['answer' => true, 'points_possible' => 2]);
+
+    expect(gradingService()->gradeAnswer($answer)->feedback)->toBeNull();
+});
+
 it('marks a manual-grading answer pending on first grade, without a score', function (): void {
     $question = Question::factory()->create(['type' => 'essay', 'points' => 10]);
     $answer = QuestionAnswer::factory()->for($question)->create(['answer' => 'My essay.', 'points_possible' => 10]);

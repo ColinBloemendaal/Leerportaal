@@ -47,6 +47,7 @@ final class QuizSettingsCast implements CastsAttributes
             'cooldown_minutes_between_attempts' => $settings->cooldownMinutesBetweenAttempts,
             'question_pool_size' => $settings->questionPoolSize,
             'shuffle_questions' => $settings->shuffleQuestions,
+            'feedback_visibility' => $settings->feedbackVisibility->value,
         ], JSON_THROW_ON_ERROR);
     }
 }
