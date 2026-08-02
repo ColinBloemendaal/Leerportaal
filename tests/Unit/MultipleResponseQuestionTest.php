@@ -51,14 +51,14 @@ it('passes a valid payload', function (): void {
 it('grades selecting exactly the correct options as fully correct', function (): void {
     $result = multipleResponseQuestion()->grade(multipleResponseQuestionModel(), ['a', 'b']);
 
-    expect($result->isCorrect())->toBeTrue()
+    expect($result->isCorrect)->toBeTrue()
         ->and($result->pointsAwarded)->toBe(6.0);
 });
 
 it('grades selecting only one of two correct options as partial credit', function (): void {
     $result = multipleResponseQuestion()->grade(multipleResponseQuestionModel(), ['a']);
 
-    expect($result->isCorrect())->toBeFalse()
+    expect($result->isCorrect)->toBeFalse()
         ->and($result->pointsAwarded)->toBe(3.0);
 });
 
@@ -66,7 +66,7 @@ it('grades a correct plus an incorrect selection as reduced partial credit', fun
     $result = multipleResponseQuestion()->grade(multipleResponseQuestionModel(), ['a', 'c']);
 
     // +3 for 'a' (correct), -3 for 'c' (incorrect) = 0
-    expect($result->isCorrect())->toBeFalse()
+    expect($result->isCorrect)->toBeFalse()
         ->and($result->pointsAwarded)->toBe(0.0);
 });
 
@@ -79,12 +79,12 @@ it('clamps score to zero rather than going negative', function (): void {
 it('grades an empty selection as incorrect', function (): void {
     $result = multipleResponseQuestion()->grade(multipleResponseQuestionModel(), []);
 
-    expect($result->isCorrect())->toBeFalse()
+    expect($result->isCorrect)->toBeFalse()
         ->and($result->pointsAwarded)->toBe(0.0);
 });
 
 it('grades a malformed (non-array) answer as incorrect rather than erroring', function (): void {
     $result = multipleResponseQuestion()->grade(multipleResponseQuestionModel(), 'a');
 
-    expect($result->isCorrect())->toBeFalse();
+    expect($result->isCorrect)->toBeFalse();
 });

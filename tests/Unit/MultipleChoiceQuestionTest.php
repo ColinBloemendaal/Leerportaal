@@ -57,7 +57,7 @@ it('grades a correct answer', function (): void {
 
     $result = multipleChoiceQuestion()->grade($question, 'a');
 
-    expect($result->isCorrect())->toBeTrue()
+    expect($result->isCorrect)->toBeTrue()
         ->and($result->pointsAwarded)->toBe(4.0);
 });
 
@@ -72,7 +72,7 @@ it('grades an incorrect answer', function (): void {
 
     $result = multipleChoiceQuestion()->grade($question, 'b');
 
-    expect($result->isCorrect())->toBeFalse()
+    expect($result->isCorrect)->toBeFalse()
         ->and($result->pointsAwarded)->toBe(0.0);
 });
 
@@ -84,7 +84,7 @@ it('grades a malformed (non-string) answer as incorrect rather than erroring', f
 
     $result = multipleChoiceQuestion()->grade($question, ['a', 'b']);
 
-    expect($result->isCorrect())->toBeFalse();
+    expect($result->isCorrect)->toBeFalse();
 });
 
 it('grades an empty answer as incorrect', function (): void {
@@ -95,5 +95,5 @@ it('grades an empty answer as incorrect', function (): void {
 
     $result = multipleChoiceQuestion()->grade($question, null);
 
-    expect($result->isCorrect())->toBeFalse();
+    expect($result->isCorrect)->toBeFalse();
 });

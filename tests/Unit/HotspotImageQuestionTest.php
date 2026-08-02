@@ -72,25 +72,25 @@ it('requires every region to have a text label for the keyboard alternative', fu
 it('grades selecting exactly the correct regions as fully correct', function (): void {
     $result = hotspotImageQuestion()->grade(hotspotImageQuestionModel(), ['a', 'b']);
 
-    expect($result->isCorrect())->toBeTrue()
+    expect($result->isCorrect)->toBeTrue()
         ->and($result->pointsAwarded)->toBe(6.0);
 });
 
 it('grades selecting one of two correct regions as partial credit', function (): void {
     $result = hotspotImageQuestion()->grade(hotspotImageQuestionModel(), ['a']);
 
-    expect($result->isCorrect())->toBeFalse()
+    expect($result->isCorrect)->toBeFalse()
         ->and($result->pointsAwarded)->toBe(3.0);
 });
 
 it('grades a malformed (non-array) answer as incorrect rather than erroring', function (): void {
     $result = hotspotImageQuestion()->grade(hotspotImageQuestionModel(), 'a');
 
-    expect($result->isCorrect())->toBeFalse();
+    expect($result->isCorrect)->toBeFalse();
 });
 
 it('grades an empty answer as incorrect', function (): void {
     $result = hotspotImageQuestion()->grade(hotspotImageQuestionModel(), []);
 
-    expect($result->isCorrect())->toBeFalse();
+    expect($result->isCorrect)->toBeFalse();
 });

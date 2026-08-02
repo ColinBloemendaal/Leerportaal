@@ -46,5 +46,5 @@ it('always reports pending manual grading, regardless of the answer', function (
 it('has no correctness verdict until manually graded', function (): void {
     $question = Question::factory()->create(['points' => 10]);
 
-    expect(fileUploadQuestion()->grade($question, 'media-id-123')->isCorrect())->toBeNull();
+    expect(fileUploadQuestion()->grade($question, 'media-id-123')->isCorrect)->toBeNull();
 });

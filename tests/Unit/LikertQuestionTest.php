@@ -39,8 +39,8 @@ it('is always not applicable to grade, regardless of the answer', function (): v
     $withAnswer = likertQuestion()->grade($question, '3');
     $withoutAnswer = likertQuestion()->grade($question, null);
 
-    expect($withAnswer->isCorrect())->toBeNull()
+    expect($withAnswer->isCorrect)->toBeNull()
         ->and($withAnswer->requiresManualGrading)->toBeFalse()
         ->and($withAnswer->pointsAwarded)->toBeNull()
-        ->and($withoutAnswer->isCorrect())->toBeNull();
+        ->and($withoutAnswer->isCorrect)->toBeNull();
 });

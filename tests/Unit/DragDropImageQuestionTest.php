@@ -79,7 +79,7 @@ it('grades placing every item in its correct zone as fully correct', function ()
         'zone-1' => 'item-a', 'zone-2' => 'item-b',
     ]);
 
-    expect($result->isCorrect())->toBeTrue()
+    expect($result->isCorrect)->toBeTrue()
         ->and($result->pointsAwarded)->toBe(4.0);
 });
 
@@ -88,18 +88,18 @@ it('grades one correct placement as partial credit', function (): void {
         'zone-1' => 'item-a', 'zone-2' => 'item-a',
     ]);
 
-    expect($result->isCorrect())->toBeFalse()
+    expect($result->isCorrect)->toBeFalse()
         ->and($result->pointsAwarded)->toBe(2.0);
 });
 
 it('grades a malformed (non-array) answer as incorrect rather than erroring', function (): void {
     $result = dragDropImageQuestion()->grade(dragDropImageQuestionModel(), 'item-a');
 
-    expect($result->isCorrect())->toBeFalse();
+    expect($result->isCorrect)->toBeFalse();
 });
 
 it('grades an empty answer as incorrect', function (): void {
     $result = dragDropImageQuestion()->grade(dragDropImageQuestionModel(), []);
 
-    expect($result->isCorrect())->toBeFalse();
+    expect($result->isCorrect)->toBeFalse();
 });

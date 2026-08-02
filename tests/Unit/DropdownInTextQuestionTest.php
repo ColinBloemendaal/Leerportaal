@@ -47,14 +47,14 @@ it('passes a valid payload', function (): void {
 it('grades selecting the correct option for every blank as fully correct', function (): void {
     $result = dropdownInTextQuestion()->grade(dropdownInTextQuestionModel(), ['1' => 'Paris', '2' => 'Europe']);
 
-    expect($result->isCorrect())->toBeTrue()
+    expect($result->isCorrect)->toBeTrue()
         ->and($result->pointsAwarded)->toBe(4.0);
 });
 
 it('grades one correct blank as partial credit', function (): void {
     $result = dropdownInTextQuestion()->grade(dropdownInTextQuestionModel(), ['1' => 'Paris', '2' => 'Asia']);
 
-    expect($result->isCorrect())->toBeFalse()
+    expect($result->isCorrect)->toBeFalse()
         ->and($result->pointsAwarded)->toBe(2.0);
 });
 
@@ -67,11 +67,11 @@ it('is an exact match, unlike fill_in_blank -- casing must match precisely', fun
 it('grades a malformed (non-array) answer as incorrect rather than erroring', function (): void {
     $result = dropdownInTextQuestion()->grade(dropdownInTextQuestionModel(), 'Paris');
 
-    expect($result->isCorrect())->toBeFalse();
+    expect($result->isCorrect)->toBeFalse();
 });
 
 it('grades an empty answer as incorrect', function (): void {
     $result = dropdownInTextQuestion()->grade(dropdownInTextQuestionModel(), []);
 
-    expect($result->isCorrect())->toBeFalse();
+    expect($result->isCorrect)->toBeFalse();
 });

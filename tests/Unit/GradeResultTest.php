@@ -9,21 +9,21 @@ it('is correct when fully awarded', function (): void {
 
     expect($result->pointsAwarded)->toBe(5.0)
         ->and($result->pointsPossible)->toBe(5.0)
-        ->and($result->isCorrect())->toBeTrue();
+        ->and($result->isCorrect)->toBeTrue();
 });
 
 it('is not correct when partially awarded', function (): void {
     $result = GradeResult::partial(2.0, 5.0);
 
     expect($result->pointsAwarded)->toBe(2.0)
-        ->and($result->isCorrect())->toBeFalse();
+        ->and($result->isCorrect)->toBeFalse();
 });
 
 it('awards zero points when incorrect', function (): void {
     $result = GradeResult::incorrect(5.0);
 
     expect($result->pointsAwarded)->toBe(0.0)
-        ->and($result->isCorrect())->toBeFalse();
+        ->and($result->isCorrect)->toBeFalse();
 });
 
 it('has no points awarded and no correctness verdict while pending manual grading', function (): void {
@@ -31,7 +31,7 @@ it('has no points awarded and no correctness verdict while pending manual gradin
 
     expect($result->pointsAwarded)->toBeNull()
         ->and($result->requiresManualGrading)->toBeTrue()
-        ->and($result->isCorrect())->toBeNull();
+        ->and($result->isCorrect)->toBeNull();
 });
 
 it('carries optional feedback', function (): void {
@@ -45,5 +45,5 @@ it('has no points and no correctness verdict when not applicable', function (): 
 
     expect($result->pointsAwarded)->toBeNull()
         ->and($result->requiresManualGrading)->toBeFalse()
-        ->and($result->isCorrect())->toBeNull();
+        ->and($result->isCorrect)->toBeNull();
 });

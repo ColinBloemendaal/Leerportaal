@@ -52,7 +52,7 @@ it('grades matching every pair correctly as fully correct', function (): void {
         '1' => 'France', '2' => 'Germany', '3' => 'Spain',
     ]);
 
-    expect($result->isCorrect())->toBeTrue()
+    expect($result->isCorrect)->toBeTrue()
         ->and($result->pointsAwarded)->toBe(6.0);
 });
 
@@ -61,7 +61,7 @@ it('grades matching some pairs as partial credit', function (): void {
         '1' => 'France', '2' => 'Spain', '3' => 'Germany',
     ]);
 
-    expect($result->isCorrect())->toBeFalse()
+    expect($result->isCorrect)->toBeFalse()
         ->and($result->pointsAwarded)->toBe(2.0);
 });
 
@@ -70,18 +70,18 @@ it('grades matching no pairs as incorrect', function (): void {
         '1' => 'Germany', '2' => 'Spain', '3' => 'France',
     ]);
 
-    expect($result->isCorrect())->toBeFalse()
+    expect($result->isCorrect)->toBeFalse()
         ->and($result->pointsAwarded)->toBe(0.0);
 });
 
 it('grades a malformed (non-array) answer as incorrect rather than erroring', function (): void {
     $result = matchingQuestion()->grade(matchingQuestionModel(), 'France');
 
-    expect($result->isCorrect())->toBeFalse();
+    expect($result->isCorrect)->toBeFalse();
 });
 
 it('grades an empty answer as incorrect', function (): void {
     $result = matchingQuestion()->grade(matchingQuestionModel(), []);
 
-    expect($result->isCorrect())->toBeFalse();
+    expect($result->isCorrect)->toBeFalse();
 });

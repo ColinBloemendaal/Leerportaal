@@ -43,7 +43,7 @@ final class Quiz extends Model
 
     protected static function booted(): void
     {
-        static::saving(function (self $quiz): void {
+        self::saving(function (self $quiz): void {
             if (($quiz->module_id === null) === ($quiz->lesson_id === null)) {
                 throw InvalidQuizParentException::mustHaveExactlyOneParent();
             }

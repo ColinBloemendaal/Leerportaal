@@ -45,7 +45,7 @@ it('grades an exact match case-insensitively by default', function (): void {
         'payload' => ['match_mode' => 'exact', 'acceptable_answers' => ['Paris']],
     ]);
 
-    expect(openShortQuestion()->grade($question, 'paris')->isCorrect())->toBeTrue();
+    expect(openShortQuestion()->grade($question, 'paris')->isCorrect)->toBeTrue();
 });
 
 it('rejects an exact match under case_sensitive when casing differs', function (): void {
@@ -54,7 +54,7 @@ it('rejects an exact match under case_sensitive when casing differs', function (
         'payload' => ['match_mode' => 'exact', 'case_sensitive' => true, 'acceptable_answers' => ['Paris']],
     ]);
 
-    expect(openShortQuestion()->grade($question, 'paris')->isCorrect())->toBeFalse();
+    expect(openShortQuestion()->grade($question, 'paris')->isCorrect)->toBeFalse();
 });
 
 it('grades a contains match', function (): void {
@@ -65,7 +65,7 @@ it('grades a contains match', function (): void {
 
     $result = openShortQuestion()->grade($question, 'Paris is the capital of France, obviously');
 
-    expect($result->isCorrect())->toBeTrue();
+    expect($result->isCorrect)->toBeTrue();
 });
 
 it('grades a regex match', function (): void {
@@ -74,9 +74,9 @@ it('grades a regex match', function (): void {
         'payload' => ['match_mode' => 'regex', 'acceptable_answers' => ['/^par[ei]s$/']],
     ]);
 
-    expect(openShortQuestion()->grade($question, 'paris')->isCorrect())->toBeTrue()
-        ->and(openShortQuestion()->grade($question, 'pares')->isCorrect())->toBeTrue()
-        ->and(openShortQuestion()->grade($question, 'berlin')->isCorrect())->toBeFalse();
+    expect(openShortQuestion()->grade($question, 'paris')->isCorrect)->toBeTrue()
+        ->and(openShortQuestion()->grade($question, 'pares')->isCorrect)->toBeTrue()
+        ->and(openShortQuestion()->grade($question, 'berlin')->isCorrect)->toBeFalse();
 });
 
 it('does not crash on a malformed regex pattern', function (): void {
@@ -85,7 +85,7 @@ it('does not crash on a malformed regex pattern', function (): void {
         'payload' => ['match_mode' => 'regex', 'acceptable_answers' => ['[invalid(']],
     ]);
 
-    expect(openShortQuestion()->grade($question, 'anything')->isCorrect())->toBeFalse();
+    expect(openShortQuestion()->grade($question, 'anything')->isCorrect)->toBeFalse();
 });
 
 it('grades a blank or malformed answer as incorrect rather than erroring', function (): void {
@@ -94,7 +94,7 @@ it('grades a blank or malformed answer as incorrect rather than erroring', funct
         'payload' => ['match_mode' => 'exact', 'acceptable_answers' => ['Paris']],
     ]);
 
-    expect(openShortQuestion()->grade($question, '')->isCorrect())->toBeFalse()
-        ->and(openShortQuestion()->grade($question, null)->isCorrect())->toBeFalse()
-        ->and(openShortQuestion()->grade($question, ['Paris'])->isCorrect())->toBeFalse();
+    expect(openShortQuestion()->grade($question, '')->isCorrect)->toBeFalse()
+        ->and(openShortQuestion()->grade($question, null)->isCorrect)->toBeFalse()
+        ->and(openShortQuestion()->grade($question, ['Paris'])->isCorrect)->toBeFalse();
 });

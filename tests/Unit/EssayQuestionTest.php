@@ -56,5 +56,5 @@ it('always reports pending manual grading, regardless of the answer', function (
 it('has no correctness verdict until manually graded', function (): void {
     $question = Question::factory()->create(['points' => 10]);
 
-    expect(essayQuestion()->grade($question, 'Anything')->isCorrect())->toBeNull();
+    expect(essayQuestion()->grade($question, 'Anything')->isCorrect)->toBeNull();
 });

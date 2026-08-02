@@ -48,7 +48,7 @@ it('passes a valid payload', function (): void {
 it('grades the exact correct order as fully correct', function (): void {
     $result = orderingQuestion()->grade(orderingQuestionModel(), ['a', 'b', 'c', 'd']);
 
-    expect($result->isCorrect())->toBeTrue()
+    expect($result->isCorrect)->toBeTrue()
         ->and($result->pointsAwarded)->toBe(4.0);
 });
 
@@ -56,25 +56,25 @@ it('grades a partially correct order proportionally', function (): void {
     // a and d are in their correct positions (2 of 4); b/c are swapped.
     $result = orderingQuestion()->grade(orderingQuestionModel(), ['a', 'c', 'b', 'd']);
 
-    expect($result->isCorrect())->toBeFalse()
+    expect($result->isCorrect)->toBeFalse()
         ->and($result->pointsAwarded)->toBe(2.0);
 });
 
 it('grades a fully reversed order as incorrect', function (): void {
     $result = orderingQuestion()->grade(orderingQuestionModel(), ['d', 'c', 'b', 'a']);
 
-    expect($result->isCorrect())->toBeFalse()
+    expect($result->isCorrect)->toBeFalse()
         ->and($result->pointsAwarded)->toBe(0.0);
 });
 
 it('grades a malformed (non-array) answer as incorrect rather than erroring', function (): void {
     $result = orderingQuestion()->grade(orderingQuestionModel(), 'a,b,c,d');
 
-    expect($result->isCorrect())->toBeFalse();
+    expect($result->isCorrect)->toBeFalse();
 });
 
 it('grades an empty answer as incorrect', function (): void {
     $result = orderingQuestion()->grade(orderingQuestionModel(), []);
 
-    expect($result->isCorrect())->toBeFalse();
+    expect($result->isCorrect)->toBeFalse();
 });

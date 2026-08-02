@@ -6,7 +6,6 @@ namespace App\Questions;
 
 use App\Enums\QuestionTypeEnum;
 use App\Questions\Contracts\QuestionType;
-use App\Questions\Types\MultipleChoiceQuestion;
 use App\Questions\Types\DragDropImageQuestion;
 use App\Questions\Types\DropdownInTextQuestion;
 use App\Questions\Types\EssayQuestion;
@@ -15,22 +14,20 @@ use App\Questions\Types\FillInBlankQuestion;
 use App\Questions\Types\HotspotImageQuestion;
 use App\Questions\Types\LikertQuestion;
 use App\Questions\Types\MatchingQuestion;
+use App\Questions\Types\MultipleChoiceQuestion;
 use App\Questions\Types\MultipleResponseQuestion;
 use App\Questions\Types\NumericQuestion;
 use App\Questions\Types\OpenShortQuestion;
 use App\Questions\Types\OrderingQuestion;
 use App\Questions\Types\TrueFalseQuestion;
-use OutOfBoundsException;
 
 /**
- * Adding a question type = one QuestionTypeEnum case (already complete
- * -- all 14 exist) + one entry here + one class implementing
- * QuestionType + two Vue components. Mirrors App\Blocks\BlockTypeRegistry.
- *
- * Unlike blocks (all 7 types built in one commit), each question type is
- * its own separate TODO.md task/commit, so MAP starts empty and gains
- * one entry per type as that type's task lands -- an empty/partial map
- * is a valid, expected intermediate state here, not a bug.
+ * Adding a question type = one QuestionTypeEnum case + one entry here +
+ * one class implementing QuestionType + two Vue components. Mirrors
+ * App\Blocks\BlockTypeRegistry -- MAP covers every QuestionTypeEnum
+ * case (all 14), so resolve() indexes it directly rather than guarding
+ * with isset()/an exception the way the map did while it was still
+ * being filled in commit by commit.
  */
 final class QuestionTypeRegistry
 {
@@ -56,10 +53,6 @@ final class QuestionTypeRegistry
 
     public function resolve(QuestionTypeEnum $type): QuestionType
     {
-        if (! isset(self::MAP[$type->value])) {
-            throw new OutOfBoundsException("No QuestionType implementation registered for [{$type->value}] yet.");
-        }
-
         return app(self::MAP[$type->value]);
     }
 }

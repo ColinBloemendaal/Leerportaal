@@ -38,7 +38,7 @@ it('grades a correct true answer', function (): void {
 
     $result = trueFalseQuestion()->grade($question, true);
 
-    expect($result->isCorrect())->toBeTrue()
+    expect($result->isCorrect)->toBeTrue()
         ->and($result->pointsAwarded)->toBe(2.0);
 });
 
@@ -47,7 +47,7 @@ it('grades an incorrect false answer', function (): void {
 
     $result = trueFalseQuestion()->grade($question, false);
 
-    expect($result->isCorrect())->toBeFalse()
+    expect($result->isCorrect)->toBeFalse()
         ->and($result->pointsAwarded)->toBe(0.0);
 });
 
@@ -56,7 +56,7 @@ it('grades a malformed (non-boolean) answer as incorrect rather than erroring', 
 
     $result = trueFalseQuestion()->grade($question, 'true');
 
-    expect($result->isCorrect())->toBeFalse();
+    expect($result->isCorrect)->toBeFalse();
 });
 
 it('grades an empty answer as incorrect', function (): void {
@@ -64,5 +64,5 @@ it('grades an empty answer as incorrect', function (): void {
 
     $result = trueFalseQuestion()->grade($question, null);
 
-    expect($result->isCorrect())->toBeFalse();
+    expect($result->isCorrect)->toBeFalse();
 });
