@@ -19,6 +19,7 @@ use App\Http\Controllers\CursistDashboardController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\InvitesController;
 use App\Http\Controllers\KlantDashboardController;
+use App\Http\Controllers\MailWebhookController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\NotificationPreferenceController;
 use App\Http\Controllers\PlatformDashboardController;
@@ -51,6 +52,12 @@ Route::get('/branding/{reseller}/login-background', [ResellerBrandingController:
 // Public, unauthenticated -- see App\Http\Controllers\CertificateVerificationController.
 Route::get('/certificates/verify/{code}', [CertificateVerificationController::class, 'show'])
     ->name('certificates.verify');
+
+// Public, unauthenticated, signature-verified instead (see MailWebhookController
+// and bootstrap/app.php's CSRF exception for this path).
+Route::post('/webhooks/mailgun', [MailWebhookController::class, 'mailgun'])
+    ->middleware('throttle:mailgun-webhook')
+    ->name('webhooks.mailgun');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'create'])->name('login');

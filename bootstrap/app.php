@@ -33,6 +33,13 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'block-during-impersonation' => BlockDuringImpersonation::class,
         ]);
+
+        // The mail provider can't carry a Laravel session/CSRF token --
+        // verified instead by MailWebhookController via its own signature
+        // check (App\Services\Mail\MailgunWebhookParser).
+        $middleware->validateCsrfTokens(except: [
+            'webhooks/mailgun',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         Integration::handles($exceptions);

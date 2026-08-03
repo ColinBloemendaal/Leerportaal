@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Contracts\Dns\DnsResolver;
+use App\Contracts\Mail\MailSuppressionWebhookParser;
 use App\Contracts\Ploi\PloiClient;
 use App\Contracts\Repositories\ResellerThemeRepository;
 use App\Contracts\Storage\StorageMetering;
+use App\Listeners\Mail\PreventSendingToSuppressedAddresses;
 use App\Policies\SuperAdminBypass;
 use App\Services\Dns\NativeDnsResolver;
+use App\Services\Mail\MailgunWebhookParser;
 use App\Services\Ploi\HttpPloiClient;
 use App\Services\Storage\EloquentStorageMeteringService;
 use App\Services\Theming\ThemeCssGenerator;
@@ -23,6 +26,8 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Client\Factory as HttpFactory;
 use Illuminate\Http\Request;
+use Illuminate\Mail\Events\MessageSending;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\View as ViewFacade;
@@ -59,6 +64,10 @@ final class AppServiceProvider extends ServiceProvider
         // Illuminate\Filesystem\FilesystemServiceProvider only registers
         // the 'filesystem' string alias, not this interface.
         $this->app->bind(FilesystemFactory::class, fn ($app) => $app->make('filesystem'));
+
+        $this->app->bind(MailSuppressionWebhookParser::class, fn ($app): MailgunWebhookParser => new MailgunWebhookParser(
+            (string) config('services.mailgun.webhook_signing_key'),
+        ));
     }
 
     /**
@@ -72,6 +81,8 @@ final class AppServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         Gate::before($this->app->make(SuperAdminBypass::class));
+
+        Event::listen(MessageSending::class, PreventSendingToSuppressedAddresses::class);
 
         // Runtime CSS custom property injection (CLAUDE.md §1: "no
         // per-tenant CSS build step"), computed fresh per request from the
@@ -127,6 +138,14 @@ final class AppServiceProvider extends ServiceProvider
             $key = $request->user()?->getAuthIdentifier() ?? $request->ip();
 
             return Limit::perMinute(5)->by((string) $key);
+        });
+
+        // Signature verification is the real defense; this is just baseline
+        // abuse protection against someone hammering the endpoint. Generous
+        // limit -- a real bounce/complaint spike from one send can trigger
+        // many legitimate webhook calls in a short window.
+        RateLimiter::for('mailgun-webhook', function (Request $request): Limit {
+            return Limit::perMinute(120)->by($request->ip());
         });
     }
 }

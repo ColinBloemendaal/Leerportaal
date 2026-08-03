@@ -28,6 +28,7 @@ use App\Contracts\Repositories\ResellerMailTemplateRepository;
 use App\Contracts\Repositories\ResellerRepository;
 use App\Contracts\Repositories\ResellerThemeRepository;
 use App\Contracts\Repositories\SavedFilterRepository;
+use App\Contracts\Repositories\SuppressedEmailRepository;
 use App\Contracts\Repositories\UserInviteRepository;
 use App\Contracts\Repositories\UserRepository;
 use App\Repositories\Eloquent\EloquentActivityLogRepository;
@@ -54,6 +55,7 @@ use App\Repositories\Eloquent\EloquentResellerMailTemplateRepository;
 use App\Repositories\Eloquent\EloquentResellerRepository;
 use App\Repositories\Eloquent\EloquentResellerThemeRepository;
 use App\Repositories\Eloquent\EloquentSavedFilterRepository;
+use App\Repositories\Eloquent\EloquentSuppressedEmailRepository;
 use App\Repositories\Eloquent\EloquentUserInviteRepository;
 use App\Repositories\Eloquent\EloquentUserRepository;
 use Illuminate\Support\ServiceProvider;
@@ -94,5 +96,6 @@ final class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ActivityLogRepository::class, EloquentActivityLogRepository::class);
         $this->app->bind(ExportRepository::class, EloquentExportRepository::class);
         $this->app->bind(FailedJobRepository::class, EloquentFailedJobRepository::class);
+        $this->app->bind(SuppressedEmailRepository::class, EloquentSuppressedEmailRepository::class);
     }
 }

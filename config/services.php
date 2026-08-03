@@ -18,6 +18,12 @@ return [
         'key' => env('POSTMARK_API_KEY'),
     ],
 
+    'mailgun' => [
+        // Verifies inbound bounce/complaint webhooks (App\Services\Mail\MailgunWebhookParser),
+        // not the same credential as MAILGUN_SECRET used by the transport to send.
+        'webhook_signing_key' => env('MAILGUN_WEBHOOK_SIGNING_KEY'),
+    ],
+
     'resend' => [
         'key' => env('RESEND_API_KEY'),
     ],
