@@ -20,6 +20,7 @@ use App\Http\Controllers\ExportController;
 use App\Http\Controllers\InvitesController;
 use App\Http\Controllers\KlantDashboardController;
 use App\Http\Controllers\PlatformDashboardController;
+use App\Http\Controllers\PlatformHealthController;
 use App\Http\Controllers\QuizAttemptIndexController;
 use App\Http\Controllers\ResellerBrandingController;
 use App\Http\Controllers\ResellerDashboardController;
@@ -159,6 +160,7 @@ Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->grou
         Route::get('/users', [UserIndexController::class, 'index'])->name('users.index');
         Route::get('/users/{user}', [UserDetailController::class, 'show'])->name('users.show');
         Route::get('/activity', [ActivityLogIndexController::class, 'index'])->name('activity.index');
+        Route::get('/health', [PlatformHealthController::class, 'index'])->name('health');
     });
 
     Route::prefix('admin/reseller')->name('admin.reseller.')->group(function () {
