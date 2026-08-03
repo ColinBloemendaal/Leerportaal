@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Contracts\Billing\PaymentGateway;
 use App\Contracts\Dns\DnsResolver;
 use App\Contracts\Mail\MailSuppressionWebhookParser;
 use App\Contracts\Ploi\PloiClient;
@@ -11,6 +12,7 @@ use App\Contracts\Repositories\ResellerThemeRepository;
 use App\Contracts\Storage\StorageMetering;
 use App\Listeners\Mail\PreventSendingToSuppressedAddresses;
 use App\Policies\SuperAdminBypass;
+use App\Services\Billing\MollieGateway;
 use App\Services\Dns\NativeDnsResolver;
 use App\Services\Mail\MailgunWebhookParser;
 use App\Services\Ploi\HttpPloiClient;
@@ -67,6 +69,11 @@ final class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(MailSuppressionWebhookParser::class, fn ($app): MailgunWebhookParser => new MailgunWebhookParser(
             (string) config('services.mailgun.webhook_signing_key'),
+        ));
+
+        $this->app->bind(PaymentGateway::class, fn ($app): MollieGateway => new MollieGateway(
+            $app->make(HttpFactory::class),
+            (string) config('services.mollie.key'),
         ));
     }
 
