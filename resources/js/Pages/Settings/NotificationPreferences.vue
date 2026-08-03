@@ -55,7 +55,9 @@ function changeDigestFrequency(event: Event) {
     <h1 class="h4 mb-4">{{ t('settings.notificationPreferences.title') }}</h1>
 
     <div class="mb-4" style="max-width: 20rem">
-        <label for="digest-frequency" class="form-label">{{ t('settings.notificationPreferences.emailFrequency') }}</label>
+        <label for="digest-frequency" class="form-label">{{
+            t('settings.notificationPreferences.emailFrequency')
+        }}</label>
         <select id="digest-frequency" class="form-select" :value="digestFrequency" @change="changeDigestFrequency">
             <option v-for="option in digestFrequencyOptions" :key="option.value" :value="option.value">
                 {{ option.label }}

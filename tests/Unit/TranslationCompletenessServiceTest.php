@@ -25,6 +25,7 @@ it('is complete when every translatable field has a non-empty value for the loca
 
 it('is incomplete when a translatable field is missing for the locale', function (): void {
     $course = Course::factory()->create();
+    $course->setTranslations('description', []);
     $course->setTranslation('title', 'nl', 'Titel');
     $course->save();
 
@@ -44,6 +45,8 @@ it('is incomplete when a translatable field is set but blank for the locale', fu
 
 it('is incomplete when the locale has no translations at all', function (): void {
     $course = Course::factory()->create();
+    $course->setTranslations('title', []);
+    $course->setTranslations('description', []);
     $course->setTranslation('title', 'en', 'Title');
     $course->setTranslation('description', 'en', 'Description');
     $course->save();
