@@ -37,4 +37,31 @@ trait HasResellerBranding
             subject: $subject,
         );
     }
+
+    /**
+     * Data merged into every branded notification's Content(with: ...) --
+     * consumed by the "reseller" markdown theme (resources/views/vendor/mail/html/themes/reseller.blade.php)
+     * and the shared header/footer partials (resources/views/emails/partials).
+     * The logo is served through the existing public, unauthenticated
+     * branding.logo route (App\Http\Controllers\ResellerBrandingController)
+     * rather than the raw private-disk path: an email client fetches images
+     * over HTTP with no session, unlike the certificate PDF's dompdf renderer
+     * which can read the disk path directly.
+     *
+     * @return array<string, string|null>
+     */
+    private function brandingData(Reseller $reseller, ?ResellerTheme $resellerTheme): array
+    {
+        return [
+            'resellerName' => $reseller->name,
+            'primaryColor' => $resellerTheme === null ? '#0d6efd' : $resellerTheme->primary_color,
+            'logoUrl' => $resellerTheme === null || $resellerTheme->logo_path === null
+                ? null
+                : route('branding.logo', $reseller->slug),
+            'footerText' => $resellerTheme?->footer_text,
+            'supportEmail' => $resellerTheme?->support_email,
+            'termsUrl' => $resellerTheme?->terms_url,
+            'privacyUrl' => $resellerTheme?->privacy_url,
+        ];
+    }
 }

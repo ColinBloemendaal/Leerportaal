@@ -34,6 +34,11 @@ final class CertificateIssued extends Mailable implements ShouldQueue
 
     public function __construct(public readonly Certificate $certificate)
     {
+        // Untyped assignment, not a re-declared property: Mailable's own
+        // $theme is intentionally untyped, and Larastan flags overriding it
+        // with a native type (property.extraNativeType).
+        $this->theme = 'reseller';
+
         // withoutTenantScope(): CourseAssignment is TenantScoped, but this
         // Mailable is queued and runs on a worker with no ambient tenant
         // to satisfy it -- without this, the query silently returns null
@@ -71,6 +76,7 @@ final class CertificateIssued extends Mailable implements ShouldQueue
                 'courseTitle' => $this->course->title,
                 'verificationCode' => $this->certificate->verification_code,
                 'verificationUrl' => URL::route('certificates.verify', ['code' => $this->certificate->verification_code]),
+                ...$this->brandingData($this->reseller, $this->resellerTheme),
             ],
         );
     }

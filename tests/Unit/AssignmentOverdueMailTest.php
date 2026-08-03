@@ -24,6 +24,8 @@ it('builds subject and content from the course', function (): void {
 
     expect($mail->envelope()->subject)->toBe('Overdue: Fire Safety 101')
         ->and($mail->content()->markdown)->toBe('emails.assignments.overdue');
+
+    expect($mail->render())->toContain('Fire Safety 101');
 });
 
 it('throws when the assignment has no deadline', function (): void {

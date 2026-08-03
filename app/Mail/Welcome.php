@@ -34,6 +34,11 @@ final class Welcome extends Mailable implements ShouldQueue
 
     public function __construct(public readonly User $user)
     {
+        // Untyped assignment, not a re-declared property: Mailable's own
+        // $theme is intentionally untyped, and Larastan flags overriding it
+        // with a native type (property.extraNativeType).
+        $this->theme = 'reseller';
+
         $reseller = $this->user->reseller()->first();
 
         if ($reseller === null) {
@@ -62,7 +67,7 @@ final class Welcome extends Mailable implements ShouldQueue
             markdown: 'emails.welcome',
             with: [
                 'userName' => $this->user->name,
-                'resellerName' => $this->reseller->name,
+                ...$this->brandingData($this->reseller, $this->resellerTheme),
             ],
         );
     }

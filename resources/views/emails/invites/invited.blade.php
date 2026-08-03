@@ -1,4 +1,8 @@
 @component('mail::message')
+@slot('header')
+@include('emails.partials.branded-header')
+@endslot
+
 # You've been invited
 
 {{ $resellerName }} has invited **{{ $inviteeName }}** to join their Leerportaal environment.
@@ -13,4 +17,8 @@ If you weren't expecting this invitation, you can safely ignore this email.
 
 Thanks,<br>
 {{ $resellerName }}
+
+@slot('footer')
+@include('emails.partials.branded-footer')
+@endslot
 @endcomponent

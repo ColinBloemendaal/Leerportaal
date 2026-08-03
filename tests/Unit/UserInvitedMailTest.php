@@ -61,6 +61,8 @@ it('uses the default subject and Blade view when there is no template override',
     expect($mail->envelope()->subject)->toBe('Acme Training invited you to Leerportaal')
         ->and($mail->content()->markdown)->toBe('emails.invites.invited')
         ->and($mail->content()->htmlString)->toBeNull();
+
+    expect($mail->render())->toContain('Acme Training');
 });
 
 it('uses the reseller template override subject and body when one exists', function (): void {

@@ -25,6 +25,8 @@ it('builds subject and content from the course and offset', function (): void {
     expect($mail->envelope()->subject)->toBe('Deadline approaching: Fire Safety 101')
         ->and($mail->content()->markdown)->toBe('emails.assignments.deadline-approaching')
         ->and($mail->content()->with['daysBefore'])->toBe(7);
+
+    expect($mail->render())->toContain('Fire Safety 101');
 });
 
 it('throws when the assignment has no deadline', function (): void {

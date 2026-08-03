@@ -21,4 +21,6 @@ it('builds subject and content from the completed course', function (): void {
     expect($mail->envelope()->subject)->toBe('Course completed: Fire Safety 101')
         ->and($mail->content()->markdown)->toBe('emails.assignments.completed')
         ->and($mail->content()->with['courseTitle'])->toBe('Fire Safety 101');
+
+    expect($mail->render())->toContain('Fire Safety 101');
 });

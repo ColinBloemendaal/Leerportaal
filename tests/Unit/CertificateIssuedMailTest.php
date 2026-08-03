@@ -26,4 +26,6 @@ it('builds subject and content from the completed course, with no ambient tenant
         ->and($mail->content()->markdown)->toBe('emails.certificates.issued')
         ->and($mail->content()->with['verificationCode'])->toBe('ABCD1234EFGH5678')
         ->and($mail->content()->with['verificationUrl'])->toContain('ABCD1234EFGH5678');
+
+    expect($mail->render())->toContain('ABCD1234EFGH5678');
 });

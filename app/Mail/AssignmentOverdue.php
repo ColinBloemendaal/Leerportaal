@@ -32,6 +32,11 @@ final class AssignmentOverdue extends Mailable implements ShouldQueue
 
     public function __construct(public readonly CourseAssignment $assignment)
     {
+        // Untyped assignment, not a re-declared property: Mailable's own
+        // $theme is intentionally untyped, and Larastan flags overriding it
+        // with a native type (property.extraNativeType).
+        $this->theme = 'reseller';
+
         $reseller = $this->assignment->reseller()->first();
         $course = $this->assignment->course()->first();
 
@@ -61,6 +66,7 @@ final class AssignmentOverdue extends Mailable implements ShouldQueue
             with: [
                 'courseTitle' => $this->course->title,
                 'deadlineAt' => $this->assignment->deadline_at?->toFormattedDateString(),
+                ...$this->brandingData($this->reseller, $this->resellerTheme),
             ],
         );
     }

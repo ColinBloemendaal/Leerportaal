@@ -1,4 +1,8 @@
 @component('mail::message')
+@slot('header')
+@include('emails.partials.branded-header')
+@endslot
+
 # New course assigned
 
 You've been assigned **{{ $courseTitle }}**.
@@ -8,5 +12,9 @@ Please complete it by **{{ $deadlineAt }}**.
 @endif
 
 Thanks,<br>
-{{ config('app.name') }}
+{{ $resellerName ?? config('app.name') }}
+
+@slot('footer')
+@include('emails.partials.branded-footer')
+@endslot
 @endcomponent

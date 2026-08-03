@@ -41,6 +41,11 @@ final class UserInvited extends Mailable implements ShouldQueue
 
     public function __construct(public readonly UserInvite $invite)
     {
+        // Untyped assignment, not a re-declared property: Mailable's own
+        // $theme is intentionally untyped, and Larastan flags overriding it
+        // with a native type (property.extraNativeType).
+        $this->theme = 'reseller';
+
         $reseller = $this->invite->reseller()->first();
 
         if ($reseller === null) {
@@ -91,9 +96,9 @@ final class UserInvited extends Mailable implements ShouldQueue
         return new Content(
             markdown: 'emails.invites.invited',
             with: [
-                'resellerName' => $this->reseller->name,
                 'inviteeName' => $this->invite->name,
                 'acceptUrl' => $this->acceptUrl,
+                ...$this->brandingData($this->reseller, $this->resellerTheme),
             ],
         );
     }

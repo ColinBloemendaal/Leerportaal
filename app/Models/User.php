@@ -38,6 +38,20 @@ final class User extends Authenticatable implements MustVerifyEmail
     protected $guarded = [];
 
     /**
+     * Mirrors the notification_digest_frequency column's DB default: a
+     * freshly-instantiated (not-yet-inserted-or-refreshed) User must
+     * already read as DigestFrequency::Immediate in memory, or code that
+     * notifies a just-created user (e.g. AcceptInvite) before any ->fresh()
+     * call would see a null cast and RespectsPreferences would wrongly
+     * treat it as "digest, not immediate" and strip the mail channel.
+     *
+     * @var array<string, mixed>
+     */
+    protected $attributes = [
+        'notification_digest_frequency' => 'immediate',
+    ];
+
+    /**
      * @var list<string>
      */
     protected $hidden = [

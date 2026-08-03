@@ -1,4 +1,8 @@
 @component('mail::message')
+@slot('header')
+@include('emails.partials.branded-header')
+@endslot
+
 # Certificate issued
 
 Congratulations! You've completed **{{ $courseTitle }}** and your certificate is ready.
@@ -10,5 +14,9 @@ View your certificate
 Verification code: `{{ $verificationCode }}`
 
 Thanks,<br>
-{{ config('app.name') }}
+{{ $resellerName ?? config('app.name') }}
+
+@slot('footer')
+@include('emails.partials.branded-footer')
+@endslot
 @endcomponent
