@@ -2,7 +2,9 @@
 
 use App\Console\Commands\CheckPlatformHealthCommand;
 use App\Console\Commands\SendAssignmentDeadlineRemindersCommand;
+use App\Console\Commands\SendDailyNotificationDigestsCommand;
 use App\Console\Commands\SendKlantProgressReportsCommand;
+use App\Console\Commands\SendWeeklyNotificationDigestsCommand;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
@@ -28,3 +30,10 @@ Schedule::command(SendAssignmentDeadlineRemindersCommand::class)->dailyAt('07:00
 // the schedule interval -- this just needs to run often enough to catch
 // a spike promptly.
 Schedule::command(CheckPlatformHealthCommand::class)->hourly();
+
+// notification_digest_sent_at (not a fixed "last 24h"/"last 7 days"
+// window) is what actually makes these safe to run at these times --
+// each command only ever picks up what accumulated since that user's
+// own last send, so a late or re-run doesn't duplicate or skip.
+Schedule::command(SendDailyNotificationDigestsCommand::class)->dailyAt('08:00');
+Schedule::command(SendWeeklyNotificationDigestsCommand::class)->weeklyOn(1, '08:00');

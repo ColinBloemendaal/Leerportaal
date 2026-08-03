@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Notifications\Concerns;
 
 use App\Contracts\Repositories\NotificationPreferenceRepository;
+use App\Enums\DigestFrequency;
 use App\Enums\NotificationChannel;
 use App\Enums\NotificationType;
 use App\Models\User;
@@ -31,9 +32,20 @@ trait RespectsPreferences
 
         $preferences = app(NotificationPreferenceRepository::class);
 
-        return array_values(array_filter(
+        $channels = array_values(array_filter(
             $defaultChannels,
             fn (string $channel): bool => $preferences->isEnabled($notifiable->id, $type, NotificationChannel::from($channel)),
         ));
+
+        // Deferred to a digest, not skipped: the database channel (if
+        // still present above) already stores the row a scheduled digest
+        // command later reads from -- see SendNotificationDigest. Only
+        // the immediate mail send is what a non-immediate frequency
+        // suppresses here.
+        if ($notifiable->notification_digest_frequency !== DigestFrequency::Immediate) {
+            $channels = array_values(array_filter($channels, fn (string $channel): bool => $channel !== 'mail'));
+        }
+
+        return $channels;
     }
 }

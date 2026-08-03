@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Concerns\HasAuditLog;
+use App\Enums\DigestFrequency;
 use App\Enums\Role;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -58,6 +59,8 @@ final class User extends Authenticatable implements MustVerifyEmail
             'two_factor_recovery_codes' => 'encrypted:array',
             'two_factor_confirmed_at' => 'datetime',
             'platform_role' => Role::class,
+            'notification_digest_frequency' => DigestFrequency::class,
+            'notification_digest_sent_at' => 'immutable_datetime',
         ];
     }
 

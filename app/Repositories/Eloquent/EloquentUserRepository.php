@@ -7,11 +7,13 @@ namespace App\Repositories\Eloquent;
 use App\Contracts\Repositories\UserRepository;
 use App\DataTransferObjects\Filtering\FilterableSpec;
 use App\DataTransferObjects\Filtering\FilterRequestData;
+use App\Enums\DigestFrequency;
 use App\Enums\Role;
 use App\Models\User;
 use App\Support\Filtering\QueryFilterApplier;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\LazyCollection;
 
 final class EloquentUserRepository implements UserRepository
 {
@@ -37,5 +39,10 @@ final class EloquentUserRepository implements UserRepository
     public function superAdmins(): Collection
     {
         return User::query()->where('platform_role', Role::SuperAdmin)->get();
+    }
+
+    public function withDigestFrequency(DigestFrequency $frequency): LazyCollection
+    {
+        return User::query()->where('notification_digest_frequency', $frequency)->cursor();
     }
 }

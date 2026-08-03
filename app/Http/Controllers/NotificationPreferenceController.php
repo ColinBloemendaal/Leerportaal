@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Actions\Notifications\UpdateNotificationDigestFrequency;
 use App\Actions\Notifications\UpdateNotificationPreference;
+use App\Enums\DigestFrequency;
 use App\Enums\NotificationChannel;
+use App\Http\Requests\Notifications\UpdateNotificationDigestFrequencyRequest;
 use App\Http\Requests\Notifications\UpdateNotificationPreferenceRequest;
 use App\Services\Notifications\NotificationPreferenceGridService;
 use Illuminate\Http\RedirectResponse;
@@ -27,6 +30,11 @@ final class NotificationPreferenceController extends Controller
                 fn (NotificationChannel $channel): array => ['value' => $channel->value, 'label' => $channel->label()],
                 NotificationChannel::cases(),
             ),
+            'digestFrequency' => $user->notification_digest_frequency->value,
+            'digestFrequencyOptions' => array_map(
+                fn (DigestFrequency $frequency): array => ['value' => $frequency->value, 'label' => $frequency->label()],
+                DigestFrequency::cases(),
+            ),
         ]);
     }
 
@@ -41,6 +49,19 @@ final class NotificationPreferenceController extends Controller
         $data = $request->toDto();
 
         $updatePreference($user->id, $data->type, $data->channel, $data->enabled);
+
+        return back();
+    }
+
+    public function updateDigestFrequency(
+        UpdateNotificationDigestFrequencyRequest $request,
+        UpdateNotificationDigestFrequency $updateFrequency,
+    ): RedirectResponse {
+        $user = $request->user();
+
+        abort_if($user === null, 404);
+
+        $updateFrequency($user->id, $request->toDto()->frequency);
 
         return back();
     }

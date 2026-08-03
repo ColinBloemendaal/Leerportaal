@@ -111,6 +111,8 @@ Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->grou
 
         Route::get('/notifications', [NotificationPreferenceController::class, 'edit'])->name('notifications.edit');
         Route::put('/notifications', [NotificationPreferenceController::class, 'update'])->name('notifications.update');
+        Route::put('/notifications/digest-frequency', [NotificationPreferenceController::class, 'updateDigestFrequency'])
+            ->name('notifications.digest-frequency');
 
         Route::get('/email-templates', [ResellerMailTemplateController::class, 'index'])
             ->name('email-templates.index');

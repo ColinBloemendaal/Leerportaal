@@ -307,7 +307,9 @@
         },
         "notificationPreferences": {
             "title": "Notification preferences",
-            "notification": "Notification"
+            "notification": "Notification",
+            "emailFrequency": "Email frequency",
+            "emailFrequencyHelp": "How often you receive email notifications. In-app notifications are always immediate."
         }
     },
     "dashboard": {

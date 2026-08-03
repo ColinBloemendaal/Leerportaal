@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Contracts\Repositories;
 
 use App\DataTransferObjects\Filtering\FilterRequestData;
+use App\Enums\DigestFrequency;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\LazyCollection;
 
 /**
  * @extends FilterablePaginator<User>
@@ -36,4 +38,11 @@ interface UserRepository extends FilterablePaginator
      * @return Collection<int, User>
      */
     public function superAdmins(): Collection;
+
+    /**
+     * Platform-wide iteration for the daily/weekly digest commands.
+     *
+     * @return LazyCollection<int, User>
+     */
+    public function withDigestFrequency(DigestFrequency $frequency): LazyCollection;
 }
