@@ -54,3 +54,13 @@ it('finds a user by id, eager-loading their reseller', function (): void {
 it('returns null for a non-existent user id', function (): void {
     expect(app(EloquentUserRepository::class)->findById(999999))->toBeNull();
 });
+
+it('lists only platform staff with the super-admin role', function (): void {
+    $superAdmin = User::factory()->platformStaff()->create(['platform_role' => Role::SuperAdmin]);
+    User::factory()->platformStaff()->create(['platform_role' => Role::PlatformAdmin]);
+    User::factory()->create();
+
+    $superAdmins = app(EloquentUserRepository::class)->superAdmins();
+
+    expect($superAdmins->pluck('id')->all())->toBe([$superAdmin->id]);
+});

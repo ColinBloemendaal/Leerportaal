@@ -7,8 +7,10 @@ namespace App\Repositories\Eloquent;
 use App\Contracts\Repositories\UserRepository;
 use App\DataTransferObjects\Filtering\FilterableSpec;
 use App\DataTransferObjects\Filtering\FilterRequestData;
+use App\Enums\Role;
 use App\Models\User;
 use App\Support\Filtering\QueryFilterApplier;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 final class EloquentUserRepository implements UserRepository
@@ -30,5 +32,10 @@ final class EloquentUserRepository implements UserRepository
     public function findById(int $id): ?User
     {
         return User::query()->with('reseller')->find($id);
+    }
+
+    public function superAdmins(): Collection
+    {
+        return User::query()->where('platform_role', Role::SuperAdmin)->get();
     }
 }

@@ -6,6 +6,7 @@ namespace App\Contracts\Repositories;
 
 use App\DataTransferObjects\Filtering\FilterRequestData;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 /**
@@ -27,4 +28,12 @@ interface UserRepository extends FilterablePaginator
      * reasoning as paginate() -- a platform admin can look up any user.
      */
     public function findById(int $id): ?User;
+
+    /**
+     * Platform staff with the super-admin role -- the recipients of admin
+     * alert notifications (queue/failed-job health, etc).
+     *
+     * @return Collection<int, User>
+     */
+    public function superAdmins(): Collection;
 }

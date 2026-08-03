@@ -1,5 +1,6 @@
 <?php
 
+use App\Console\Commands\CheckPlatformHealthCommand;
 use App\Console\Commands\SendAssignmentDeadlineRemindersCommand;
 use App\Console\Commands\SendKlantProgressReportsCommand;
 use Illuminate\Foundation\Inspiring;
@@ -21,3 +22,9 @@ Schedule::command(SendKlantProgressReportsCommand::class)->weeklyOn(1, '06:00');
 // Action's own AssignmentReminder bookkeeping makes re-running (or a
 // missed day catching up) safe -- nothing sends twice.
 Schedule::command(SendAssignmentDeadlineRemindersCommand::class)->dailyAt('07:00');
+
+// Hourly: the Action's own cache-backed cooldown (24h) is what actually
+// prevents spamming super-admins while a failed-job spike persists, not
+// the schedule interval -- this just needs to run often enough to catch
+// a spike promptly.
+Schedule::command(CheckPlatformHealthCommand::class)->hourly();
