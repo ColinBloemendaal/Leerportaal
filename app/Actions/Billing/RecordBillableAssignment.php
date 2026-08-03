@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace App\Actions\Billing;
 
-use App\Contracts\Repositories\InvoiceRepository;
 use App\Enums\AssignmentBillingState;
-use App\Enums\InvoiceStatus;
 use App\Models\CourseAssignment;
-use App\Models\Invoice;
 use App\Models\InvoiceLine;
 use App\Support\Money;
 use Illuminate\Database\ConnectionInterface;
@@ -25,15 +22,14 @@ use Illuminate\Database\ConnectionInterface;
 final readonly class RecordBillableAssignment
 {
     public function __construct(
-        private InvoiceRepository $invoices,
+        private FindOrCreateDraftInvoice $findOrCreateDraftInvoice,
         private ConnectionInterface $db,
     ) {}
 
     public function __invoke(CourseAssignment $assignment): InvoiceLine
     {
         return $this->db->transaction(function () use ($assignment): InvoiceLine {
-            $invoice = $this->invoices->currentDraftForReseller($assignment->reseller_id)
-                ?? $this->createDraftInvoice($assignment->reseller_id);
+            $invoice = ($this->findOrCreateDraftInvoice)($assignment->reseller_id);
 
             $amountCents = $assignment->price_cents === null ? 0 : $assignment->price_cents->cents;
 
@@ -56,19 +52,6 @@ final readonly class RecordBillableAssignment
 
             return $line;
         });
-    }
-
-    private function createDraftInvoice(int $resellerId): Invoice
-    {
-        $periodStart = now()->startOfMonth();
-
-        return Invoice::query()->create([
-            'reseller_id' => $resellerId,
-            'status' => InvoiceStatus::Draft,
-            'period_start' => $periodStart,
-            'period_end' => $periodStart->copy()->endOfMonth(),
-            'total_cents' => 0,
-        ]);
     }
 
     private function describe(CourseAssignment $assignment): string

@@ -2,6 +2,7 @@
 
 use App\Console\Commands\CheckPlatformHealthCommand;
 use App\Console\Commands\IssueDueInvoicesCommand;
+use App\Console\Commands\RecordStorageOverageChargesCommand;
 use App\Console\Commands\SendAssignmentDeadlineRemindersCommand;
 use App\Console\Commands\SendDailyNotificationDigestsCommand;
 use App\Console\Commands\SendKlantProgressReportsCommand;
@@ -45,3 +46,10 @@ Schedule::command(SendWeeklyNotificationDigestsCommand::class)->weeklyOn(1, '08:
 // date -- an invoice with nothing billed that period is simply never
 // picked up (total_cents > 0 is part of that same filter).
 Schedule::command(IssueDueInvoicesCommand::class)->dailyAt('02:00');
+
+// Daily, not monthly: the Action itself is what makes this safe to run
+// this often -- it upserts the one storage-overage line on the current
+// draft invoice rather than adding a new one each run, so a reseller's
+// charge (or credit-back, if they drop under the limit again) just stays
+// current with today's usage until the invoice is actually issued.
+Schedule::command(RecordStorageOverageChargesCommand::class)->dailyAt('03:00');
