@@ -6,6 +6,7 @@ use App\Actions\Billing\WaiveAssignmentBilling;
 use App\Enums\AssignmentBillingState;
 use App\Enums\InvoiceStatus;
 use App\Models\CourseAssignment;
+use App\Models\CreditNote;
 use App\Models\Invoice;
 use App\Models\InvoiceLine;
 use App\Models\Reseller;
@@ -30,7 +31,7 @@ it('removes the line and reduces the draft invoice total, then waives the assign
         ->and(InvoiceLine::query()->where('course_assignment_id', $assignment->id)->exists())->toBeFalse();
 });
 
-it('waives the assignment but leaves an already-issued invoice untouched', function (): void {
+it('waives the assignment, leaves an already-issued invoice untouched, and issues a credit note instead', function (): void {
     $reseller = Reseller::factory()->create();
     app(TenantContext::class)->set($reseller);
     $invoice = Invoice::factory()->for($reseller)->issued()->create(['total_cents' => 5000]);
@@ -40,10 +41,15 @@ it('waives the assignment but leaves an already-issued invoice untouched', funct
 
     app(WaiveAssignmentBilling::class)($assignment);
 
+    $creditNote = CreditNote::query()->where('invoice_id', $invoice->id)->first();
+
     expect($assignment->fresh()->billing_state)->toBe(AssignmentBillingState::Waived)
         ->and($invoice->fresh()->total_cents->cents)->toBe(5000)
         ->and($invoice->fresh()->status)->toBe(InvoiceStatus::Issued)
-        ->and(InvoiceLine::query()->where('course_assignment_id', $assignment->id)->exists())->toBeTrue();
+        ->and(InvoiceLine::query()->where('course_assignment_id', $assignment->id)->exists())->toBeTrue()
+        ->and($creditNote)->not->toBeNull()
+        ->and($creditNote->amount_cents->cents)->toBe(1500)
+        ->and($creditNote->reason)->toBe('14-day free revocation');
 });
 
 it('does nothing when the assignment was never billed', function (): void {

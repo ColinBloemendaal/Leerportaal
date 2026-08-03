@@ -16,18 +16,19 @@ use App\Tenancy\TenantContext;
  * revocation -- see App\Actions\Courses\RevokeCourseAssignment, which
  * decides *whether* a revocation qualifies as free before calling this.
  *
- * Only reverses a line still sitting on a Draft invoice: CLAUDE.md §11
- * says invoices are immutable once issued, so a waiver against an already
- * Issued/Paid invoice can't touch that invoice's lines or total here --
- * that correction needs a credit note, a separate, not-yet-built sub-task.
- * Documented gap, not silently papered over: `billing_state` still flips
- * to Waived either way (the assignment itself is no longer billable going
- * forward), but the money already invoiced stays invoiced until a credit
- * note exists.
+ * A line still sitting on a Draft invoice is reversed directly (removed,
+ * invoice total reduced) -- nothing has been issued yet, so there's
+ * nothing to preserve. Once the invoice is Issued/Paid, CLAUDE.md §11 says
+ * it's immutable: the line and total stay exactly as issued, and the
+ * correction is a separate IssueCreditNote record instead, for the
+ * already-invoiced amount.
  */
 final readonly class WaiveAssignmentBilling
 {
-    public function __construct(private TenantContext $tenantContext) {}
+    public function __construct(
+        private IssueCreditNote $issueCreditNote,
+        private TenantContext $tenantContext,
+    ) {}
 
     public function __invoke(CourseAssignment $assignment): void
     {
@@ -40,19 +41,24 @@ final readonly class WaiveAssignmentBilling
         if ($line !== null) {
             $invoice = $line->invoice()->first();
 
-            if ($invoice !== null && $invoice->status === InvoiceStatus::Draft) {
+            if ($invoice !== null) {
                 $reseller = $invoice->reseller()->first();
 
                 if ($reseller !== null) {
                     $this->tenantContext->set($reseller);
                 }
 
-                $currentTotalCents = $invoice->total_cents === null ? 0 : $invoice->total_cents->cents;
                 $lineAmountCents = $line->amount_cents === null ? 0 : $line->amount_cents->cents;
-                $invoice->total_cents = Money::fromCents(max(0, $currentTotalCents - $lineAmountCents));
-                $invoice->save();
 
-                $line->delete();
+                if ($invoice->status === InvoiceStatus::Draft) {
+                    $currentTotalCents = $invoice->total_cents === null ? 0 : $invoice->total_cents->cents;
+                    $invoice->total_cents = Money::fromCents(max(0, $currentTotalCents - $lineAmountCents));
+                    $invoice->save();
+
+                    $line->delete();
+                } else {
+                    ($this->issueCreditNote)($invoice, $lineAmountCents, '14-day free revocation');
+                }
             }
         }
 
