@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link, useForm } from '@inertiajs/vue3';
+import { useI18n } from 'vue-i18n';
 
 defineOptions({ layout: AppLayout });
+
+const { t } = useI18n();
 
 const props = defineProps<{
     type: string;
@@ -35,7 +38,9 @@ function placeholderToken(token: string): string {
 
 <template>
     <p class="mb-1">
-        <Link href="/settings/email-templates" class="text-muted small">&larr; Email templates</Link>
+        <Link href="/settings/email-templates" class="text-muted small">{{
+            t('settings.emailTemplates.edit.back')
+        }}</Link>
     </p>
     <h1 class="h4 mb-4">{{ label }}</h1>
 
@@ -43,7 +48,7 @@ function placeholderToken(token: string): string {
         <div class="col-12 col-lg-7">
             <form @submit.prevent="submit">
                 <div class="mb-3">
-                    <label for="subject" class="form-label">Subject</label>
+                    <label for="subject" class="form-label">{{ t('settings.emailTemplates.edit.subject') }}</label>
                     <input
                         id="subject"
                         v-model="form.subject"
@@ -56,7 +61,7 @@ function placeholderToken(token: string): string {
                 </div>
 
                 <div class="mb-3">
-                    <label for="body_markdown" class="form-label">Body (Markdown)</label>
+                    <label for="body_markdown" class="form-label">{{ t('settings.emailTemplates.edit.body') }}</label>
                     <textarea
                         id="body_markdown"
                         v-model="form.body_markdown"
@@ -70,7 +75,9 @@ function placeholderToken(token: string): string {
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary" :disabled="form.processing">Save</button>
+                <button type="submit" class="btn btn-primary" :disabled="form.processing">
+                    {{ t('settings.emailTemplates.edit.save') }}
+                </button>
                 <button
                     v-if="override !== null"
                     type="button"
@@ -78,12 +85,12 @@ function placeholderToken(token: string): string {
                     :disabled="form.processing"
                     @click="resetToDefault"
                 >
-                    Reset to default
+                    {{ t('settings.emailTemplates.edit.resetToDefault') }}
                 </button>
             </form>
 
             <div class="mt-4">
-                <p class="text-muted small mb-2">Available placeholders</p>
+                <p class="text-muted small mb-2">{{ t('settings.emailTemplates.edit.availablePlaceholders') }}</p>
                 <ul class="list-unstyled small">
                     <li v-for="(description, token) in placeholders" :key="token">
                         <code>{{ placeholderToken(token) }}</code> &mdash; {{ description }}
@@ -93,14 +100,14 @@ function placeholderToken(token: string): string {
         </div>
 
         <div class="col-12 col-lg-5">
-            <p class="text-muted small mb-2">Preview (with sample values)</p>
+            <p class="text-muted small mb-2">{{ t('settings.emailTemplates.edit.preview') }}</p>
             <div class="border rounded p-3">
                 <p class="fw-semibold mb-2">{{ preview.subject }}</p>
                 <!-- preview.bodyHtml is server-rendered by App\Services\Mail\SafeMarkdownRenderer
                      (CommonMark with html_input=>escape) -- already-sanitized, not raw user input. -->
                 <!-- eslint-disable-next-line vue/no-v-html -->
                 <div v-if="preview.bodyHtml" v-html="preview.bodyHtml"></div>
-                <p v-else class="text-muted small mb-0">Using the default template body.</p>
+                <p v-else class="text-muted small mb-0">{{ t('settings.emailTemplates.edit.usingDefault') }}</p>
             </div>
         </div>
     </div>

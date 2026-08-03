@@ -3,8 +3,11 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import { meetsWcagAA } from '@/lib/contrast';
 import { useForm } from '@inertiajs/vue3';
 import { computed, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 defineOptions({ layout: AppLayout });
+
+const { t } = useI18n();
 
 const props = defineProps<{
     theme: {
@@ -101,84 +104,84 @@ const secondaryContrastFailsAA = computed(
 </script>
 
 <template>
-    <h1 class="h4 mb-4">Theme</h1>
+    <h1 class="h4 mb-4">{{ t('settings.theme.title') }}</h1>
 
     <form class="row g-3" style="max-width: 32rem" @submit.prevent="submit">
         <div class="col-12">
-            <label for="primary_color" class="form-label">Primary color</label>
+            <label for="primary_color" class="form-label">{{ t('settings.theme.primaryColor') }}</label>
             <div class="input-group">
                 <input
                     id="primary_color"
                     v-model="form.primary_color"
                     type="color"
                     class="form-control form-control-color"
-                    title="Primary color"
+                    :title="t('settings.theme.primaryColor')"
                 />
                 <input
                     v-model="form.primary_color"
                     type="text"
                     class="form-control"
                     :class="{ 'is-invalid': form.errors.primary_color }"
-                    aria-label="Primary color hex value"
+                    :aria-label="`${t('settings.theme.primaryColor')} hex value`"
                 />
             </div>
             <div v-if="form.errors.primary_color" class="invalid-feedback d-block">
                 {{ form.errors.primary_color }}
             </div>
             <p v-if="primaryContrastFailsAA" class="text-warning small mb-0 mt-1">
-                Warning: white text on this color fails WCAG AA contrast (4.5:1) -- may be hard to read on buttons.
+                {{ t('settings.theme.contrastWarning') }}
             </p>
         </div>
 
         <div class="col-12">
-            <label for="secondary_color" class="form-label">Secondary color</label>
+            <label for="secondary_color" class="form-label">{{ t('settings.theme.secondaryColor') }}</label>
             <div class="input-group">
                 <input
                     id="secondary_color"
                     v-model="form.secondary_color"
                     type="color"
                     class="form-control form-control-color"
-                    title="Secondary color"
+                    :title="t('settings.theme.secondaryColor')"
                 />
                 <input
                     v-model="form.secondary_color"
                     type="text"
                     class="form-control"
                     :class="{ 'is-invalid': form.errors.secondary_color }"
-                    aria-label="Secondary color hex value"
+                    :aria-label="`${t('settings.theme.secondaryColor')} hex value`"
                 />
             </div>
             <div v-if="form.errors.secondary_color" class="invalid-feedback d-block">
                 {{ form.errors.secondary_color }}
             </div>
             <p v-if="secondaryContrastFailsAA" class="text-warning small mb-0 mt-1">
-                Warning: white text on this color fails WCAG AA contrast (4.5:1) -- may be hard to read on buttons.
+                {{ t('settings.theme.contrastWarning') }}
             </p>
         </div>
 
         <div class="col-12">
-            <label for="accent_color" class="form-label">Accent color</label>
+            <label for="accent_color" class="form-label">{{ t('settings.theme.accentColor') }}</label>
             <div class="input-group">
                 <input
                     id="accent_color"
                     v-model="form.accent_color"
                     type="color"
                     class="form-control form-control-color"
-                    title="Accent color"
+                    :title="t('settings.theme.accentColor')"
                 />
                 <input
                     v-model="form.accent_color"
                     type="text"
                     class="form-control"
                     :class="{ 'is-invalid': form.errors.accent_color }"
-                    aria-label="Accent color hex value"
+                    :aria-label="`${t('settings.theme.accentColor')} hex value`"
                 />
             </div>
             <div v-if="form.errors.accent_color" class="invalid-feedback d-block">{{ form.errors.accent_color }}</div>
         </div>
 
         <div class="col-12">
-            <label for="font_family" class="form-label">Font family</label>
+            <label for="font_family" class="form-label">{{ t('settings.theme.fontFamily') }}</label>
             <input
                 id="font_family"
                 v-model="form.font_family"
@@ -191,7 +194,7 @@ const secondaryContrastFailsAA = computed(
         </div>
 
         <div class="col-12">
-            <label for="logo" class="form-label">Logo</label>
+            <label for="logo" class="form-label">{{ t('settings.theme.logo') }}</label>
             <img v-if="assetUrls.logo" :src="assetUrls.logo" alt="Current logo" class="d-block mb-2" height="48" />
             <input
                 id="logo"
@@ -205,7 +208,7 @@ const secondaryContrastFailsAA = computed(
         </div>
 
         <div class="col-12">
-            <label for="favicon" class="form-label">Favicon</label>
+            <label for="favicon" class="form-label">{{ t('settings.theme.favicon') }}</label>
             <img
                 v-if="assetUrls.favicon"
                 :src="assetUrls.favicon"
@@ -225,7 +228,7 @@ const secondaryContrastFailsAA = computed(
         </div>
 
         <div class="col-12">
-            <label for="login_background" class="form-label">Login background</label>
+            <label for="login_background" class="form-label">{{ t('settings.theme.loginBackground') }}</label>
             <img
                 v-if="assetUrls.login_background"
                 :src="assetUrls.login_background"
@@ -247,7 +250,7 @@ const secondaryContrastFailsAA = computed(
         </div>
 
         <div class="col-12">
-            <label for="custom_css" class="form-label">Custom CSS</label>
+            <label for="custom_css" class="form-label">{{ t('settings.theme.customCss') }}</label>
             <textarea
                 id="custom_css"
                 v-model="form.custom_css"
@@ -257,12 +260,12 @@ const secondaryContrastFailsAA = computed(
                 maxlength="10000"
                 placeholder=".btn { border-radius: 0; }"
             ></textarea>
-            <div class="form-text">Advanced. Max 10,000 characters. Applied after all other theme settings.</div>
+            <div class="form-text">{{ t('settings.theme.customCssHelp') }}</div>
             <div v-if="form.errors.custom_css" class="invalid-feedback d-block">{{ form.errors.custom_css }}</div>
         </div>
 
         <div class="col-12">
-            <label for="sender_name" class="form-label">Email sender name</label>
+            <label for="sender_name" class="form-label">{{ t('settings.theme.senderName') }}</label>
             <input
                 id="sender_name"
                 v-model="form.sender_name"
@@ -271,12 +274,12 @@ const secondaryContrastFailsAA = computed(
                 :class="{ 'is-invalid': form.errors.sender_name }"
                 placeholder="Your organization name"
             />
-            <div class="form-text">Shown as the sender name on emails. The sending address itself stays fixed.</div>
+            <div class="form-text">{{ t('settings.theme.senderNameHelp') }}</div>
             <div v-if="form.errors.sender_name" class="invalid-feedback">{{ form.errors.sender_name }}</div>
         </div>
 
         <div class="col-12">
-            <label for="reply_to_email" class="form-label">Reply-to email</label>
+            <label for="reply_to_email" class="form-label">{{ t('settings.theme.replyToEmail') }}</label>
             <input
                 id="reply_to_email"
                 v-model="form.reply_to_email"
@@ -285,12 +288,12 @@ const secondaryContrastFailsAA = computed(
                 :class="{ 'is-invalid': form.errors.reply_to_email }"
                 placeholder="support@yourdomain.example"
             />
-            <div class="form-text">Where replies to your emails should land.</div>
+            <div class="form-text">{{ t('settings.theme.replyToEmailHelp') }}</div>
             <div v-if="form.errors.reply_to_email" class="invalid-feedback">{{ form.errors.reply_to_email }}</div>
         </div>
 
         <div class="col-12">
-            <label for="footer_text" class="form-label">Footer text</label>
+            <label for="footer_text" class="form-label">{{ t('settings.theme.footerText') }}</label>
             <textarea
                 id="footer_text"
                 v-model="form.footer_text"
@@ -300,12 +303,12 @@ const secondaryContrastFailsAA = computed(
                 maxlength="1000"
                 placeholder="© Your organization. All rights reserved."
             ></textarea>
-            <div class="form-text">Shown at the bottom of every page.</div>
+            <div class="form-text">{{ t('settings.theme.footerTextHelp') }}</div>
             <div v-if="form.errors.footer_text" class="invalid-feedback d-block">{{ form.errors.footer_text }}</div>
         </div>
 
         <div class="col-12">
-            <label for="support_email" class="form-label">Support email</label>
+            <label for="support_email" class="form-label">{{ t('settings.theme.supportEmail') }}</label>
             <input
                 id="support_email"
                 v-model="form.support_email"
@@ -318,7 +321,7 @@ const secondaryContrastFailsAA = computed(
         </div>
 
         <div class="col-12">
-            <label for="terms_url" class="form-label">Terms of service URL</label>
+            <label for="terms_url" class="form-label">{{ t('settings.theme.termsUrl') }}</label>
             <input
                 id="terms_url"
                 v-model="form.terms_url"
@@ -331,7 +334,7 @@ const secondaryContrastFailsAA = computed(
         </div>
 
         <div class="col-12">
-            <label for="privacy_url" class="form-label">Privacy policy URL</label>
+            <label for="privacy_url" class="form-label">{{ t('settings.theme.privacyUrl') }}</label>
             <input
                 id="privacy_url"
                 v-model="form.privacy_url"
@@ -344,14 +347,16 @@ const secondaryContrastFailsAA = computed(
         </div>
 
         <div class="col-12">
-            <button type="submit" class="btn btn-primary" :disabled="form.processing">Save theme</button>
+            <button type="submit" class="btn btn-primary" :disabled="form.processing">
+                {{ t('settings.theme.save') }}
+            </button>
         </div>
     </form>
 
     <div class="mt-4 p-3 border rounded" style="max-width: 32rem">
-        <p class="text-muted small mb-2">Live preview</p>
-        <button type="button" class="btn btn-primary me-2">Primary button</button>
-        <a href="#" class="link-primary">A link</a>
+        <p class="text-muted small mb-2">{{ t('settings.theme.livePreview') }}</p>
+        <button type="button" class="btn btn-primary me-2">{{ t('settings.theme.previewButton') }}</button>
+        <a href="#" class="link-primary">{{ t('settings.theme.previewLink') }}</a>
     </div>
 
     <!--

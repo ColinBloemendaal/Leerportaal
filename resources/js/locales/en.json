@@ -243,5 +243,93 @@
         "empty": "No pending invites.",
         "revokedTitle": "Revoked invites",
         "restore": "Restore"
+    },
+    "settings": {
+        "theme": {
+            "title": "Theme",
+            "primaryColor": "Primary color",
+            "secondaryColor": "Secondary color",
+            "accentColor": "Accent color",
+            "contrastWarning": "Warning: white text on this color fails WCAG AA contrast (4.5:1) -- may be hard to read on buttons.",
+            "fontFamily": "Font family",
+            "logo": "Logo",
+            "favicon": "Favicon",
+            "loginBackground": "Login background",
+            "customCss": "Custom CSS",
+            "customCssHelp": "Advanced. Max 10,000 characters. Applied after all other theme settings.",
+            "senderName": "Email sender name",
+            "senderNameHelp": "Shown as the sender name on emails. The sending address itself stays fixed.",
+            "replyToEmail": "Reply-to email",
+            "replyToEmailHelp": "Where replies to your emails should land.",
+            "footerText": "Footer text",
+            "footerTextHelp": "Shown at the bottom of every page.",
+            "supportEmail": "Support email",
+            "termsUrl": "Terms of service URL",
+            "privacyUrl": "Privacy policy URL",
+            "save": "Save theme",
+            "livePreview": "Live preview",
+            "previewButton": "Primary button",
+            "previewLink": "A link"
+        },
+        "twoFactor": {
+            "title": "Two-factor authentication",
+            "introDescription": "Add an extra layer of security to your account using an authenticator app.",
+            "enable": "Enable two-factor authentication",
+            "pendingDescription": "Scan this QR code with your authenticator app, then enter the code it shows to finish setting up.",
+            "code": "Code",
+            "confirm": "Confirm",
+            "enabledDescription": "Two-factor authentication is enabled.",
+            "regenerate": "Regenerate recovery codes",
+            "disable": "Disable",
+            "recoveryCodesWarning": "Save these recovery codes somewhere safe. Each can only be used once."
+        },
+        "emailTemplates": {
+            "index": {
+                "title": "Email templates",
+                "description": "Override the subject and body of these system emails. Anything not overridden uses the default text.",
+                "notification": "Notification",
+                "status": "Status",
+                "customized": "Customized",
+                "default": "Default",
+                "edit": "Edit"
+            },
+            "edit": {
+                "back": "← Email templates",
+                "subject": "Subject",
+                "body": "Body (Markdown)",
+                "save": "Save",
+                "resetToDefault": "Reset to default",
+                "availablePlaceholders": "Available placeholders",
+                "preview": "Preview (with sample values)",
+                "usingDefault": "Using the default template body."
+            }
+        }
+    },
+    "dashboard": {
+        "title": "My dashboard",
+        "empty": "No courses assigned yet.",
+        "inProgress": "In progress",
+        "overdue": "Overdue",
+        "due": "Due",
+        "assigned": "Assigned",
+        "completed": "Completed"
+    },
+    "welcome": {
+        "title": "Leerportaal",
+        "description": "Whitelabel learning platform. If your organization has its own Leerportaal portal, use the link your provider gave you to sign in."
+    },
+    "errors": {
+        "403": "You do not have permission to access this page.",
+        "404": "The page you are looking for could not be found.",
+        "419": "The page expired, please try again.",
+        "500": "Something went wrong on our end.",
+        "503": "The application is currently unavailable.",
+        "unknown": "An unexpected error occurred."
+    },
+    "certificates": {
+        "verified": "Certificate verified",
+        "issuedOn": "Issued on {date}",
+        "notFoundTitle": "Certificate not found",
+        "notFoundDescription": "This verification code doesn't match any issued certificate."
     }
 }

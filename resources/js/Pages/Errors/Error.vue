@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 defineOptions({ layout: GuestLayout });
 
@@ -8,15 +9,12 @@ const props = defineProps<{
     status: number;
 }>();
 
-const messages: Record<number, string> = {
-    403: 'You do not have permission to access this page.',
-    404: 'The page you are looking for could not be found.',
-    419: 'The page expired, please try again.',
-    500: 'Something went wrong on our end.',
-    503: 'The application is currently unavailable.',
-};
+const { t, te } = useI18n();
 
-const message = computed(() => messages[props.status] ?? 'An unexpected error occurred.');
+const message = computed(() => {
+    const key = `errors.${props.status}`;
+    return te(key) ? t(key) : t('errors.unknown');
+});
 </script>
 
 <template>

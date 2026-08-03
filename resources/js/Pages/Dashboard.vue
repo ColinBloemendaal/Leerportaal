@@ -2,10 +2,12 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import type { AssignmentStatus, CursistAssignmentRow } from '@/types/dashboard';
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 defineOptions({ layout: AppLayout });
 
 const props = defineProps<{ assignments: CursistAssignmentRow[] }>();
+const { t } = useI18n();
 
 function byStatus(status: AssignmentStatus): CursistAssignmentRow[] {
     return props.assignments.filter((assignment) => assignment.status === status);
@@ -17,19 +19,19 @@ const completed = computed(() => byStatus('completed'));
 </script>
 
 <template>
-    <h1 class="h4 mb-4">My dashboard</h1>
+    <h1 class="h4 mb-4">{{ t('dashboard.title') }}</h1>
 
-    <div v-if="assignments.length === 0" class="text-muted">No courses assigned yet.</div>
+    <div v-if="assignments.length === 0" class="text-muted">{{ t('dashboard.empty') }}</div>
 
     <template v-else>
         <section v-if="inProgress.length > 0" class="mb-4">
-            <h2 class="h6 text-uppercase text-muted mb-3">In progress</h2>
+            <h2 class="h6 text-uppercase text-muted mb-3">{{ t('dashboard.inProgress') }}</h2>
             <div v-for="row in inProgress" :key="row.assignmentId" class="card mb-2">
                 <div class="card-body d-flex justify-content-between align-items-center">
                     <div>
                         <div class="fw-semibold">{{ row.courseTitle }}</div>
                         <div v-if="row.deadlineAt" class="small" :class="row.isOverdue ? 'text-danger' : 'text-muted'">
-                            {{ row.isOverdue ? 'Overdue' : 'Due' }}: {{ row.deadlineAt }}
+                            {{ row.isOverdue ? t('dashboard.overdue') : t('dashboard.due') }}: {{ row.deadlineAt }}
                         </div>
                     </div>
                     <div class="text-end" style="min-width: 8rem">
@@ -49,19 +51,19 @@ const completed = computed(() => byStatus('completed'));
         </section>
 
         <section v-if="notStarted.length > 0" class="mb-4">
-            <h2 class="h6 text-uppercase text-muted mb-3">Assigned</h2>
+            <h2 class="h6 text-uppercase text-muted mb-3">{{ t('dashboard.assigned') }}</h2>
             <div v-for="row in notStarted" :key="row.assignmentId" class="card mb-2">
                 <div class="card-body d-flex justify-content-between align-items-center">
                     <div class="fw-semibold">{{ row.courseTitle }}</div>
                     <div v-if="row.deadlineAt" class="small" :class="row.isOverdue ? 'text-danger' : 'text-muted'">
-                        {{ row.isOverdue ? 'Overdue' : 'Due' }}: {{ row.deadlineAt }}
+                        {{ row.isOverdue ? t('dashboard.overdue') : t('dashboard.due') }}: {{ row.deadlineAt }}
                     </div>
                 </div>
             </div>
         </section>
 
         <section v-if="completed.length > 0">
-            <h2 class="h6 text-uppercase text-muted mb-3">Completed</h2>
+            <h2 class="h6 text-uppercase text-muted mb-3">{{ t('dashboard.completed') }}</h2>
             <div v-for="row in completed" :key="row.assignmentId" class="card mb-2">
                 <div class="card-body"><span class="text-success me-2">&#10003;</span>{{ row.courseTitle }}</div>
             </div>

@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { router, useForm } from '@inertiajs/vue3';
+import { useI18n } from 'vue-i18n';
 
 defineOptions({ layout: AppLayout });
+
+const { t } = useI18n();
 
 const props = defineProps<{
     enabled: boolean;
@@ -33,23 +36,23 @@ function regenerateRecoveryCodes() {
 </script>
 
 <template>
-    <h1 class="h4 mb-4">Two-factor authentication</h1>
+    <h1 class="h4 mb-4">{{ t('settings.twoFactor.title') }}</h1>
 
     <div v-if="!enabled && !pending">
-        <p class="text-muted">Add an extra layer of security to your account using an authenticator app.</p>
-        <button type="button" class="btn btn-primary" @click="enable">Enable two-factor authentication</button>
+        <p class="text-muted">{{ t('settings.twoFactor.introDescription') }}</p>
+        <button type="button" class="btn btn-primary" @click="enable">{{ t('settings.twoFactor.enable') }}</button>
     </div>
 
     <div v-else-if="pending">
         <p class="text-muted">
-            Scan this QR code with your authenticator app, then enter the code it shows to finish setting up.
+            {{ t('settings.twoFactor.pendingDescription') }}
         </p>
         <!-- eslint-disable-next-line vue/no-v-html -- server-generated SVG (BaconQrCode) from our own TwoFactorAuthenticator, never user input -->
         <div v-if="props.qrCodeSvg" class="mb-3" v-html="props.qrCodeSvg" />
 
         <form class="row g-2 align-items-end" @submit.prevent="confirm">
             <div class="col-auto">
-                <label for="code" class="form-label">Code</label>
+                <label for="code" class="form-label">{{ t('settings.twoFactor.code') }}</label>
                 <input
                     id="code"
                     v-model="confirmForm.code"
@@ -62,24 +65,28 @@ function regenerateRecoveryCodes() {
                 <div v-if="confirmForm.errors.code" class="invalid-feedback">{{ confirmForm.errors.code }}</div>
             </div>
             <div class="col-auto">
-                <button type="submit" class="btn btn-primary" :disabled="confirmForm.processing">Confirm</button>
+                <button type="submit" class="btn btn-primary" :disabled="confirmForm.processing">
+                    {{ t('settings.twoFactor.confirm') }}
+                </button>
             </div>
         </form>
     </div>
 
     <div v-else>
-        <p class="text-success">Two-factor authentication is enabled.</p>
+        <p class="text-success">{{ t('settings.twoFactor.enabledDescription') }}</p>
 
         <div class="d-flex gap-2 mb-3">
             <button type="button" class="btn btn-outline-secondary" @click="regenerateRecoveryCodes">
-                Regenerate recovery codes
+                {{ t('settings.twoFactor.regenerate') }}
             </button>
-            <button type="button" class="btn btn-outline-danger" @click="disable">Disable</button>
+            <button type="button" class="btn btn-outline-danger" @click="disable">
+                {{ t('settings.twoFactor.disable') }}
+            </button>
         </div>
     </div>
 
     <div v-if="props.recoveryCodes" class="alert alert-warning mt-3">
-        <p class="fw-semibold">Save these recovery codes somewhere safe. Each can only be used once.</p>
+        <p class="fw-semibold">{{ t('settings.twoFactor.recoveryCodesWarning') }}</p>
         <ul class="mb-0 font-monospace">
             <li v-for="code in props.recoveryCodes" :key="code">{{ code }}</li>
         </ul>

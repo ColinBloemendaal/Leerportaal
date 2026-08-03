@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import type { CertificateVerification } from '@/types/certificates';
+import { useI18n } from 'vue-i18n';
 
 defineOptions({ layout: GuestLayout });
 
 defineProps<{ certificate: CertificateVerification | null }>();
+
+const { t } = useI18n();
 </script>
 
 <template>
@@ -24,12 +27,12 @@ defineProps<{ certificate: CertificateVerification | null }>();
                 />
             </svg>
         </div>
-        <h1 class="h4 mb-3">Certificate verified</h1>
+        <h1 class="h4 mb-3">{{ t('certificates.verified') }}</h1>
         <p class="mb-1">
             <strong>{{ certificate.data.recipient_name }}</strong>
         </p>
         <p class="mb-1">{{ certificate.data.course_title }}</p>
-        <p class="text-muted small mb-3">Issued on {{ certificate.data.issued_at }}</p>
+        <p class="text-muted small mb-3">{{ t('certificates.issuedOn', { date: certificate.data.issued_at }) }}</p>
         <p class="text-muted small font-monospace">{{ certificate.data.verification_code }}</p>
     </div>
 
@@ -49,7 +52,7 @@ defineProps<{ certificate: CertificateVerification | null }>();
                 />
             </svg>
         </div>
-        <h1 class="h4 mb-3">Certificate not found</h1>
-        <p class="text-muted">This verification code doesn't match any issued certificate.</p>
+        <h1 class="h4 mb-3">{{ t('certificates.notFoundTitle') }}</h1>
+        <p class="text-muted">{{ t('certificates.notFoundDescription') }}</p>
     </div>
 </template>

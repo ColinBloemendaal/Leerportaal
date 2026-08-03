@@ -243,5 +243,93 @@
         "empty": "Geen openstaande uitnodigingen.",
         "revokedTitle": "Ingetrokken uitnodigingen",
         "restore": "Herstellen"
+    },
+    "settings": {
+        "theme": {
+            "title": "Thema",
+            "primaryColor": "Primaire kleur",
+            "secondaryColor": "Secundaire kleur",
+            "accentColor": "Accentkleur",
+            "contrastWarning": "Let op: witte tekst op deze kleur voldoet niet aan WCAG AA-contrast (4.5:1) -- kan moeilijk leesbaar zijn op knoppen.",
+            "fontFamily": "Lettertype",
+            "logo": "Logo",
+            "favicon": "Favicon",
+            "loginBackground": "Achtergrond inlogpagina",
+            "customCss": "Aangepaste CSS",
+            "customCssHelp": "Geavanceerd. Max. 10.000 tekens. Wordt toegepast na alle andere themainstellingen.",
+            "senderName": "Afzendernaam e-mail",
+            "senderNameHelp": "Wordt getoond als afzendernaam op e-mails. Het verzendadres zelf blijft vast.",
+            "replyToEmail": "Antwoordadres",
+            "replyToEmailHelp": "Waar reacties op je e-mails terechtkomen.",
+            "footerText": "Footertekst",
+            "footerTextHelp": "Wordt onderaan elke pagina getoond.",
+            "supportEmail": "Support e-mailadres",
+            "termsUrl": "URL algemene voorwaarden",
+            "privacyUrl": "URL privacybeleid",
+            "save": "Thema opslaan",
+            "livePreview": "Live voorbeeld",
+            "previewButton": "Primaire knop",
+            "previewLink": "Een link"
+        },
+        "twoFactor": {
+            "title": "Tweestapsverificatie",
+            "introDescription": "Voeg een extra beveiligingslaag toe aan je account met een authenticator-app.",
+            "enable": "Tweestapsverificatie inschakelen",
+            "pendingDescription": "Scan deze QR-code met je authenticator-app en voer daarna de getoonde code in om de instelling af te ronden.",
+            "code": "Code",
+            "confirm": "Bevestigen",
+            "enabledDescription": "Tweestapsverificatie is ingeschakeld.",
+            "regenerate": "Herstelcodes opnieuw genereren",
+            "disable": "Uitschakelen",
+            "recoveryCodesWarning": "Bewaar deze herstelcodes op een veilige plek. Elke code kan maar één keer gebruikt worden."
+        },
+        "emailTemplates": {
+            "index": {
+                "title": "E-mailsjablonen",
+                "description": "Overschrijf het onderwerp en de inhoud van deze systeem-e-mails. Wat niet overschreven is, gebruikt de standaardtekst.",
+                "notification": "Melding",
+                "status": "Status",
+                "customized": "Aangepast",
+                "default": "Standaard",
+                "edit": "Bewerken"
+            },
+            "edit": {
+                "back": "← E-mailsjablonen",
+                "subject": "Onderwerp",
+                "body": "Inhoud (Markdown)",
+                "save": "Opslaan",
+                "resetToDefault": "Terugzetten naar standaard",
+                "availablePlaceholders": "Beschikbare placeholders",
+                "preview": "Voorbeeld (met voorbeeldwaarden)",
+                "usingDefault": "Gebruikt de standaard sjabloontekst."
+            }
+        }
+    },
+    "dashboard": {
+        "title": "Mijn dashboard",
+        "empty": "Nog geen cursussen toegewezen.",
+        "inProgress": "Bezig",
+        "overdue": "Te laat",
+        "due": "Deadline",
+        "assigned": "Toegewezen",
+        "completed": "Afgerond"
+    },
+    "welcome": {
+        "title": "Leerportaal",
+        "description": "Whitelabel leerplatform. Als jouw organisatie een eigen Leerportaal-omgeving heeft, gebruik dan de link die je van je aanbieder hebt gekregen om in te loggen."
+    },
+    "errors": {
+        "403": "Je hebt geen toegang tot deze pagina.",
+        "404": "De pagina die je zoekt kon niet worden gevonden.",
+        "419": "De pagina is verlopen, probeer het opnieuw.",
+        "500": "Er is iets misgegaan aan onze kant.",
+        "503": "De applicatie is momenteel niet beschikbaar.",
+        "unknown": "Er is een onverwachte fout opgetreden."
+    },
+    "certificates": {
+        "verified": "Certificaat geverifieerd",
+        "issuedOn": "Uitgegeven op {date}",
+        "notFoundTitle": "Certificaat niet gevonden",
+        "notFoundDescription": "Deze verificatiecode komt niet overeen met een uitgegeven certificaat."
     }
 }
