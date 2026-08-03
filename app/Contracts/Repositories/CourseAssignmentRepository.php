@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Contracts\Repositories;
 
+use App\DataTransferObjects\Filtering\FilterRequestData;
 use App\Models\CourseAssignment;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 interface CourseAssignmentRepository
 {
@@ -16,4 +18,16 @@ interface CourseAssignmentRepository
      * @return Collection<int, CourseAssignment>
      */
     public function forUser(int $userId): Collection;
+
+    /**
+     * For the reseller admin assignments index -- CourseAssignment is
+     * TenantScoped, so this is already scoped to the current reseller
+     * with no explicit filtering needed. No free-text search: it has no
+     * searchable column of its own (course title/cursist name live on
+     * related tables, out of scope for QueryFilterApplier's single-table
+     * design).
+     *
+     * @return LengthAwarePaginator<int, CourseAssignment>
+     */
+    public function paginate(FilterRequestData $filters, int $perPage = 15): LengthAwarePaginator;
 }
