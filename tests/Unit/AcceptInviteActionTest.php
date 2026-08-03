@@ -8,10 +8,12 @@ use App\Models\Reseller;
 use App\Models\ResellerKlant;
 use App\Models\User;
 use App\Models\UserInvite;
+use App\Notifications\WelcomeNotification;
 use App\Repositories\Eloquent\EloquentUserInviteRepository;
 use App\Tenancy\TenantContext;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -23,7 +25,9 @@ beforeEach(function (): void {
     $this->action = new AcceptInvite(new EloquentUserInviteRepository, app(ConnectionInterface::class));
 });
 
-it('creates the user and marks the invite accepted', function (): void {
+it('creates the user, marks the invite accepted, and sends a welcome notification', function (): void {
+    Notification::fake();
+
     $klant = ResellerKlant::factory()->for($this->reseller, 'reseller')->create();
     $invite = UserInvite::factory()->create([
         'reseller_id' => $this->reseller->id,
@@ -43,6 +47,8 @@ it('creates the user and marks the invite accepted', function (): void {
         ->and($user->resellerklant_id)->toBe($klant->id)
         ->and($user->hasVerifiedEmail())->toBeTrue()
         ->and($invite->fresh()->isPending())->toBeFalse();
+
+    Notification::assertSentTo($user, WelcomeNotification::class);
 });
 
 it('rejects a mismatched hash', function (): void {

@@ -7,6 +7,7 @@ namespace App\Actions\Auth;
 use App\Contracts\Repositories\UserInviteRepository;
 use App\DataTransferObjects\Auth\AcceptInviteData;
 use App\Models\User;
+use App\Notifications\WelcomeNotification;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Validation\ValidationException;
 
@@ -34,7 +35,7 @@ final readonly class AcceptInvite
             throw ValidationException::withMessages(['password' => trans('Someone with this email already has an account.')]);
         }
 
-        return $this->db->transaction(function () use ($invite, $data): User {
+        $user = $this->db->transaction(function () use ($invite, $data): User {
             $user = User::create([
                 'reseller_id' => $invite->reseller_id,
                 'resellerklant_id' => $invite->resellerklant_id,
@@ -48,5 +49,12 @@ final readonly class AcceptInvite
 
             return $user;
         });
+
+        // Sent after the transaction commits, not from inside it: a queued
+        // notification dispatched mid-transaction could be picked up by a
+        // worker before the User row is actually committed.
+        $user->notify(new WelcomeNotification);
+
+        return $user;
     }
 }

@@ -48,6 +48,11 @@ arch('only actions, repositories, and models touch models directly')
         // Mailables shape their own view data from a model, the same job
         // Http\Resources does for Inertia props.
         'App\Mail',
+        // Notification classes are typed over Illuminate\Notifications\Notification's
+        // own via($notifiable)/toMail($notifiable)/toDatabase($notifiable)
+        // signatures -- same "shapes its own payload from an already-loaded
+        // model" reasoning as App\Mail above.
+        'App\Notifications',
         // Services do pure calculation over domain models (CLAUDE.md §3a's
         // own examples -- GradingService, AssignmentPricingService --
         // fundamentally need to accept a Question/CourseAssignment to
