@@ -17,6 +17,9 @@ import { Link } from '@inertiajs/vue3';
                     <li class="nav-item">
                         <Link href="/admin/platform" class="nav-link text-white">Dashboard</Link>
                     </li>
+                    <li class="nav-item">
+                        <Link href="/admin/platform/resellers" class="nav-link text-white">Resellers</Link>
+                    </li>
                 </ul>
             </aside>
 

@@ -18,6 +18,7 @@ use App\Http\Controllers\KlantDashboardController;
 use App\Http\Controllers\PlatformDashboardController;
 use App\Http\Controllers\ResellerBrandingController;
 use App\Http\Controllers\ResellerDashboardController;
+use App\Http\Controllers\ResellerIndexController;
 use App\Http\Controllers\ResellerKlantController;
 use App\Http\Controllers\ResellerMailTemplateController;
 use App\Http\Controllers\ResellerThemeController;
@@ -139,6 +140,7 @@ Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->grou
 
     Route::prefix('admin/platform')->name('admin.platform.')->group(function () {
         Route::get('/', [PlatformDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/resellers', [ResellerIndexController::class, 'index'])->name('resellers.index');
     });
 
     Route::prefix('admin/reseller')->name('admin.reseller.')->group(function () {

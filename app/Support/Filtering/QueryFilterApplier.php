@@ -17,11 +17,15 @@ use Illuminate\Database\Eloquent\Builder;
  * query construction and still never leak a Builder to their callers;
  * this only helps them build one).
  *
- * @template TModel of \Illuminate\Database\Eloquent\Model
+ * Generic per-call (via the method's own @template), not per-instance --
+ * one shared applier is used across every model, unlike a repository
+ * which is bound to a single model.
  */
 final readonly class QueryFilterApplier
 {
     /**
+     * @template TModel of \Illuminate\Database\Eloquent\Model
+     *
      * @param  Builder<TModel>  $query
      * @return Builder<TModel>
      */
