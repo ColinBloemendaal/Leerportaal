@@ -354,5 +354,100 @@
             "stop": "Voorlezen stoppen",
             "speed": "Voorleessnelheid"
         }
+    },
+    "questions": {
+        "common": {
+            "remove": "Verwijderen"
+        },
+        "editor": {
+            "multipleChoice": {
+                "options": "Opties",
+                "correctAnswerAria": "Markeer '{text}' als het juiste antwoord",
+                "addOption": "Optie toevoegen"
+            },
+            "multipleResponse": {
+                "options": "Opties",
+                "correctAnswerAria": "Markeer '{text}' als een juist antwoord",
+                "addOption": "Optie toevoegen"
+            },
+            "trueFalse": {
+                "correctAnswer": "Juiste antwoord",
+                "true": "Waar",
+                "false": "Onwaar"
+            },
+            "openShort": {
+                "matchMode": "Vergelijkingsmodus",
+                "exactMatch": "Exacte overeenkomst",
+                "contains": "Bevat",
+                "regex": "Reguliere expressie",
+                "caseSensitive": "Hoofdlettergevoelig",
+                "acceptableAnswers": "Geaccepteerde antwoorden",
+                "addAnswer": "Antwoord toevoegen"
+            },
+            "essay": {
+                "minWords": "Minimum aantal woorden",
+                "maxWords": "Maximum aantal woorden",
+                "rubric": "Beoordelingsrubriek",
+                "criterionPlaceholder": "Criterium",
+                "pointsPlaceholder": "Punten",
+                "addCriterion": "Criterium toevoegen"
+            },
+            "matching": {
+                "pairs": "Paren",
+                "left": "Links",
+                "right": "Rechts",
+                "addPair": "Paar toevoegen"
+            },
+            "ordering": {
+                "itemsLabel": "Items, in de juiste volgorde",
+                "moveUpAria": "'{text}' omhoog verplaatsen",
+                "moveDownAria": "'{text}' omlaag verplaatsen",
+                "addItem": "Item toevoegen"
+            },
+            "fillInBlank": {
+                "template": "Sjabloon (gebruik {placeholder} voor elk invulveld)",
+                "blanks": "Invulvelden",
+                "acceptableAnswersPlaceholder": "Geaccepteerde antwoorden, komma-gescheiden",
+                "caseSensitiveAria": "Hoofdlettergevoelig voor invulveld {id}",
+                "addBlank": "Invulveld toevoegen"
+            },
+            "dropdownInText": {
+                "template": "Sjabloon (gebruik {placeholder} voor elk invulveld)",
+                "blanks": "Invulvelden",
+                "optionsPlaceholder": "Opties, komma-gescheiden",
+                "correctOption": "Juiste optie",
+                "addBlank": "Invulveld toevoegen"
+            },
+            "numeric": {
+                "correctAnswer": "Juiste antwoord",
+                "tolerance": "Tolerantie (±)"
+            },
+            "hotspotImage": {
+                "imageUrl": "Afbeeldings-URL",
+                "regionsLabel": "Gebieden (percentage van afbeelding)",
+                "correctRegionAria": "Markeer '{label}' als een juist gebied",
+                "labelPlaceholder": "Label",
+                "addRegion": "Gebied toevoegen"
+            },
+            "dragDropImage": {
+                "imageUrl": "Afbeeldings-URL",
+                "draggableItems": "Sleepbare items",
+                "addItem": "Item toevoegen",
+                "dropZones": "Neerzetgebieden (percentage van afbeelding)",
+                "labelPlaceholder": "Label",
+                "correctItem": "Juist item",
+                "addZone": "Gebied toevoegen"
+            },
+            "likert": {
+                "scalePoints": "Schaalpunten",
+                "valuePlaceholder": "Waarde",
+                "labelPlaceholder": "Label",
+                "addScalePoint": "Schaalpunt toevoegen"
+            },
+            "fileUpload": {
+                "allowedTypes": "Toegestane bestandstypen (komma-gescheiden MIME-types)",
+                "maxSize": "Maximale bestandsgrootte (bytes)"
+            }
+        }
     }
 }

@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import type { OpenShortMatchMode } from '@/types/questions';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const matchMode = defineModel<OpenShortMatchMode>('match_mode', { required: true });
 const caseSensitive = defineModel<boolean>('case_sensitive', { required: true });
@@ -20,19 +23,21 @@ function updateAnswer(index: number, value: string): void {
 
 <template>
     <div class="mb-3">
-        <label for="open-short-match-mode" class="form-label">Match mode</label>
+        <label for="open-short-match-mode" class="form-label">{{ t('questions.editor.openShort.matchMode') }}</label>
         <select id="open-short-match-mode" v-model="matchMode" class="form-select">
-            <option value="exact">Exact match</option>
-            <option value="contains">Contains</option>
-            <option value="regex">Regular expression</option>
+            <option value="exact">{{ t('questions.editor.openShort.exactMatch') }}</option>
+            <option value="contains">{{ t('questions.editor.openShort.contains') }}</option>
+            <option value="regex">{{ t('questions.editor.openShort.regex') }}</option>
         </select>
     </div>
     <div class="form-check mb-3">
         <input id="open-short-case-sensitive" v-model="caseSensitive" class="form-check-input" type="checkbox" />
-        <label class="form-check-label" for="open-short-case-sensitive">Case sensitive</label>
+        <label class="form-check-label" for="open-short-case-sensitive">{{
+            t('questions.editor.openShort.caseSensitive')
+        }}</label>
     </div>
     <div class="mb-3">
-        <label class="form-label">Acceptable answers</label>
+        <label class="form-label">{{ t('questions.editor.openShort.acceptableAnswers') }}</label>
         <div v-for="(answer, index) in acceptableAnswers" :key="index" class="input-group mb-2">
             <input
                 type="text"
@@ -40,8 +45,12 @@ function updateAnswer(index: number, value: string): void {
                 :value="answer"
                 @input="updateAnswer(index, ($event.target as HTMLInputElement).value)"
             />
-            <button type="button" class="btn btn-outline-danger" @click="removeAnswer(index)">Remove</button>
+            <button type="button" class="btn btn-outline-danger" @click="removeAnswer(index)">
+                {{ t('questions.common.remove') }}
+            </button>
         </div>
-        <button type="button" class="btn btn-outline-secondary btn-sm" @click="addAnswer">Add answer</button>
+        <button type="button" class="btn btn-outline-secondary btn-sm" @click="addAnswer">
+            {{ t('questions.editor.openShort.addAnswer') }}
+        </button>
     </div>
 </template>

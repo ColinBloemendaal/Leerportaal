@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
+
 const correctAnswer = defineModel<number>('correct_answer', { required: true });
 const tolerance = defineModel<number>('tolerance', { required: true });
 </script>
@@ -6,7 +10,9 @@ const tolerance = defineModel<number>('tolerance', { required: true });
 <template>
     <div class="row mb-3">
         <div class="col">
-            <label for="numeric-correct-answer" class="form-label">Correct answer</label>
+            <label for="numeric-correct-answer" class="form-label">{{
+                t('questions.editor.numeric.correctAnswer')
+            }}</label>
             <input
                 id="numeric-correct-answer"
                 v-model.number="correctAnswer"
@@ -16,7 +22,7 @@ const tolerance = defineModel<number>('tolerance', { required: true });
             />
         </div>
         <div class="col">
-            <label for="numeric-tolerance" class="form-label">Tolerance (±)</label>
+            <label for="numeric-tolerance" class="form-label">{{ t('questions.editor.numeric.tolerance') }}</label>
             <input
                 id="numeric-tolerance"
                 v-model.number="tolerance"

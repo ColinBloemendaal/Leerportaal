@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import type { DraggableItem, DropZone } from '@/types/questions';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const imageUrl = defineModel<string>('image_url', { required: true });
 const dropZones = defineModel<DropZone[]>('drop_zones', { required: true });
@@ -40,11 +43,11 @@ function setCorrectItem(zoneId: string, itemId: string): void {
 
 <template>
     <div class="mb-3">
-        <label for="drag-drop-image-url" class="form-label">Image URL</label>
+        <label for="drag-drop-image-url" class="form-label">{{ t('questions.editor.dragDropImage.imageUrl') }}</label>
         <input id="drag-drop-image-url" v-model="imageUrl" type="text" class="form-control" />
     </div>
     <div class="mb-3">
-        <label class="form-label">Draggable items</label>
+        <label class="form-label">{{ t('questions.editor.dragDropImage.draggableItems') }}</label>
         <div v-for="item in draggableItems" :key="item.id" class="input-group mb-2">
             <input
                 type="text"
@@ -52,18 +55,22 @@ function setCorrectItem(zoneId: string, itemId: string): void {
                 :value="item.text"
                 @input="updateItemText(item.id, ($event.target as HTMLInputElement).value)"
             />
-            <button type="button" class="btn btn-outline-danger" @click="removeItem(item.id)">Remove</button>
+            <button type="button" class="btn btn-outline-danger" @click="removeItem(item.id)">
+                {{ t('questions.common.remove') }}
+            </button>
         </div>
-        <button type="button" class="btn btn-outline-secondary btn-sm" @click="addItem">Add item</button>
+        <button type="button" class="btn btn-outline-secondary btn-sm" @click="addItem">
+            {{ t('questions.editor.dragDropImage.addItem') }}
+        </button>
     </div>
     <div class="mb-3">
-        <label class="form-label">Drop zones (percent of image)</label>
+        <label class="form-label">{{ t('questions.editor.dragDropImage.dropZones') }}</label>
         <div v-for="zone in dropZones" :key="zone.id" class="row g-2 align-items-center mb-2">
             <div class="col">
                 <input
                     type="text"
                     class="form-control"
-                    placeholder="Label"
+                    :placeholder="t('questions.editor.dragDropImage.labelPlaceholder')"
                     :value="zone.label"
                     @input="updateZone(zone.id, 'label', ($event.target as HTMLInputElement).value)"
                 />
@@ -85,14 +92,18 @@ function setCorrectItem(zoneId: string, itemId: string): void {
                     :value="correctPlacements[zone.id] ?? ''"
                     @change="setCorrectItem(zone.id, ($event.target as HTMLSelectElement).value)"
                 >
-                    <option value="" disabled>Correct item</option>
+                    <option value="" disabled>{{ t('questions.editor.dragDropImage.correctItem') }}</option>
                     <option v-for="item in draggableItems" :key="item.id" :value="item.id">{{ item.text }}</option>
                 </select>
             </div>
             <div class="col-auto">
-                <button type="button" class="btn btn-outline-danger" @click="removeZone(zone.id)">Remove</button>
+                <button type="button" class="btn btn-outline-danger" @click="removeZone(zone.id)">
+                    {{ t('questions.common.remove') }}
+                </button>
             </div>
         </div>
-        <button type="button" class="btn btn-outline-secondary btn-sm" @click="addZone">Add zone</button>
+        <button type="button" class="btn btn-outline-secondary btn-sm" @click="addZone">
+            {{ t('questions.editor.dragDropImage.addZone') }}
+        </button>
     </div>
 </template>

@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
+
 const allowedMimeTypes = defineModel<string[]>('allowed_mime_types', { required: true });
 const maxSizeBytes = defineModel<number | null>('max_size_bytes', { required: true });
 
@@ -12,7 +16,9 @@ function updateMimeTypes(raw: string): void {
 
 <template>
     <div class="mb-3">
-        <label for="file-upload-mime-types" class="form-label">Allowed file types (comma-separated MIME types)</label>
+        <label for="file-upload-mime-types" class="form-label">{{
+            t('questions.editor.fileUpload.allowedTypes')
+        }}</label>
         <input
             id="file-upload-mime-types"
             type="text"
@@ -22,7 +28,7 @@ function updateMimeTypes(raw: string): void {
         />
     </div>
     <div class="mb-3">
-        <label for="file-upload-max-size" class="form-label">Maximum file size (bytes)</label>
+        <label for="file-upload-max-size" class="form-label">{{ t('questions.editor.fileUpload.maxSize') }}</label>
         <input id="file-upload-max-size" v-model.number="maxSizeBytes" type="number" class="form-control" min="1" />
     </div>
 </template>

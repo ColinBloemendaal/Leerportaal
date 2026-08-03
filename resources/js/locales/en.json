@@ -354,5 +354,100 @@
             "stop": "Stop read-aloud",
             "speed": "Read-aloud speed"
         }
+    },
+    "questions": {
+        "common": {
+            "remove": "Remove"
+        },
+        "editor": {
+            "multipleChoice": {
+                "options": "Options",
+                "correctAnswerAria": "Mark '{text}' as the correct answer",
+                "addOption": "Add option"
+            },
+            "multipleResponse": {
+                "options": "Options",
+                "correctAnswerAria": "Mark '{text}' as a correct answer",
+                "addOption": "Add option"
+            },
+            "trueFalse": {
+                "correctAnswer": "Correct answer",
+                "true": "True",
+                "false": "False"
+            },
+            "openShort": {
+                "matchMode": "Match mode",
+                "exactMatch": "Exact match",
+                "contains": "Contains",
+                "regex": "Regular expression",
+                "caseSensitive": "Case sensitive",
+                "acceptableAnswers": "Acceptable answers",
+                "addAnswer": "Add answer"
+            },
+            "essay": {
+                "minWords": "Minimum words",
+                "maxWords": "Maximum words",
+                "rubric": "Grading rubric",
+                "criterionPlaceholder": "Criterion",
+                "pointsPlaceholder": "Points",
+                "addCriterion": "Add criterion"
+            },
+            "matching": {
+                "pairs": "Pairs",
+                "left": "Left",
+                "right": "Right",
+                "addPair": "Add pair"
+            },
+            "ordering": {
+                "itemsLabel": "Items, in the correct order",
+                "moveUpAria": "Move '{text}' up",
+                "moveDownAria": "Move '{text}' down",
+                "addItem": "Add item"
+            },
+            "fillInBlank": {
+                "template": "Template (use {placeholder} for each blank)",
+                "blanks": "Blanks",
+                "acceptableAnswersPlaceholder": "Acceptable answers, comma-separated",
+                "caseSensitiveAria": "Case sensitive for blank {id}",
+                "addBlank": "Add blank"
+            },
+            "dropdownInText": {
+                "template": "Template (use {placeholder} for each blank)",
+                "blanks": "Blanks",
+                "optionsPlaceholder": "Options, comma-separated",
+                "correctOption": "Correct option",
+                "addBlank": "Add blank"
+            },
+            "numeric": {
+                "correctAnswer": "Correct answer",
+                "tolerance": "Tolerance (±)"
+            },
+            "hotspotImage": {
+                "imageUrl": "Image URL",
+                "regionsLabel": "Regions (percent of image)",
+                "correctRegionAria": "Mark '{label}' as a correct region",
+                "labelPlaceholder": "Label",
+                "addRegion": "Add region"
+            },
+            "dragDropImage": {
+                "imageUrl": "Image URL",
+                "draggableItems": "Draggable items",
+                "addItem": "Add item",
+                "dropZones": "Drop zones (percent of image)",
+                "labelPlaceholder": "Label",
+                "correctItem": "Correct item",
+                "addZone": "Add zone"
+            },
+            "likert": {
+                "scalePoints": "Scale points",
+                "valuePlaceholder": "Value",
+                "labelPlaceholder": "Label",
+                "addScalePoint": "Add scale point"
+            },
+            "fileUpload": {
+                "allowedTypes": "Allowed file types (comma-separated MIME types)",
+                "maxSize": "Maximum file size (bytes)"
+            }
+        }
     }
 }

@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import type { HotspotRegion } from '@/types/questions';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const imageUrl = defineModel<string>('image_url', { required: true });
 const regions = defineModel<HotspotRegion[]>('regions', { required: true });
@@ -27,18 +30,18 @@ function toggleCorrect(id: string, checked: boolean): void {
 
 <template>
     <div class="mb-3">
-        <label for="hotspot-image-url" class="form-label">Image URL</label>
+        <label for="hotspot-image-url" class="form-label">{{ t('questions.editor.hotspotImage.imageUrl') }}</label>
         <input id="hotspot-image-url" v-model="imageUrl" type="text" class="form-control" />
     </div>
     <div class="mb-3">
-        <label class="form-label">Regions (percent of image)</label>
+        <label class="form-label">{{ t('questions.editor.hotspotImage.regionsLabel') }}</label>
         <div v-for="region in regions" :key="region.id" class="row g-2 align-items-center mb-2">
             <div class="col-auto">
                 <input
                     type="checkbox"
                     class="form-check-input"
                     :checked="correctRegionIds.includes(region.id)"
-                    :aria-label="`Mark '${region.label}' as a correct region`"
+                    :aria-label="t('questions.editor.hotspotImage.correctRegionAria', { label: region.label })"
                     @change="toggleCorrect(region.id, ($event.target as HTMLInputElement).checked)"
                 />
             </div>
@@ -46,7 +49,7 @@ function toggleCorrect(id: string, checked: boolean): void {
                 <input
                     type="text"
                     class="form-control"
-                    placeholder="Label"
+                    :placeholder="t('questions.editor.hotspotImage.labelPlaceholder')"
                     :value="region.label"
                     @input="updateRegion(region.id, 'label', ($event.target as HTMLInputElement).value)"
                 />
@@ -63,9 +66,13 @@ function toggleCorrect(id: string, checked: boolean): void {
                 />
             </div>
             <div class="col-auto">
-                <button type="button" class="btn btn-outline-danger" @click="removeRegion(region.id)">Remove</button>
+                <button type="button" class="btn btn-outline-danger" @click="removeRegion(region.id)">
+                    {{ t('questions.common.remove') }}
+                </button>
             </div>
         </div>
-        <button type="button" class="btn btn-outline-secondary btn-sm" @click="addRegion">Add region</button>
+        <button type="button" class="btn btn-outline-secondary btn-sm" @click="addRegion">
+            {{ t('questions.editor.hotspotImage.addRegion') }}
+        </button>
     </div>
 </template>

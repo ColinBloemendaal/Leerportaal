@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import type { MultipleResponseOption } from '@/types/questions';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const options = defineModel<MultipleResponseOption[]>('options', { required: true });
 const correctOptionIds = defineModel<string[]>('correct_option_ids', { required: true });
@@ -26,14 +29,14 @@ function toggleCorrect(id: string, checked: boolean): void {
 
 <template>
     <div class="mb-3">
-        <label class="form-label">Options</label>
+        <label class="form-label">{{ t('questions.editor.multipleResponse.options') }}</label>
         <div v-for="option in options" :key="option.id" class="input-group mb-2">
             <div class="input-group-text">
                 <input
                     type="checkbox"
                     class="form-check-input mt-0"
                     :checked="correctOptionIds.includes(option.id)"
-                    :aria-label="`Mark '${option.text}' as a correct answer`"
+                    :aria-label="t('questions.editor.multipleResponse.correctAnswerAria', { text: option.text })"
                     @change="toggleCorrect(option.id, ($event.target as HTMLInputElement).checked)"
                 />
             </div>
@@ -43,8 +46,12 @@ function toggleCorrect(id: string, checked: boolean): void {
                 :value="option.text"
                 @input="updateOptionText(option.id, ($event.target as HTMLInputElement).value)"
             />
-            <button type="button" class="btn btn-outline-danger" @click="removeOption(option.id)">Remove</button>
+            <button type="button" class="btn btn-outline-danger" @click="removeOption(option.id)">
+                {{ t('questions.common.remove') }}
+            </button>
         </div>
-        <button type="button" class="btn btn-outline-secondary btn-sm" @click="addOption">Add option</button>
+        <button type="button" class="btn btn-outline-secondary btn-sm" @click="addOption">
+            {{ t('questions.editor.multipleResponse.addOption') }}
+        </button>
     </div>
 </template>
