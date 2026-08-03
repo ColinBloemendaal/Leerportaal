@@ -448,6 +448,47 @@
                 "allowedTypes": "Allowed file types (comma-separated MIME types)",
                 "maxSize": "Maximum file size (bytes)"
             }
+        },
+        "player": {
+            "common": {
+                "answerAria": "Answer for question {id}"
+            },
+            "trueFalse": {
+                "true": "True",
+                "false": "False"
+            },
+            "essay": {
+                "minWords": "Minimum {count} words.",
+                "maxWords": "Maximum {count} words."
+            },
+            "matching": {
+                "chooseMatch": "Choose a match"
+            },
+            "ordering": {
+                "orderAria": "Order the items for question {id}",
+                "moveUpAria": "Move '{text}' up",
+                "moveDownAria": "Move '{text}' down"
+            },
+            "fillInBlank": {
+                "blankAria": "Blank {blankId} for question {questionId}"
+            },
+            "dropdownInText": {
+                "blankAria": "Blank {blankId} for question {questionId}",
+                "choose": "Choose"
+            },
+            "numeric": {
+                "answerAria": "Numeric answer for question {id}"
+            },
+            "hotspotImage": {
+                "selectArea": "Select the correct area(s)"
+            },
+            "dragDropImage": {
+                "chooseItem": "Choose an item"
+            },
+            "fileUpload": {
+                "uploadAria": "File upload for question {id}",
+                "maxSize": "Maximum size: {size} MB."
+            }
         }
     }
 }

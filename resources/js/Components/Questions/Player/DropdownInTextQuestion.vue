@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import type { DropdownInTextPayload } from '@/types/questions';
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{ payload: DropdownInTextPayload; questionId: string | number }>();
+const { t } = useI18n();
 
 const answer = defineModel<Record<string, string>>({ default: () => ({}) });
 
@@ -45,11 +47,11 @@ function update(blankId: string, value: string): void {
             <select
                 v-else
                 class="d-inline-block w-auto mx-1"
-                :aria-label="`Blank ${segment.id} for question ${questionId}`"
+                :aria-label="t('questions.player.dropdownInText.blankAria', { blankId: segment.id, questionId })"
                 :value="answer[segment.id] ?? ''"
                 @change="update(segment.id, ($event.target as HTMLSelectElement).value)"
             >
-                <option value="" disabled>Choose</option>
+                <option value="" disabled>{{ t('questions.player.dropdownInText.choose') }}</option>
                 <option v-for="option in optionsFor(segment.id)" :key="option" :value="option">{{ option }}</option>
             </select>
         </template>

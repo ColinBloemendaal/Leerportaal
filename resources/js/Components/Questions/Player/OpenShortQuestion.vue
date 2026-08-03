@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
+
 defineProps<{ questionId: string | number }>();
 
 const answer = defineModel<string>({ default: '' });
+const { t } = useI18n();
 </script>
 
 <template>
@@ -10,6 +13,6 @@ const answer = defineModel<string>({ default: '' });
         v-model="answer"
         type="text"
         class="form-control"
-        :aria-label="`Answer for question ${questionId}`"
+        :aria-label="t('questions.player.common.answerAria', { id: questionId })"
     />
 </template>

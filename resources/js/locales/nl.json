@@ -448,6 +448,47 @@
                 "allowedTypes": "Toegestane bestandstypen (komma-gescheiden MIME-types)",
                 "maxSize": "Maximale bestandsgrootte (bytes)"
             }
+        },
+        "player": {
+            "common": {
+                "answerAria": "Antwoord voor vraag {id}"
+            },
+            "trueFalse": {
+                "true": "Waar",
+                "false": "Onwaar"
+            },
+            "essay": {
+                "minWords": "Minimaal {count} woorden.",
+                "maxWords": "Maximaal {count} woorden."
+            },
+            "matching": {
+                "chooseMatch": "Kies een match"
+            },
+            "ordering": {
+                "orderAria": "Zet de items in volgorde voor vraag {id}",
+                "moveUpAria": "'{text}' omhoog verplaatsen",
+                "moveDownAria": "'{text}' omlaag verplaatsen"
+            },
+            "fillInBlank": {
+                "blankAria": "Invulveld {blankId} voor vraag {questionId}"
+            },
+            "dropdownInText": {
+                "blankAria": "Invulveld {blankId} voor vraag {questionId}",
+                "choose": "Kies"
+            },
+            "numeric": {
+                "answerAria": "Numeriek antwoord voor vraag {id}"
+            },
+            "hotspotImage": {
+                "selectArea": "Selecteer het/de juiste gebied(en)"
+            },
+            "dragDropImage": {
+                "chooseItem": "Kies een item"
+            },
+            "fileUpload": {
+                "uploadAria": "Bestand uploaden voor vraag {id}",
+                "maxSize": "Maximale grootte: {size} MB."
+            }
         }
     }
 }

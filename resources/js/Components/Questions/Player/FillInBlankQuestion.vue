@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import type { FillInBlankPayload } from '@/types/questions';
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{ payload: FillInBlankPayload; questionId: string | number }>();
+const { t } = useI18n();
 
 const answer = defineModel<Record<string, string>>({ default: () => ({}) });
 
@@ -44,7 +46,7 @@ function update(blankId: string, value: string): void {
                 type="text"
                 class="d-inline-block mx-1"
                 style="width: 8rem"
-                :aria-label="`Blank ${segment.id} for question ${questionId}`"
+                :aria-label="t('questions.player.fillInBlank.blankAria', { blankId: segment.id, questionId })"
                 :value="answer[segment.id] ?? ''"
                 @input="update(segment.id, ($event.target as HTMLInputElement).value)"
             />

@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import type { OrderingPayload } from '@/types/questions';
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{ payload: OrderingPayload; questionId: string | number }>();
+const { t } = useI18n();
 
 // Answer is the list of item ids in the cursist's chosen order. Starts
 // shuffled (not in the payload's correct order) so the player never
@@ -25,7 +27,10 @@ function move(index: number, direction: -1 | 1): void {
 </script>
 
 <template>
-    <ol class="list-group list-group-numbered" :aria-label="`Order the items for question ${questionId}`">
+    <ol
+        class="list-group list-group-numbered"
+        :aria-label="t('questions.player.ordering.orderAria', { id: questionId })"
+    >
         <li
             v-for="(id, index) in orderedIds"
             :key="id"
@@ -37,7 +42,7 @@ function move(index: number, direction: -1 | 1): void {
                     type="button"
                     class="btn btn-sm btn-outline-secondary"
                     :disabled="index === 0"
-                    :aria-label="`Move '${itemText(id)}' up`"
+                    :aria-label="t('questions.player.ordering.moveUpAria', { text: itemText(id) })"
                     @click="move(index, -1)"
                 >
                     ↑
@@ -46,7 +51,7 @@ function move(index: number, direction: -1 | 1): void {
                     type="button"
                     class="btn btn-sm btn-outline-secondary"
                     :disabled="index === orderedIds.length - 1"
-                    :aria-label="`Move '${itemText(id)}' down`"
+                    :aria-label="t('questions.player.ordering.moveDownAria', { text: itemText(id) })"
                     @click="move(index, 1)"
                 >
                     ↓

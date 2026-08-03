@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import type { HotspotImagePayload } from '@/types/questions';
+import { useI18n } from 'vue-i18n';
 
 defineProps<{ payload: HotspotImagePayload; questionId: string | number }>();
 
 const answer = defineModel<string[]>({ default: () => [] });
+const { t } = useI18n();
 
 function toggle(id: string, checked: boolean): void {
     answer.value = checked ? [...answer.value, id] : answer.value.filter((regionId) => regionId !== id);
@@ -40,7 +42,7 @@ function toggle(id: string, checked: boolean): void {
             ></button>
         </div>
         <fieldset>
-            <legend class="form-label h6">Select the correct area(s)</legend>
+            <legend class="form-label h6">{{ t('questions.player.hotspotImage.selectArea') }}</legend>
             <div v-for="region in payload.regions" :key="region.id" class="form-check">
                 <input
                     :id="`question-${questionId}-region-${region.id}`"

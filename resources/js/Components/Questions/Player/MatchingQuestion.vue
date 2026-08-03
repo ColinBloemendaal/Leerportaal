@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import type { MatchingPayload } from '@/types/questions';
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{ payload: MatchingPayload; questionId: string | number }>();
 
 const answer = defineModel<Record<string, string>>({ default: () => ({}) });
+const { t } = useI18n();
 
 // Shuffled once per render via a stable sort key, not re-shuffled on every
 // answer change, so the option order doesn't jump around as the cursist
@@ -26,7 +28,7 @@ function select(pairId: string, value: string): void {
                 :value="answer[pair.id] ?? ''"
                 @change="select(pair.id, ($event.target as HTMLSelectElement).value)"
             >
-                <option value="" disabled>Choose a match</option>
+                <option value="" disabled>{{ t('questions.player.matching.chooseMatch') }}</option>
                 <option v-for="value in shuffledRightValues" :key="value" :value="value">{{ value }}</option>
             </select>
         </div>

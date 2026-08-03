@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import type { DragDropImagePayload } from '@/types/questions';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{ payload: DragDropImagePayload; questionId: string | number }>();
 
 const answer = defineModel<Record<string, string>>({ default: () => ({}) });
+const { t } = useI18n();
 
 function select(zoneId: string, itemId: string): void {
     answer.value = { ...answer.value, [zoneId]: itemId };
@@ -45,7 +47,7 @@ function itemText(id: string): string {
                     :value="answer[zone.id] ?? ''"
                     @change="select(zone.id, ($event.target as HTMLSelectElement).value)"
                 >
-                    <option value="" disabled>Choose an item</option>
+                    <option value="" disabled>{{ t('questions.player.dragDropImage.chooseItem') }}</option>
                     <option v-for="item in payload.draggable_items" :key="item.id" :value="item.id">
                         {{ item.text }}
                     </option>
