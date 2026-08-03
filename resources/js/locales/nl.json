@@ -331,5 +331,28 @@
         "issuedOn": "Uitgegeven op {date}",
         "notFoundTitle": "Certificaat niet gevonden",
         "notFoundDescription": "Deze verificatiecode komt niet overeen met een uitgegeven certificaat."
+    },
+    "components": {
+        "appFooter": {
+            "terms": "Voorwaarden",
+            "privacy": "Privacy"
+        },
+        "impersonationBanner": {
+            "notice": "{impersonator} impersoneert {target}.",
+            "stop": "Stoppen met impersoneren"
+        },
+        "localeField": {
+            "languageFor": "Taal voor {label}"
+        },
+        "translationCompleteness": {
+            "complete": "Compleet",
+            "incomplete": "Niet compleet"
+        },
+        "voorleesControls": {
+            "pause": "Voorlezen pauzeren",
+            "play": "Voorlezen starten",
+            "stop": "Voorlezen stoppen",
+            "speed": "Voorleessnelheid"
+        }
     }
 }

@@ -331,5 +331,28 @@
         "issuedOn": "Issued on {date}",
         "notFoundTitle": "Certificate not found",
         "notFoundDescription": "This verification code doesn't match any issued certificate."
+    },
+    "components": {
+        "appFooter": {
+            "terms": "Terms",
+            "privacy": "Privacy"
+        },
+        "impersonationBanner": {
+            "notice": "{impersonator} is impersonating {target}.",
+            "stop": "Stop impersonating"
+        },
+        "localeField": {
+            "languageFor": "Language for {label}"
+        },
+        "translationCompleteness": {
+            "complete": "Complete",
+            "incomplete": "Incomplete"
+        },
+        "voorleesControls": {
+            "pause": "Pause read-aloud",
+            "play": "Play read-aloud",
+            "stop": "Stop read-aloud",
+            "speed": "Read-aloud speed"
+        }
     }
 }

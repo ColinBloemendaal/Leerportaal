@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import type { TranslatableValue } from '@/types/translatable';
 import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const props = defineProps<{
     label: string;
@@ -35,7 +38,7 @@ const fieldId = computed(() => props.id ?? `locale-field-${props.label.toLowerCa
                 v-if="availableLocales.length > 1"
                 v-model="activeLocale"
                 class="form-select form-select-sm w-auto"
-                :aria-label="`Language for ${label}`"
+                :aria-label="t('components.localeField.languageFor', { label })"
             >
                 <option v-for="locale in availableLocales" :key="locale" :value="locale">
                     {{ locale.toUpperCase() }}

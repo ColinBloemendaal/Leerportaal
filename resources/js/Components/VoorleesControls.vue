@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { localeToBcp47, useVoorlees } from '@/Composables/useVoorlees';
+import { useI18n } from 'vue-i18n';
 
 /**
  * Drop this next to any block or question's rendered text to give it a
@@ -15,6 +16,7 @@ const props = defineProps<{
 }>();
 
 const { status, speed, supported, play, pause, resume, stop, setSpeed } = useVoorlees();
+const { t } = useI18n();
 
 function toggle(): void {
     if (status.value === 'playing') {
@@ -36,7 +38,9 @@ function onSpeedChange(event: Event): void {
         <button
             type="button"
             class="btn btn-sm btn-outline-secondary"
-            :aria-label="status === 'playing' ? 'Pause read-aloud' : 'Play read-aloud'"
+            :aria-label="
+                status === 'playing' ? t('components.voorleesControls.pause') : t('components.voorleesControls.play')
+            "
             @click="toggle"
         >
             {{ status === 'playing' ? '⏸' : '▶' }}
@@ -45,14 +49,14 @@ function onSpeedChange(event: Event): void {
             type="button"
             class="btn btn-sm btn-outline-secondary"
             :disabled="status === 'idle'"
-            aria-label="Stop read-aloud"
+            :aria-label="t('components.voorleesControls.stop')"
             @click="stop"
         >
             ⏹
         </button>
         <select
             class="form-select form-select-sm w-auto"
-            aria-label="Read-aloud speed"
+            :aria-label="t('components.voorleesControls.speed')"
             :value="speed"
             @change="onSpeedChange"
         >

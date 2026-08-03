@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const page = usePage();
 const footer = computed(() => page.props.footer);
 
@@ -22,10 +24,10 @@ const hasContent = computed(
                 {{ footer.supportEmail }}
             </a>
             <a v-if="footer.termsUrl" :href="footer.termsUrl" class="text-muted me-3" target="_blank" rel="noopener">
-                Terms
+                {{ t('components.appFooter.terms') }}
             </a>
             <a v-if="footer.privacyUrl" :href="footer.privacyUrl" class="text-muted" target="_blank" rel="noopener">
-                Privacy
+                {{ t('components.appFooter.privacy') }}
             </a>
         </p>
     </footer>
