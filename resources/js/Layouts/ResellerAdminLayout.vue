@@ -48,6 +48,14 @@ const { t } = useI18n();
                             t('layouts.reseller.myExports')
                         }}</Link>
                     </li>
+                    <li class="nav-item">
+                        <Link href="/notifications" class="nav-link text-white">
+                            {{ t('common.notifications') }}
+                            <span v-if="$page.props.notificationsUnreadCount > 0" class="badge text-bg-danger ms-1">
+                                {{ $page.props.notificationsUnreadCount }}
+                            </span>
+                        </Link>
+                    </li>
                 </ul>
             </aside>
 

@@ -19,6 +19,7 @@ use App\Http\Controllers\CursistDashboardController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\InvitesController;
 use App\Http\Controllers\KlantDashboardController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PlatformDashboardController;
 use App\Http\Controllers\PlatformHealthController;
 use App\Http\Controllers\QuizAttemptIndexController;
@@ -152,6 +153,12 @@ Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->grou
         Route::get('/{export}/download', [ExportController::class, 'download'])
             ->middleware('signed')
             ->name('download');
+    });
+
+    Route::prefix('notifications')->name('notifications.')->group(function () {
+        Route::get('/', [NotificationController::class, 'index'])->name('index');
+        Route::post('/read-all', [NotificationController::class, 'markAllRead'])->name('read-all');
+        Route::post('/{notification}/read', [NotificationController::class, 'markRead'])->name('read');
     });
 
     Route::prefix('admin/platform')->name('admin.platform.')->group(function () {

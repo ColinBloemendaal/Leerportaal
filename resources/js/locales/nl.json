@@ -68,7 +68,8 @@
     "common": {
         "exportCsv": "Exporteren als CSV",
         "pagination": "Pagina {current} van {last} ({total} totaal)",
-        "noResultsFiltered": "Geen resultaten voor deze filters."
+        "noResultsFiltered": "Geen resultaten voor deze filters.",
+        "notifications": "Meldingen"
     },
     "admin": {
         "platform": {
@@ -536,5 +537,11 @@
                 "title": "Video"
             }
         }
+    },
+    "notifications": {
+        "title": "Meldingen",
+        "markAllRead": "Alles als gelezen markeren",
+        "markRead": "Als gelezen markeren",
+        "empty": "Nog geen meldingen."
     }
 }

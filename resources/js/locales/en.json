@@ -68,7 +68,8 @@
     "common": {
         "exportCsv": "Export as CSV",
         "pagination": "Page {current} of {last} ({total} total)",
-        "noResultsFiltered": "No results match these filters."
+        "noResultsFiltered": "No results match these filters.",
+        "notifications": "Notifications"
     },
     "admin": {
         "platform": {
@@ -536,5 +537,11 @@
                 "title": "Video"
             }
         }
+    },
+    "notifications": {
+        "title": "Notifications",
+        "markAllRead": "Mark all as read",
+        "markRead": "Mark as read",
+        "empty": "No notifications yet."
     }
 }

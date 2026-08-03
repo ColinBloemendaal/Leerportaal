@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Contracts\Repositories\NotificationRepository;
 use App\Contracts\Repositories\ResellerThemeRepository;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -57,6 +58,10 @@ final class HandleInertiaRequests extends Middleware
             ] : null,
 
             'footer' => fn () => $this->footerProps(),
+
+            'notificationsUnreadCount' => fn () => $request->user() === null
+                ? 0
+                : app(NotificationRepository::class)->unreadCountForUser($request->user()->id),
         ];
     }
 

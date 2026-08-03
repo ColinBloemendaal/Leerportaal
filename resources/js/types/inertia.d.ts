@@ -19,6 +19,7 @@ declare module '@inertiajs/core' {
                 termsUrl: string | null;
                 privacyUrl: string | null;
             };
+            notificationsUnreadCount: number;
         };
     }
 }
