@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import { useForm, usePage } from '@inertiajs/vue3';
+import { useI18n } from 'vue-i18n';
 
 defineOptions({ layout: GuestLayout });
+
+const { t } = useI18n();
 
 const form = useForm({
     email: '',
@@ -16,13 +19,13 @@ function submit() {
 </script>
 
 <template>
-    <h1 class="h4 mb-4">Forgot your password?</h1>
+    <h1 class="h4 mb-4">{{ t('auth.forgotPassword.title') }}</h1>
 
     <div v-if="page.props.flash.status" class="alert alert-success">{{ page.props.flash.status }}</div>
 
     <form @submit.prevent="submit">
         <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
+            <label for="email" class="form-label">{{ t('auth.forgotPassword.email') }}</label>
             <input
                 id="email"
                 v-model="form.email"
@@ -35,6 +38,8 @@ function submit() {
             <div v-if="form.errors.email" class="invalid-feedback">{{ form.errors.email }}</div>
         </div>
 
-        <button type="submit" class="btn btn-primary w-100" :disabled="form.processing">Send reset link</button>
+        <button type="submit" class="btn btn-primary w-100" :disabled="form.processing">
+            {{ t('auth.forgotPassword.submit') }}
+        </button>
     </form>
 </template>

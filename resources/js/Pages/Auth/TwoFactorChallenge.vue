@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import { useForm } from '@inertiajs/vue3';
+import { useI18n } from 'vue-i18n';
 
 defineOptions({ layout: GuestLayout });
+
+const { t } = useI18n();
 
 const form = useForm({
     code: '',
@@ -14,12 +17,12 @@ function submit() {
 </script>
 
 <template>
-    <h1 class="h4 mb-3">Two-factor authentication</h1>
-    <p class="text-muted">Enter the code from your authenticator app, or one of your recovery codes.</p>
+    <h1 class="h4 mb-3">{{ t('auth.twoFactorChallenge.title') }}</h1>
+    <p class="text-muted">{{ t('auth.twoFactorChallenge.description') }}</p>
 
     <form @submit.prevent="submit">
         <div class="mb-3">
-            <label for="code" class="form-label">Code</label>
+            <label for="code" class="form-label">{{ t('auth.twoFactorChallenge.code') }}</label>
             <input
                 id="code"
                 v-model="form.code"
@@ -34,6 +37,8 @@ function submit() {
             <div v-if="form.errors.code" class="invalid-feedback">{{ form.errors.code }}</div>
         </div>
 
-        <button type="submit" class="btn btn-primary w-100" :disabled="form.processing">Verify</button>
+        <button type="submit" class="btn btn-primary w-100" :disabled="form.processing">
+            {{ t('auth.twoFactorChallenge.submit') }}
+        </button>
     </form>
 </template>

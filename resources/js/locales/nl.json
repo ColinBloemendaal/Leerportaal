@@ -24,5 +24,45 @@
             "dashboard": "Dashboard",
             "myExports": "Mijn exports"
         }
+    },
+    "auth": {
+        "login": {
+            "title": "Inloggen",
+            "email": "E-mailadres",
+            "password": "Wachtwoord",
+            "rememberMe": "Onthoud mij",
+            "submit": "Inloggen",
+            "forgotPassword": "Wachtwoord vergeten?"
+        },
+        "forgotPassword": {
+            "title": "Wachtwoord vergeten?",
+            "email": "E-mailadres",
+            "submit": "Verstuur resetlink"
+        },
+        "resetPassword": {
+            "title": "Wachtwoord opnieuw instellen",
+            "email": "E-mailadres",
+            "password": "Nieuw wachtwoord",
+            "passwordConfirmation": "Bevestig wachtwoord",
+            "submit": "Wachtwoord instellen"
+        },
+        "twoFactorChallenge": {
+            "title": "Tweestapsverificatie",
+            "description": "Voer de code uit je authenticator-app in, of een van je herstelcodes.",
+            "code": "Code",
+            "submit": "Verifiëren"
+        },
+        "verifyEmail": {
+            "title": "Bevestig je e-mailadres",
+            "description": "Bedankt voor je aanmelding! Bevestig eerst je e-mailadres via de link die we je hebben gemaild.",
+            "resend": "Verificatiemail opnieuw versturen"
+        },
+        "acceptInvite": {
+            "title": "Welkom, {name}",
+            "description": "Stel een wachtwoord in voor {email} om je account af te ronden.",
+            "password": "Wachtwoord",
+            "passwordConfirmation": "Bevestig wachtwoord",
+            "submit": "Account activeren"
+        }
     }
 }

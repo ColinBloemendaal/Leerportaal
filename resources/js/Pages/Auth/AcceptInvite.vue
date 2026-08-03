@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import { useForm } from '@inertiajs/vue3';
+import { useI18n } from 'vue-i18n';
 
 defineOptions({ layout: GuestLayout });
+
+const { t } = useI18n();
 
 const props = defineProps<{
     acceptUrl: string;
@@ -21,12 +24,12 @@ function submit() {
 </script>
 
 <template>
-    <h1 class="h4 mb-1">Welcome, {{ name }}</h1>
-    <p class="text-muted mb-4">Set a password for {{ email }} to finish setting up your account.</p>
+    <h1 class="h4 mb-1">{{ t('auth.acceptInvite.title', { name }) }}</h1>
+    <p class="text-muted mb-4">{{ t('auth.acceptInvite.description', { email }) }}</p>
 
     <form @submit.prevent="submit">
         <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
+            <label for="password" class="form-label">{{ t('auth.acceptInvite.password') }}</label>
             <input
                 id="password"
                 v-model="form.password"
@@ -40,7 +43,9 @@ function submit() {
         </div>
 
         <div class="mb-3">
-            <label for="password_confirmation" class="form-label">Confirm password</label>
+            <label for="password_confirmation" class="form-label">{{
+                t('auth.acceptInvite.passwordConfirmation')
+            }}</label>
             <input
                 id="password_confirmation"
                 v-model="form.password_confirmation"
@@ -50,6 +55,8 @@ function submit() {
             />
         </div>
 
-        <button type="submit" class="btn btn-primary w-100" :disabled="form.processing">Activate account</button>
+        <button type="submit" class="btn btn-primary w-100" :disabled="form.processing">
+            {{ t('auth.acceptInvite.submit') }}
+        </button>
     </form>
 </template>

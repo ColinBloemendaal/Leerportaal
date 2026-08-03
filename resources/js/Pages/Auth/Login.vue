@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import { Link, useForm } from '@inertiajs/vue3';
+import { useI18n } from 'vue-i18n';
 
 defineOptions({ layout: GuestLayout });
+
+const { t } = useI18n();
 
 const form = useForm({
     email: '',
@@ -18,11 +21,11 @@ function submit() {
 </script>
 
 <template>
-    <h1 class="h4 mb-4">Sign in</h1>
+    <h1 class="h4 mb-4">{{ t('auth.login.title') }}</h1>
 
     <form @submit.prevent="submit">
         <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
+            <label for="email" class="form-label">{{ t('auth.login.email') }}</label>
             <input
                 id="email"
                 v-model="form.email"
@@ -36,7 +39,7 @@ function submit() {
         </div>
 
         <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
+            <label for="password" class="form-label">{{ t('auth.login.password') }}</label>
             <input
                 id="password"
                 v-model="form.password"
@@ -50,13 +53,15 @@ function submit() {
 
         <div class="mb-3 form-check">
             <input id="remember" v-model="form.remember" type="checkbox" class="form-check-input" />
-            <label for="remember" class="form-check-label">Remember me</label>
+            <label for="remember" class="form-check-label">{{ t('auth.login.rememberMe') }}</label>
         </div>
 
-        <button type="submit" class="btn btn-primary w-100" :disabled="form.processing">Sign in</button>
+        <button type="submit" class="btn btn-primary w-100" :disabled="form.processing">
+            {{ t('auth.login.submit') }}
+        </button>
 
         <div class="text-center mt-3">
-            <Link href="/forgot-password" class="small">Forgot your password?</Link>
+            <Link href="/forgot-password" class="small">{{ t('auth.login.forgotPassword') }}</Link>
         </div>
     </form>
 </template>

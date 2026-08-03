@@ -24,5 +24,45 @@
             "dashboard": "Dashboard",
             "myExports": "My exports"
         }
+    },
+    "auth": {
+        "login": {
+            "title": "Sign in",
+            "email": "Email",
+            "password": "Password",
+            "rememberMe": "Remember me",
+            "submit": "Sign in",
+            "forgotPassword": "Forgot your password?"
+        },
+        "forgotPassword": {
+            "title": "Forgot your password?",
+            "email": "Email",
+            "submit": "Send reset link"
+        },
+        "resetPassword": {
+            "title": "Reset your password",
+            "email": "Email",
+            "password": "New password",
+            "passwordConfirmation": "Confirm password",
+            "submit": "Reset password"
+        },
+        "twoFactorChallenge": {
+            "title": "Two-factor authentication",
+            "description": "Enter the code from your authenticator app, or one of your recovery codes.",
+            "code": "Code",
+            "submit": "Verify"
+        },
+        "verifyEmail": {
+            "title": "Verify your email",
+            "description": "Thanks for signing up! Before getting started, please verify your email address by clicking the link we emailed you.",
+            "resend": "Resend verification email"
+        },
+        "acceptInvite": {
+            "title": "Welcome, {name}",
+            "description": "Set a password for {email} to finish setting up your account.",
+            "password": "Password",
+            "passwordConfirmation": "Confirm password",
+            "submit": "Activate account"
+        }
     }
 }
