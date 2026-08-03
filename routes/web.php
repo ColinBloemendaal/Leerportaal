@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityLogIndexController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ImpersonationController;
@@ -146,6 +147,7 @@ Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->grou
         Route::get('/', [PlatformDashboardController::class, 'index'])->name('dashboard');
         Route::get('/resellers', [ResellerIndexController::class, 'index'])->name('resellers.index');
         Route::get('/users', [UserIndexController::class, 'index'])->name('users.index');
+        Route::get('/activity', [ActivityLogIndexController::class, 'index'])->name('activity.index');
     });
 
     Route::prefix('admin/reseller')->name('admin.reseller.')->group(function () {
