@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useExportRequest } from '@/Composables/useExportRequest';
 import { useIndexFilters } from '@/Composables/useIndexFilters';
 import ResellerAdminLayout from '@/Layouts/ResellerAdminLayout.vue';
 import type { FilterQuery, PaginatedCollection } from '@/types/filtering';
@@ -24,6 +25,7 @@ const props = defineProps<{
 }>();
 
 const { sort, direction, filters, sortBy } = useIndexFilters('/admin/reseller/attempts', props.query);
+const { requestExport } = useExportRequest('attempts', props.query);
 
 function passedLabel(passed: boolean | null): string {
     if (passed === null) return 'Pending';
@@ -34,13 +36,16 @@ function passedLabel(passed: boolean | null): string {
 <template>
     <h1 class="h4 mb-4">Quiz attempts</h1>
 
-    <div class="row g-2 mb-3">
+    <div class="row g-2 mb-3 align-items-center">
         <div class="col-auto">
             <select v-model="filters.passed" class="form-select">
                 <option value="">All results</option>
                 <option value="1">Passed</option>
                 <option value="0">Failed</option>
             </select>
+        </div>
+        <div class="col-auto ms-auto">
+            <button type="button" class="btn btn-sm btn-outline-secondary" @click="requestExport">Export as CSV</button>
         </div>
     </div>
 

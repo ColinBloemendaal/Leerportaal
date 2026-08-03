@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useExportRequest } from '@/Composables/useExportRequest';
 import { useIndexFilters } from '@/Composables/useIndexFilters';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import type { FilterQuery, PaginatedCollection } from '@/types/filtering';
@@ -22,12 +23,13 @@ const props = defineProps<{
 }>();
 
 const { search, sort, direction, filters, sortBy } = useIndexFilters('/admin/platform/activity', props.query);
+const { requestExport } = useExportRequest('activity', props.query);
 </script>
 
 <template>
     <h1 class="h4 mb-4">Activity log</h1>
 
-    <div class="row g-2 mb-3">
+    <div class="row g-2 mb-3 align-items-center">
         <div class="col-auto">
             <input v-model="search" type="search" class="form-control" placeholder="Search description" />
         </div>
@@ -52,6 +54,9 @@ const { search, sort, direction, filters, sortBy } = useIndexFilters('/admin/pla
         </div>
         <div class="col-auto">
             <input v-model="filters.date_to" type="date" class="form-control" aria-label="To date" />
+        </div>
+        <div class="col-auto ms-auto">
+            <button type="button" class="btn btn-sm btn-outline-secondary" @click="requestExport">Export as CSV</button>
         </div>
     </div>
 

@@ -1,13 +1,16 @@
 <script setup lang="ts">
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import AppLayout from '@/Layouts/AppLayout.vue';
 import type { ExportRow } from '@/types/exports';
-import { Link } from '@inertiajs/vue3';
 
 defineProps<{
     exports: { data: ExportRow[] };
 }>();
 
-defineOptions({ layout: AdminLayout });
+// AppLayout, not AdminLayout/ResellerAdminLayout/KlantAdminLayout: this
+// page is reachable by any authenticated staff member regardless of
+// which admin area they requested an export from, so it has no single
+// "right" role-specific sidebar to force.
+defineOptions({ layout: AppLayout });
 </script>
 
 <template>
@@ -45,6 +48,4 @@ defineOptions({ layout: AdminLayout });
             </tr>
         </tbody>
     </table>
-
-    <Link href="/admin/platform" class="d-inline-block mt-3">&laquo; Back to dashboard</Link>
 </template>

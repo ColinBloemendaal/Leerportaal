@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useExportRequest } from '@/Composables/useExportRequest';
 import { useIndexFilters } from '@/Composables/useIndexFilters';
 import ResellerAdminLayout from '@/Layouts/ResellerAdminLayout.vue';
 import type { FilterQuery, PaginatedCollection } from '@/types/filtering';
@@ -21,6 +22,7 @@ const props = defineProps<{
 }>();
 
 const { sort, direction, filters, sortBy } = useIndexFilters('/admin/reseller/assignments', props.query);
+const { requestExport } = useExportRequest('assignments', props.query);
 
 function formatMoney(cents: number): string {
     return new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR' }).format(cents / 100);
@@ -30,7 +32,7 @@ function formatMoney(cents: number): string {
 <template>
     <h1 class="h4 mb-4">Assignments</h1>
 
-    <div class="row g-2 mb-3">
+    <div class="row g-2 mb-3 align-items-center">
         <div class="col-auto">
             <select v-model="filters.billing_state" class="form-select">
                 <option value="">All billing states</option>
@@ -38,6 +40,9 @@ function formatMoney(cents: number): string {
                 <option value="billed">Billed</option>
                 <option value="waived">Waived</option>
             </select>
+        </div>
+        <div class="col-auto ms-auto">
+            <button type="button" class="btn btn-sm btn-outline-secondary" @click="requestExport">Export as CSV</button>
         </div>
     </div>
 

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useExportRequest } from '@/Composables/useExportRequest';
 import { useIndexFilters } from '@/Composables/useIndexFilters';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import type { FilterQuery } from '@/types/filtering';
@@ -14,6 +15,7 @@ const props = defineProps<{
 }>();
 
 const { search, sort, direction, sortBy } = useIndexFilters('/klanten', props.query);
+const { requestExport } = useExportRequest('klanten', props.query);
 
 const form = useForm({
     name: '',
@@ -54,9 +56,14 @@ function restore(klant: ResellerKlant) {
         </div>
     </form>
 
-    <div class="row g-2 mb-3">
+    <div class="row g-2 mb-3 align-items-center">
         <div class="col-auto">
             <input v-model="search" type="search" class="form-control" placeholder="Zoeken" aria-label="Zoeken" />
+        </div>
+        <div class="col-auto ms-auto">
+            <button type="button" class="btn btn-sm btn-outline-secondary" @click="requestExport">
+                Exporteren als CSV
+            </button>
         </div>
     </div>
 

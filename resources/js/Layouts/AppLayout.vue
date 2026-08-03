@@ -28,7 +28,12 @@ import { Link } from '@inertiajs/vue3';
 
                 <div id="appNavbar" class="collapse navbar-collapse">
                     <ul class="navbar-nav ms-auto">
-                        <slot name="nav" />
+                        <li class="nav-item">
+                            <Link href="/dashboard" class="nav-link">Dashboard</Link>
+                        </li>
+                        <li class="nav-item">
+                            <Link href="/admin/exports" class="nav-link">My exports</Link>
+                        </li>
                     </ul>
                 </div>
             </div>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useExportRequest } from '@/Composables/useExportRequest';
 import { useIndexFilters } from '@/Composables/useIndexFilters';
 import ResellerAdminLayout from '@/Layouts/ResellerAdminLayout.vue';
 import type { FilterQuery, PaginatedCollection } from '@/types/filtering';
@@ -19,12 +20,13 @@ const props = defineProps<{
 }>();
 
 const { search, sort, direction, filters, sortBy } = useIndexFilters('/admin/reseller/courses', props.query);
+const { requestExport } = useExportRequest('courses', props.query);
 </script>
 
 <template>
     <h1 class="h4 mb-4">Courses</h1>
 
-    <div class="row g-2 mb-3">
+    <div class="row g-2 mb-3 align-items-center">
         <div class="col-auto">
             <input v-model="search" type="search" class="form-control" placeholder="Search title" />
         </div>
@@ -35,6 +37,9 @@ const { search, sort, direction, filters, sortBy } = useIndexFilters('/admin/res
                 <option value="in_review">In review</option>
                 <option value="published">Published</option>
             </select>
+        </div>
+        <div class="col-auto ms-auto">
+            <button type="button" class="btn btn-sm btn-outline-secondary" @click="requestExport">Export as CSV</button>
         </div>
     </div>
 

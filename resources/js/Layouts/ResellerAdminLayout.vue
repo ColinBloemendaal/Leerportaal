@@ -32,6 +32,9 @@ import { Link } from '@inertiajs/vue3';
                     <li class="nav-item">
                         <Link href="/invites" class="nav-link text-white">Invites</Link>
                     </li>
+                    <li class="nav-item">
+                        <Link href="/admin/exports" class="nav-link text-white">My exports</Link>
+                    </li>
                 </ul>
             </aside>
 
