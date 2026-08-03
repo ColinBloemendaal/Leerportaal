@@ -144,6 +144,104 @@
                 "workers": "Workers",
                 "noQueues": "Geen actieve wachtrijen."
             }
+        },
+        "reseller": {
+            "dashboard": {
+                "title": "Reseller dashboard",
+                "klanten": "Klanten",
+                "cursisten": "Cursisten",
+                "assignments": "Toewijzingen",
+                "billedSpend": "Gefactureerde uitgaven",
+                "pendingSpend": "Openstaande uitgaven"
+            },
+            "courses": {
+                "title": "Cursussen",
+                "searchPlaceholder": "Zoek op titel",
+                "allStatuses": "Alle statussen",
+                "draft": "Concept",
+                "inReview": "In review",
+                "published": "Gepubliceerd",
+                "titleColumn": "Titel",
+                "source": "Bron",
+                "catalog": "Catalogus",
+                "own": "Eigen",
+                "status": "Status",
+                "created": "Aangemaakt"
+            },
+            "assignments": {
+                "title": "Toewijzingen",
+                "allBillingStates": "Alle factureringsstatussen",
+                "pending": "Openstaand",
+                "billed": "Gefactureerd",
+                "waived": "Kwijtgescholden",
+                "cursist": "Cursist",
+                "course": "Cursus",
+                "billingState": "Factureringsstatus",
+                "price": "Prijs",
+                "assigned": "Toegewezen",
+                "deadline": "Deadline"
+            },
+            "attempts": {
+                "title": "Quizpogingen",
+                "allResults": "Alle resultaten",
+                "passed": "Geslaagd",
+                "failed": "Gezakt",
+                "pending": "Openstaand",
+                "cursist": "Cursist",
+                "quiz": "Quiz",
+                "attemptNumber": "Poging #",
+                "score": "Score",
+                "result": "Resultaat",
+                "started": "Gestart",
+                "submitted": "Ingediend"
+            }
+        },
+        "klant": {
+            "dashboard": {
+                "title": "Klant dashboard",
+                "cursisten": "Cursisten",
+                "cursist": "Cursist",
+                "assigned": "Toegewezen",
+                "inProgress": "Bezig",
+                "completed": "Afgerond",
+                "noCursisten": "Nog geen cursisten."
+            }
+        },
+        "exports": {
+            "title": "Mijn exports",
+            "resource": "Bron",
+            "status": "Status",
+            "requested": "Aangevraagd",
+            "expires": "Verloopt",
+            "download": "Downloaden",
+            "noExports": "Nog geen exports aangevraagd."
         }
+    },
+    "klanten": {
+        "title": "Klanten",
+        "namePlaceholder": "Naam",
+        "add": "Toevoegen",
+        "searchPlaceholder": "Zoeken",
+        "name": "Naam",
+        "remove": "Verwijderen",
+        "empty": "Nog geen klanten.",
+        "trashedTitle": "Verwijderde klanten",
+        "restore": "Herstellen"
+    },
+    "invites": {
+        "title": "Uitnodigingen",
+        "name": "Naam",
+        "email": "E-mailadres",
+        "klant": "Klant",
+        "resellerStaff": "Reseller-team",
+        "role": "Rol",
+        "chooseRole": "Kies een rol",
+        "send": "Uitnodiging versturen",
+        "roleColumn": "Rol",
+        "type": "Type",
+        "revoke": "Intrekken",
+        "empty": "Geen openstaande uitnodigingen.",
+        "revokedTitle": "Ingetrokken uitnodigingen",
+        "restore": "Herstellen"
     }
 }

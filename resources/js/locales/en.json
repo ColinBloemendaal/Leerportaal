@@ -144,6 +144,104 @@
                 "workers": "Workers",
                 "noQueues": "No active queues."
             }
+        },
+        "reseller": {
+            "dashboard": {
+                "title": "Reseller dashboard",
+                "klanten": "Clients",
+                "cursisten": "Students",
+                "assignments": "Assignments",
+                "billedSpend": "Billed spend",
+                "pendingSpend": "Pending spend"
+            },
+            "courses": {
+                "title": "Courses",
+                "searchPlaceholder": "Search title",
+                "allStatuses": "All statuses",
+                "draft": "Draft",
+                "inReview": "In review",
+                "published": "Published",
+                "titleColumn": "Title",
+                "source": "Source",
+                "catalog": "Catalog",
+                "own": "Own",
+                "status": "Status",
+                "created": "Created"
+            },
+            "assignments": {
+                "title": "Assignments",
+                "allBillingStates": "All billing states",
+                "pending": "Pending",
+                "billed": "Billed",
+                "waived": "Waived",
+                "cursist": "Student",
+                "course": "Course",
+                "billingState": "Billing state",
+                "price": "Price",
+                "assigned": "Assigned",
+                "deadline": "Deadline"
+            },
+            "attempts": {
+                "title": "Quiz attempts",
+                "allResults": "All results",
+                "passed": "Passed",
+                "failed": "Failed",
+                "pending": "Pending",
+                "cursist": "Student",
+                "quiz": "Quiz",
+                "attemptNumber": "Attempt #",
+                "score": "Score",
+                "result": "Result",
+                "started": "Started",
+                "submitted": "Submitted"
+            }
+        },
+        "klant": {
+            "dashboard": {
+                "title": "Klant dashboard",
+                "cursisten": "Students",
+                "cursist": "Student",
+                "assigned": "Assigned",
+                "inProgress": "In progress",
+                "completed": "Completed",
+                "noCursisten": "No students yet."
+            }
+        },
+        "exports": {
+            "title": "My exports",
+            "resource": "Resource",
+            "status": "Status",
+            "requested": "Requested",
+            "expires": "Expires",
+            "download": "Download",
+            "noExports": "No exports requested yet."
         }
+    },
+    "klanten": {
+        "title": "Clients",
+        "namePlaceholder": "Name",
+        "add": "Add",
+        "searchPlaceholder": "Search",
+        "name": "Name",
+        "remove": "Remove",
+        "empty": "No clients yet.",
+        "trashedTitle": "Removed clients",
+        "restore": "Restore"
+    },
+    "invites": {
+        "title": "Invites",
+        "name": "Name",
+        "email": "Email",
+        "klant": "Client",
+        "resellerStaff": "Reseller staff",
+        "role": "Role",
+        "chooseRole": "Choose a role",
+        "send": "Send invite",
+        "roleColumn": "Role",
+        "type": "Type",
+        "revoke": "Revoke",
+        "empty": "No pending invites.",
+        "revokedTitle": "Revoked invites",
+        "restore": "Restore"
     }
 }

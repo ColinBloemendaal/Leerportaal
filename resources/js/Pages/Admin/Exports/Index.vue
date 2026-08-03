@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import AppLayout from '@/Layouts/AppLayout.vue';
 import type { ExportRow } from '@/types/exports';
+import { useI18n } from 'vue-i18n';
 
 defineProps<{
     exports: { data: ExportRow[] };
@@ -11,18 +12,20 @@ defineProps<{
 // which admin area they requested an export from, so it has no single
 // "right" role-specific sidebar to force.
 defineOptions({ layout: AppLayout });
+
+const { t } = useI18n();
 </script>
 
 <template>
-    <h1 class="h4 mb-4">My exports</h1>
+    <h1 class="h4 mb-4">{{ t('admin.exports.title') }}</h1>
 
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">Resource</th>
-                <th scope="col">Status</th>
-                <th scope="col">Requested</th>
-                <th scope="col">Expires</th>
+                <th scope="col">{{ t('admin.exports.resource') }}</th>
+                <th scope="col">{{ t('admin.exports.status') }}</th>
+                <th scope="col">{{ t('admin.exports.requested') }}</th>
+                <th scope="col">{{ t('admin.exports.expires') }}</th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -39,12 +42,12 @@ defineOptions({ layout: AppLayout });
                 <td>{{ row.expires_at ?? '—' }}</td>
                 <td>
                     <a v-if="row.download_url" :href="row.download_url" class="btn btn-sm btn-outline-primary">
-                        Download
+                        {{ t('admin.exports.download') }}
                     </a>
                 </td>
             </tr>
             <tr v-if="exports.data.length === 0">
-                <td colspan="5" class="text-muted">No exports requested yet.</td>
+                <td colspan="5" class="text-muted">{{ t('admin.exports.noExports') }}</td>
             </tr>
         </tbody>
     </table>

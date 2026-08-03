@@ -3,6 +3,7 @@ import { useExportRequest } from '@/Composables/useExportRequest';
 import { useIndexFilters } from '@/Composables/useIndexFilters';
 import ResellerAdminLayout from '@/Layouts/ResellerAdminLayout.vue';
 import type { FilterQuery, PaginatedCollection } from '@/types/filtering';
+import { useI18n } from 'vue-i18n';
 
 interface AttemptRow {
     id: number;
@@ -26,46 +27,49 @@ const props = defineProps<{
 
 const { sort, direction, filters, sortBy } = useIndexFilters('/admin/reseller/attempts', props.query);
 const { requestExport } = useExportRequest('attempts', props.query);
+const { t } = useI18n();
 
 function passedLabel(passed: boolean | null): string {
-    if (passed === null) return 'Pending';
-    return passed ? 'Passed' : 'Failed';
+    if (passed === null) return t('admin.reseller.attempts.pending');
+    return passed ? t('admin.reseller.attempts.passed') : t('admin.reseller.attempts.failed');
 }
 </script>
 
 <template>
-    <h1 class="h4 mb-4">Quiz attempts</h1>
+    <h1 class="h4 mb-4">{{ t('admin.reseller.attempts.title') }}</h1>
 
     <div class="row g-2 mb-3 align-items-center">
         <div class="col-auto">
             <select v-model="filters.passed" class="form-select">
-                <option value="">All results</option>
-                <option value="1">Passed</option>
-                <option value="0">Failed</option>
+                <option value="">{{ t('admin.reseller.attempts.allResults') }}</option>
+                <option value="1">{{ t('admin.reseller.attempts.passed') }}</option>
+                <option value="0">{{ t('admin.reseller.attempts.failed') }}</option>
             </select>
         </div>
         <div class="col-auto ms-auto">
-            <button type="button" class="btn btn-sm btn-outline-secondary" @click="requestExport">Export as CSV</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary" @click="requestExport">
+                {{ t('common.exportCsv') }}
+            </button>
         </div>
     </div>
 
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">Cursist</th>
-                <th scope="col">Quiz</th>
-                <th scope="col">Attempt #</th>
+                <th scope="col">{{ t('admin.reseller.attempts.cursist') }}</th>
+                <th scope="col">{{ t('admin.reseller.attempts.quiz') }}</th>
+                <th scope="col">{{ t('admin.reseller.attempts.attemptNumber') }}</th>
                 <th scope="col" role="button" @click="sortBy('score')">
-                    Score
+                    {{ t('admin.reseller.attempts.score') }}
                     <span v-if="sort === 'score'">{{ direction === 'asc' ? '▲' : '▼' }}</span>
                 </th>
-                <th scope="col">Result</th>
+                <th scope="col">{{ t('admin.reseller.attempts.result') }}</th>
                 <th scope="col" role="button" @click="sortBy('started_at')">
-                    Started
+                    {{ t('admin.reseller.attempts.started') }}
                     <span v-if="sort === 'started_at'">{{ direction === 'asc' ? '▲' : '▼' }}</span>
                 </th>
                 <th scope="col" role="button" @click="sortBy('submitted_at')">
-                    Submitted
+                    {{ t('admin.reseller.attempts.submitted') }}
                     <span v-if="sort === 'submitted_at'">{{ direction === 'asc' ? '▲' : '▼' }}</span>
                 </th>
             </tr>
@@ -81,12 +85,18 @@ function passedLabel(passed: boolean | null): string {
                 <td>{{ attempt.submitted_at ?? '—' }}</td>
             </tr>
             <tr v-if="attempts.data.length === 0">
-                <td colspan="7" class="text-muted">No attempts match these filters.</td>
+                <td colspan="7" class="text-muted">{{ t('common.noResultsFiltered') }}</td>
             </tr>
         </tbody>
     </table>
 
     <div v-if="attempts.meta.last_page > 1" class="text-muted small">
-        Page {{ attempts.meta.current_page }} of {{ attempts.meta.last_page }} ({{ attempts.meta.total }} total)
+        {{
+            t('common.pagination', {
+                current: attempts.meta.current_page,
+                last: attempts.meta.last_page,
+                total: attempts.meta.total,
+            })
+        }}
     </div>
 </template>

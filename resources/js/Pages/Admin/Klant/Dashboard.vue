@@ -1,20 +1,23 @@
 <script setup lang="ts">
 import KlantAdminLayout from '@/Layouts/KlantAdminLayout.vue';
 import type { KlantDashboardStats } from '@/types/admin';
+import { useI18n } from 'vue-i18n';
 
 defineOptions({ layout: KlantAdminLayout });
 
 defineProps<{ stats: KlantDashboardStats }>();
+
+const { t } = useI18n();
 </script>
 
 <template>
-    <h1 class="h4 mb-4">Klant dashboard</h1>
+    <h1 class="h4 mb-4">{{ t('admin.klant.dashboard.title') }}</h1>
 
     <div class="row g-3 mb-4">
         <div class="col-sm-6 col-lg-3">
             <div class="card h-100">
                 <div class="card-body">
-                    <div class="text-muted small text-uppercase">Cursisten</div>
+                    <div class="text-muted small text-uppercase">{{ t('admin.klant.dashboard.cursisten') }}</div>
                     <div class="fs-3 fw-semibold">{{ stats.cursistCount }}</div>
                 </div>
             </div>
@@ -24,10 +27,10 @@ defineProps<{ stats: KlantDashboardStats }>();
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">Cursist</th>
-                <th scope="col">Assigned</th>
-                <th scope="col">In progress</th>
-                <th scope="col">Completed</th>
+                <th scope="col">{{ t('admin.klant.dashboard.cursist') }}</th>
+                <th scope="col">{{ t('admin.klant.dashboard.assigned') }}</th>
+                <th scope="col">{{ t('admin.klant.dashboard.inProgress') }}</th>
+                <th scope="col">{{ t('admin.klant.dashboard.completed') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -38,7 +41,7 @@ defineProps<{ stats: KlantDashboardStats }>();
                 <td>{{ cursist.completedCount }}</td>
             </tr>
             <tr v-if="stats.cursisten.length === 0">
-                <td colspan="4" class="text-muted">No cursisten yet.</td>
+                <td colspan="4" class="text-muted">{{ t('admin.klant.dashboard.noCursisten') }}</td>
             </tr>
         </tbody>
     </table>
