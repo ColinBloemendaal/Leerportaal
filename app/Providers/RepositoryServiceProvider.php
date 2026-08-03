@@ -15,6 +15,7 @@ use App\Contracts\Repositories\CustomDomainRepository;
 use App\Contracts\Repositories\ExportRepository;
 use App\Contracts\Repositories\FailedJobRepository;
 use App\Contracts\Repositories\ImpersonationRepository;
+use App\Contracts\Repositories\InvoiceRepository;
 use App\Contracts\Repositories\MediaRepository;
 use App\Contracts\Repositories\NotificationPreferenceRepository;
 use App\Contracts\Repositories\NotificationRepository;
@@ -42,6 +43,7 @@ use App\Repositories\Eloquent\EloquentCustomDomainRepository;
 use App\Repositories\Eloquent\EloquentExportRepository;
 use App\Repositories\Eloquent\EloquentFailedJobRepository;
 use App\Repositories\Eloquent\EloquentImpersonationRepository;
+use App\Repositories\Eloquent\EloquentInvoiceRepository;
 use App\Repositories\Eloquent\EloquentMediaRepository;
 use App\Repositories\Eloquent\EloquentNotificationPreferenceRepository;
 use App\Repositories\Eloquent\EloquentNotificationRepository;
@@ -97,5 +99,6 @@ final class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ExportRepository::class, EloquentExportRepository::class);
         $this->app->bind(FailedJobRepository::class, EloquentFailedJobRepository::class);
         $this->app->bind(SuppressedEmailRepository::class, EloquentSuppressedEmailRepository::class);
+        $this->app->bind(InvoiceRepository::class, EloquentInvoiceRepository::class);
     }
 }
