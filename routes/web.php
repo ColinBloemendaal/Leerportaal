@@ -20,6 +20,7 @@ use App\Http\Controllers\ExportController;
 use App\Http\Controllers\InvitesController;
 use App\Http\Controllers\KlantDashboardController;
 use App\Http\Controllers\MailWebhookController;
+use App\Http\Controllers\MollieWebhookController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\NotificationPreferenceController;
 use App\Http\Controllers\PlatformDashboardController;
@@ -58,6 +59,12 @@ Route::get('/certificates/verify/{code}', [CertificateVerificationController::cl
 Route::post('/webhooks/mailgun', [MailWebhookController::class, 'mailgun'])
     ->middleware('throttle:mailgun-webhook')
     ->name('webhooks.mailgun');
+
+// Public, unauthenticated -- verified by re-fetching the real payment
+// status from Mollie itself (see MollieWebhookController).
+Route::post('/webhooks/mollie', MollieWebhookController::class)
+    ->middleware('throttle:mollie-webhook')
+    ->name('webhooks.mollie');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'create'])->name('login');

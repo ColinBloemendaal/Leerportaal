@@ -154,5 +154,12 @@ final class AppServiceProvider extends ServiceProvider
         RateLimiter::for('mailgun-webhook', function (Request $request): Limit {
             return Limit::perMinute(120)->by($request->ip());
         });
+
+        // Re-fetching the real status from Mollie is the real defense
+        // (RecordInvoicePaymentStatus); this is just baseline abuse
+        // protection, same reasoning as the mailgun-webhook limiter above.
+        RateLimiter::for('mollie-webhook', function (Request $request): Limit {
+            return Limit::perMinute(120)->by($request->ip());
+        });
     }
 }

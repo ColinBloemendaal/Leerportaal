@@ -39,6 +39,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // check (App\Services\Mail\MailgunWebhookParser).
         $middleware->validateCsrfTokens(except: [
             'webhooks/mailgun',
+            'webhooks/mollie',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
