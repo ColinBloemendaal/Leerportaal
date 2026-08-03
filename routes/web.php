@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\TenantLoginController;
 use App\Http\Controllers\Auth\TwoFactorAuthenticationController;
 use App\Http\Controllers\Auth\TwoFactorChallengeController;
 use App\Http\Controllers\CertificateVerificationController;
+use App\Http\Controllers\CourseIndexController;
 use App\Http\Controllers\CursistDashboardController;
 use App\Http\Controllers\InvitesController;
 use App\Http\Controllers\KlantDashboardController;
@@ -147,6 +148,7 @@ Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->grou
 
     Route::prefix('admin/reseller')->name('admin.reseller.')->group(function () {
         Route::get('/', [ResellerDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/courses', [CourseIndexController::class, 'index'])->name('courses.index');
     });
 
     Route::prefix('admin/klant')->name('admin.klant.')->group(function () {
