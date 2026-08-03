@@ -8,6 +8,7 @@ use App\Contracts\Repositories\ResellerThemeRepository;
 use App\Exceptions\CourseAssignmentNotCompleteException;
 use App\Models\Certificate;
 use App\Models\CourseAssignment;
+use App\Notifications\CertificateIssuedNotification;
 use App\Services\Progress\CourseCompletionChecker;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Contracts\Filesystem\Factory as FilesystemFactory;
@@ -68,7 +69,7 @@ final readonly class IssueCertificate
 
         $issuedAt = now();
 
-        return Certificate::query()->create([
+        $certificate = Certificate::query()->create([
             'course_assignment_id' => $assignment->id,
             'verification_code' => $verificationCode,
             'issued_at' => $issuedAt,
@@ -78,6 +79,10 @@ final readonly class IssueCertificate
             'pdf_disk' => self::DISK,
             'pdf_path' => $path,
         ]);
+
+        $user->notify(new CertificateIssuedNotification($certificate));
+
+        return $certificate;
     }
 
     private function generateUniqueCode(): string

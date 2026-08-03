@@ -10,7 +10,9 @@ use App\Models\Course;
 use App\Models\CourseAssignment;
 use App\Models\Lesson;
 use App\Models\Module;
+use App\Notifications\CertificateIssuedNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
@@ -37,8 +39,9 @@ it('refuses to issue a certificate for an incomplete assignment', function (): v
     app(IssueCertificate::class)($assignment);
 })->throws(CourseAssignmentNotCompleteException::class);
 
-it('issues a certificate with a unique verification code and stores the PDF', function (): void {
+it('issues a certificate with a unique verification code, stores the PDF, and notifies the cursist', function (): void {
     Storage::fake('s3');
+    Notification::fake();
     [$assignment] = completedAssignment();
 
     $certificate = app(IssueCertificate::class)($assignment);
@@ -49,6 +52,7 @@ it('issues a certificate with a unique verification code and stores the PDF', fu
         ->and($certificate->pdf_path)->toBe("certificates/{$certificate->verification_code}.pdf");
 
     Storage::disk('s3')->assertExists($certificate->pdf_path);
+    Notification::assertSentTo($assignment->user, CertificateIssuedNotification::class);
 });
 
 it('leaves expires_at null when the course has no certificate validity period', function (): void {
