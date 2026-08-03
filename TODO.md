@@ -225,7 +225,7 @@ Human decision on scope: the "sender name, reply-to" branding task above and thi
 
 ### Notifications
 
-- [ ] Notification catalogue (welcome, invite, assignment, deadline, overdue, completion, certificate, password, billing, admin alerts)
+- [x] Notification catalogue (welcome, invite, assignment, deadline, overdue, completion, certificate, password, billing, admin alerts). `App\Enums\NotificationType` -- ten cases matching this task's own list, each with `label()`. Deliberately just the enum, not yet the `App\Notifications` classes themselves: a Laravel `Notification` class bundles its channel selection (`via()`) and per-channel rendering (`toMail()`/`toDatabase()`) in one place, so there's no way to build "the catalogue" and "the channels" as two genuinely separate, individually-complete pieces of code the way TODO.md's next line implies -- splitting them would mean committing dead/inert classes now. What *can* stand alone, and what every later task in this section (channels, per-user preferences, digesting, reseller mail-template overrides) needs to already exist, is the fixed set of category identifiers itself -- so that's what this task delivers. Confirmed via research: `User` already has `Notifiable` (unused so far), password reset already runs through Laravel's own default `ResetPassword` notification (no custom code), and `AssignmentDeadlineService` (built in Phase 5) already has a docblock note that its mailable/dispatch is explicitly "Phase 8's job" -- exactly the next task.
 - [ ] Email + in-app database channel for each
 - [ ] In-app notification centre with read state
 - [ ] Per-user notification preferences, per type, per channel
