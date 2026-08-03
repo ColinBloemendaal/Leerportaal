@@ -41,6 +41,18 @@ final class Reseller extends Model
         return [
             'status' => ResellerStatus::class,
             'settings' => 'array',
+            'authoring_addon_expires_at' => 'immutable_datetime',
         ];
+    }
+
+    /**
+     * CLAUDE.md §11: the authoring add-on unlocks custom course creation.
+     * Consumed by CoursePolicy::create() -- kept here as a plain derived
+     * boolean, same convention as User::isSuperAdmin()/hasEnabledTwoFactorAuthentication(),
+     * not a Service: it's a one-column comparison, not an orchestration.
+     */
+    public function hasActiveAuthoringAddon(): bool
+    {
+        return $this->authoring_addon_expires_at !== null && $this->authoring_addon_expires_at->isFuture();
     }
 }

@@ -31,3 +31,21 @@ it('soft deletes', function (): void {
     expect(Reseller::find($reseller->id))->toBeNull()
         ->and(Reseller::withTrashed()->find($reseller->id))->not->toBeNull();
 });
+
+it('has no active authoring add-on by default', function (): void {
+    $reseller = Reseller::factory()->create();
+
+    expect($reseller->hasActiveAuthoringAddon())->toBeFalse();
+});
+
+it('has an active authoring add-on when the expiry is in the future', function (): void {
+    $reseller = Reseller::factory()->withAuthoringAddon()->create();
+
+    expect($reseller->hasActiveAuthoringAddon())->toBeTrue();
+});
+
+it('treats a lapsed authoring add-on as inactive', function (): void {
+    $reseller = Reseller::factory()->create(['authoring_addon_expires_at' => now()->subDay()]);
+
+    expect($reseller->hasActiveAuthoringAddon())->toBeFalse();
+});

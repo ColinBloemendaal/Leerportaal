@@ -37,4 +37,11 @@ final class ResellerFactory extends Factory
             'status' => ResellerStatus::Suspended,
         ]);
     }
+
+    public function withAuthoringAddon(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'authoring_addon_expires_at' => now()->addYear(),
+        ]);
+    }
 }

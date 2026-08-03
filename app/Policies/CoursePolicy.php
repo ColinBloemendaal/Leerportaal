@@ -16,6 +16,13 @@ use App\Models\User;
  * copy-on-write. Only platform staff (reseller_id null) may write to a
  * catalog course; a reseller may only write to their own course. Super
  * admin reaches every action via Gate::before regardless.
+ *
+ * No course-creation controller/Action exists anywhere in the codebase
+ * yet (Phase 3/4's own course-authoring UI is still unbuilt) -- create()
+ * is nonetheless the real, complete enforcement point CLAUDE.md §11's
+ * "authoring add-on unlocks custom course creation" needs, and will be
+ * exercised the moment that controller exists; there's nothing left to
+ * "wire up" once it does.
  */
 final class CoursePolicy
 {
@@ -26,7 +33,15 @@ final class CoursePolicy
 
     public function create(User $user): bool
     {
-        return true;
+        // Platform staff author catalog courses -- no reseller
+        // subscription concept applies to them.
+        if ($user->reseller_id === null) {
+            return true;
+        }
+
+        $reseller = $user->reseller()->first();
+
+        return $reseller !== null && $reseller->hasActiveAuthoringAddon();
     }
 
     public function update(User $user, Course $course): bool

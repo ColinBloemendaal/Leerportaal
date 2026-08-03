@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\Course;
+use App\Models\Reseller;
 use App\Models\User;
 use App\Policies\CoursePolicy;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,11 +15,37 @@ beforeEach(function (): void {
     $this->policy = new CoursePolicy;
 });
 
-it('allows any authenticated user to view or create courses', function (): void {
+it('allows any authenticated user to view a course', function (): void {
     $user = User::factory()->create();
 
-    expect($this->policy->view($user))->toBeTrue()
-        ->and($this->policy->create($user))->toBeTrue();
+    expect($this->policy->view($user))->toBeTrue();
+});
+
+it('allows platform staff to create courses regardless of any authoring add-on', function (): void {
+    $staff = User::factory()->platformStaff()->create();
+
+    expect($this->policy->create($staff))->toBeTrue();
+});
+
+it('allows a reseller user to create a course when their reseller has an active authoring add-on', function (): void {
+    $reseller = Reseller::factory()->withAuthoringAddon()->create();
+    $user = User::factory()->create(['reseller_id' => $reseller->id]);
+
+    expect($this->policy->create($user))->toBeTrue();
+});
+
+it('denies a reseller user from creating a course when their reseller has no authoring add-on', function (): void {
+    $reseller = Reseller::factory()->create();
+    $user = User::factory()->create(['reseller_id' => $reseller->id]);
+
+    expect($this->policy->create($user))->toBeFalse();
+});
+
+it('denies a reseller user from creating a course once the authoring add-on has lapsed', function (): void {
+    $reseller = Reseller::factory()->create(['authoring_addon_expires_at' => now()->subDay()]);
+    $user = User::factory()->create(['reseller_id' => $reseller->id]);
+
+    expect($this->policy->create($user))->toBeFalse();
 });
 
 it('denies a reseller from writing to a catalog (platform-owned) course', function (): void {
