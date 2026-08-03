@@ -8,7 +8,10 @@ use App\DataTransferObjects\Filtering\FilterRequestData;
 use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-interface UserRepository
+/**
+ * @extends FilterablePaginator<User>
+ */
+interface UserRepository extends FilterablePaginator
 {
     /**
      * For the platform admin users index -- every user across every

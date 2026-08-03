@@ -9,7 +9,10 @@ use App\Models\Reseller;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\LazyCollection;
 
-interface ResellerRepository
+/**
+ * @extends FilterablePaginator<Reseller>
+ */
+interface ResellerRepository extends FilterablePaginator
 {
     public function findActiveBySlug(string $slug): ?Reseller;
 

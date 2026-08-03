@@ -9,7 +9,10 @@ use App\Models\Course;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-interface CourseRepository
+/**
+ * @extends FilterablePaginator<Course>
+ */
+interface CourseRepository extends FilterablePaginator
 {
     /**
      * Every platform (catalog) course plus the current reseller's own --

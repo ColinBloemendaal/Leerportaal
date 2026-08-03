@@ -8,7 +8,10 @@ use App\DataTransferObjects\Filtering\FilterRequestData;
 use App\Models\QuizAttempt;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-interface QuizAttemptRepository
+/**
+ * @extends FilterablePaginator<QuizAttempt>
+ */
+interface QuizAttemptRepository extends FilterablePaginator
 {
     /**
      * QuizAttempt has no reseller_id of its own (see App\Models\QuizAttempt)

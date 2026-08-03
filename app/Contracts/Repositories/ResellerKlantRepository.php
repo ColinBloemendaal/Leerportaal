@@ -10,7 +10,10 @@ use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
-interface ResellerKlantRepository
+/**
+ * @extends FilterablePaginator<ResellerKlant>
+ */
+interface ResellerKlantRepository extends FilterablePaginator
 {
     /**
      * @return LengthAwarePaginator<int, ResellerKlant>

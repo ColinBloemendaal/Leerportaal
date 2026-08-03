@@ -9,7 +9,10 @@ use App\Models\CourseAssignment;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-interface CourseAssignmentRepository
+/**
+ * @extends FilterablePaginator<CourseAssignment>
+ */
+interface CourseAssignmentRepository extends FilterablePaginator
 {
     /**
      * Explicitly parameterized by user id, not ambient Auth::user(), so

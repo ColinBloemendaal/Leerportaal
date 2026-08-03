@@ -9,7 +9,10 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\Activitylog\Models\Activity;
 
-interface ActivityLogRepository
+/**
+ * @extends FilterablePaginator<Activity>
+ */
+interface ActivityLogRepository extends FilterablePaginator
 {
     /**
      * Platform-wide, spanning every reseller -- the activity log itself
