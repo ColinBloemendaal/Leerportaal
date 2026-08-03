@@ -16,6 +16,7 @@ use App\Http\Controllers\CertificateVerificationController;
 use App\Http\Controllers\CourseAssignmentIndexController;
 use App\Http\Controllers\CourseIndexController;
 use App\Http\Controllers\CursistDashboardController;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\InvitesController;
 use App\Http\Controllers\KlantDashboardController;
 use App\Http\Controllers\PlatformDashboardController;
@@ -143,6 +144,14 @@ Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->grou
     Route::delete('/impersonate', [ImpersonationController::class, 'destroy'])->name('impersonate.stop');
 
     Route::get('/dashboard', [CursistDashboardController::class, 'index'])->name('dashboard');
+
+    Route::prefix('admin/exports')->name('admin.exports.')->group(function () {
+        Route::get('/', [ExportController::class, 'index'])->name('index');
+        Route::post('/', [ExportController::class, 'store'])->name('store');
+        Route::get('/{export}/download', [ExportController::class, 'download'])
+            ->middleware('signed')
+            ->name('download');
+    });
 
     Route::prefix('admin/platform')->name('admin.platform.')->group(function () {
         Route::get('/', [PlatformDashboardController::class, 'index'])->name('dashboard');

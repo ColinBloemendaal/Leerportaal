@@ -24,6 +24,14 @@ use Illuminate\Support\Facades\Schema;
  * User via ad-hoc queries, CourseCategory, Course, Media, and Question
  * via their respective visibleToCurrentReseller() repository methods.
  * See CLAUDE.md §3.
+ *
+ * Export is a different shape of exception: its reseller_id isn't an
+ * ownership/visibility column at all (the export is owned by user_id),
+ * it's operational metadata telling the queued job which TenantContext
+ * to set before calling a tenant-scoped repository's paginate() -- see
+ * App\Jobs\GenerateExportJob. TenantScoped would be actively wrong here
+ * (it would hide platform-wide exports, whose reseller_id is null, from
+ * their own owner).
  */
 final class TenancyAuditCommand extends Command
 {
@@ -36,6 +44,7 @@ final class TenancyAuditCommand extends Command
         'App\Models\Course',
         'App\Models\Media',
         'App\Models\Question',
+        'App\Models\Export',
     ];
 
     /**

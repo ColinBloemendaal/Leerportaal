@@ -11,6 +11,7 @@ use App\Contracts\Repositories\CourseAssignmentRepository;
 use App\Contracts\Repositories\CourseCategoryRepository;
 use App\Contracts\Repositories\CourseRepository;
 use App\Contracts\Repositories\CustomDomainRepository;
+use App\Contracts\Repositories\ExportRepository;
 use App\Contracts\Repositories\ImpersonationRepository;
 use App\Contracts\Repositories\MediaRepository;
 use App\Contracts\Repositories\PlatformDashboardRepository;
@@ -32,6 +33,7 @@ use App\Repositories\Eloquent\EloquentCourseAssignmentRepository;
 use App\Repositories\Eloquent\EloquentCourseCategoryRepository;
 use App\Repositories\Eloquent\EloquentCourseRepository;
 use App\Repositories\Eloquent\EloquentCustomDomainRepository;
+use App\Repositories\Eloquent\EloquentExportRepository;
 use App\Repositories\Eloquent\EloquentImpersonationRepository;
 use App\Repositories\Eloquent\EloquentMediaRepository;
 use App\Repositories\Eloquent\EloquentPlatformDashboardRepository;
@@ -79,5 +81,6 @@ final class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(UserRepository::class, EloquentUserRepository::class);
         $this->app->bind(QuizAttemptRepository::class, EloquentQuizAttemptRepository::class);
         $this->app->bind(ActivityLogRepository::class, EloquentActivityLogRepository::class);
+        $this->app->bind(ExportRepository::class, EloquentExportRepository::class);
     }
 }

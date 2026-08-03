@@ -40,4 +40,25 @@ final readonly class FilterRequestData
             filters: array_filter($filters, static fn (mixed $value): bool => is_string($value) && $value !== ''),
         );
     }
+
+    /**
+     * Reconstructs from Export::$filters (the same shape this class's
+     * own properties serialize to as JSON) -- GenerateExportJob has no
+     * HTTP request to parse, only what was captured when the export was
+     * requested.
+     *
+     * @param  array<string, mixed>  $data
+     */
+    public static function fromArray(array $data): self
+    {
+        /** @var array<string, string> $filters */
+        $filters = is_array($data['filters'] ?? null) ? $data['filters'] : [];
+
+        return new self(
+            search: isset($data['search']) && is_string($data['search']) ? $data['search'] : null,
+            sort: isset($data['sort']) && is_string($data['sort']) ? $data['sort'] : null,
+            sortDirection: ($data['sortDirection'] ?? null) === 'desc' ? 'desc' : 'asc',
+            filters: $filters,
+        );
+    }
 }
