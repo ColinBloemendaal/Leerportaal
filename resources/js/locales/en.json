@@ -490,5 +490,51 @@
                 "maxSize": "Maximum size: {size} MB."
             }
         }
+    },
+    "blocks": {
+        "editor": {
+            "callout": {
+                "text": "Text",
+                "style": "Style",
+                "variants": {
+                    "info": "Info",
+                    "warning": "Warning",
+                    "danger": "Danger",
+                    "success": "Success"
+                }
+            },
+            "divider": {
+                "description": "A horizontal divider. Nothing to configure."
+            },
+            "embed": {
+                "url": "Embed URL"
+            },
+            "fileDownload": {
+                "url": "File URL",
+                "linkText": "Link text",
+                "linkTextPlaceholder": "Download handout"
+            },
+            "image": {
+                "url": "Image URL",
+                "alt": "Alt text",
+                "caption": "Caption"
+            },
+            "richText": {
+                "text": "Text"
+            },
+            "videoEmbed": {
+                "url": "Video URL",
+                "urlHelp": "External hosting only (Vimeo, Mux, unlisted YouTube) -- no self-hosted video.",
+                "provider": "Provider (optional)"
+            }
+        },
+        "player": {
+            "embed": {
+                "title": "Embedded content"
+            },
+            "videoEmbed": {
+                "title": "Video"
+            }
+        }
     }
 }

@@ -490,5 +490,51 @@
                 "maxSize": "Maximale grootte: {size} MB."
             }
         }
+    },
+    "blocks": {
+        "editor": {
+            "callout": {
+                "text": "Tekst",
+                "style": "Stijl",
+                "variants": {
+                    "info": "Info",
+                    "warning": "Waarschuwing",
+                    "danger": "Gevaar",
+                    "success": "Succes"
+                }
+            },
+            "divider": {
+                "description": "Een horizontale scheidingslijn. Niets te configureren."
+            },
+            "embed": {
+                "url": "Embed-URL"
+            },
+            "fileDownload": {
+                "url": "Bestands-URL",
+                "linkText": "Linktekst",
+                "linkTextPlaceholder": "Handout downloaden"
+            },
+            "image": {
+                "url": "Afbeeldings-URL",
+                "alt": "Alt-tekst",
+                "caption": "Bijschrift"
+            },
+            "richText": {
+                "text": "Tekst"
+            },
+            "videoEmbed": {
+                "url": "Video-URL",
+                "urlHelp": "Alleen externe hosting (Vimeo, Mux, ongelijste YouTube) -- geen self-hosted video.",
+                "provider": "Provider (optioneel)"
+            }
+        },
+        "player": {
+            "embed": {
+                "title": "Ingesloten inhoud"
+            },
+            "videoEmbed": {
+                "title": "Video"
+            }
+        }
     }
 }
