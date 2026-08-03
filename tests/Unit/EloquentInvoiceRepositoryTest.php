@@ -33,3 +33,32 @@ it('returns null when the reseller has no draft invoice', function (): void {
 
     expect((new EloquentInvoiceRepository)->currentDraftForReseller($reseller->id))->toBeNull();
 });
+
+it('finds drafts ready to issue across every reseller, ignoring empty or already-issued ones', function (): void {
+    $resellerA = Reseller::factory()->create();
+    $resellerB = Reseller::factory()->create();
+
+    $ready = Invoice::factory()->for($resellerA)->create([
+        'period_end' => now()->subDay(),
+        'total_cents' => 1500,
+    ]);
+    // Still within its period -- not ready yet.
+    Invoice::factory()->for($resellerA)->create([
+        'period_end' => now()->addDay(),
+        'total_cents' => 1500,
+    ]);
+    // Period ended, but nothing was billed.
+    Invoice::factory()->for($resellerB)->create([
+        'period_end' => now()->subDay(),
+        'total_cents' => 0,
+    ]);
+    // Period ended and billed, but already issued.
+    Invoice::factory()->for($resellerB)->issued()->create([
+        'period_end' => now()->subDay(),
+        'total_cents' => 1500,
+    ]);
+
+    $found = (new EloquentInvoiceRepository)->draftsReadyToIssue();
+
+    expect($found->pluck('id')->all())->toBe([$ready->id]);
+});

@@ -7,6 +7,7 @@ namespace App\Repositories\Eloquent;
 use App\Contracts\Repositories\InvoiceRepository;
 use App\Enums\InvoiceStatus;
 use App\Models\Invoice;
+use Illuminate\Support\LazyCollection;
 
 final class EloquentInvoiceRepository implements InvoiceRepository
 {
@@ -17,5 +18,18 @@ final class EloquentInvoiceRepository implements InvoiceRepository
             ->where('status', InvoiceStatus::Draft)
             ->latest('period_start')
             ->first();
+    }
+
+    public function draftsReadyToIssue(): LazyCollection
+    {
+        // withoutTenantScope(): a batch invoice-issuing run spans every
+        // reseller by definition, same reasoning as
+        // CourseAssignmentRepository::dueForDeadlineEvaluation().
+        return Invoice::query()
+            ->withoutTenantScope()
+            ->where('status', InvoiceStatus::Draft)
+            ->where('period_end', '<', now())
+            ->where('total_cents', '>', 0)
+            ->cursor();
     }
 }

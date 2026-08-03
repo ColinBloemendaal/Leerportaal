@@ -1,6 +1,7 @@
 <?php
 
 use App\Console\Commands\CheckPlatformHealthCommand;
+use App\Console\Commands\IssueDueInvoicesCommand;
 use App\Console\Commands\SendAssignmentDeadlineRemindersCommand;
 use App\Console\Commands\SendDailyNotificationDigestsCommand;
 use App\Console\Commands\SendKlantProgressReportsCommand;
@@ -37,3 +38,10 @@ Schedule::command(CheckPlatformHealthCommand::class)->hourly();
 // own last send, so a late or re-run doesn't duplicate or skip.
 Schedule::command(SendDailyNotificationDigestsCommand::class)->dailyAt('08:00');
 Schedule::command(SendWeeklyNotificationDigestsCommand::class)->weeklyOn(1, '08:00');
+
+// Daily, not "on the 1st of the month": draftsReadyToIssue() already
+// filters to period_end < now(), so running daily just catches a
+// just-ended period promptly rather than waiting for a fixed calendar
+// date -- an invoice with nothing billed that period is simply never
+// picked up (total_cents > 0 is part of that same filter).
+Schedule::command(IssueDueInvoicesCommand::class)->dailyAt('02:00');
