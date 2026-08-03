@@ -18,6 +18,7 @@ use App\Http\Controllers\CursistDashboardController;
 use App\Http\Controllers\InvitesController;
 use App\Http\Controllers\KlantDashboardController;
 use App\Http\Controllers\PlatformDashboardController;
+use App\Http\Controllers\QuizAttemptIndexController;
 use App\Http\Controllers\ResellerBrandingController;
 use App\Http\Controllers\ResellerDashboardController;
 use App\Http\Controllers\ResellerIndexController;
@@ -151,6 +152,7 @@ Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->grou
         Route::get('/', [ResellerDashboardController::class, 'index'])->name('dashboard');
         Route::get('/courses', [CourseIndexController::class, 'index'])->name('courses.index');
         Route::get('/assignments', [CourseAssignmentIndexController::class, 'index'])->name('assignments.index');
+        Route::get('/attempts', [QuizAttemptIndexController::class, 'index'])->name('attempts.index');
     });
 
     Route::prefix('admin/klant')->name('admin.klant.')->group(function () {

@@ -14,6 +14,7 @@ use App\Contracts\Repositories\ImpersonationRepository;
 use App\Contracts\Repositories\MediaRepository;
 use App\Contracts\Repositories\PlatformDashboardRepository;
 use App\Contracts\Repositories\QuestionRepository;
+use App\Contracts\Repositories\QuizAttemptRepository;
 use App\Contracts\Repositories\ResellerDashboardRepository;
 use App\Contracts\Repositories\ResellerKlantCourseGrantRepository;
 use App\Contracts\Repositories\ResellerKlantRepository;
@@ -33,6 +34,7 @@ use App\Repositories\Eloquent\EloquentImpersonationRepository;
 use App\Repositories\Eloquent\EloquentMediaRepository;
 use App\Repositories\Eloquent\EloquentPlatformDashboardRepository;
 use App\Repositories\Eloquent\EloquentQuestionRepository;
+use App\Repositories\Eloquent\EloquentQuizAttemptRepository;
 use App\Repositories\Eloquent\EloquentResellerDashboardRepository;
 use App\Repositories\Eloquent\EloquentResellerKlantCourseGrantRepository;
 use App\Repositories\Eloquent\EloquentResellerKlantRepository;
@@ -73,5 +75,6 @@ final class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ResellerDashboardRepository::class, EloquentResellerDashboardRepository::class);
         $this->app->bind(SavedFilterRepository::class, EloquentSavedFilterRepository::class);
         $this->app->bind(UserRepository::class, EloquentUserRepository::class);
+        $this->app->bind(QuizAttemptRepository::class, EloquentQuizAttemptRepository::class);
     }
 }
