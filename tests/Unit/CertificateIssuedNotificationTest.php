@@ -32,6 +32,7 @@ it('routes through mail and database channels, and builds a mailable addressed t
 
     $payload = $notification->toDatabase($cursist);
     expect($payload['type'])->toBe(NotificationType::Certificate->value)
+        ->and($payload['message'])->toBeString()
         ->and($payload['certificate_id'])->toBe($certificate->id)
         ->and($payload['verification_code'])->toBe($certificate->verification_code);
 });

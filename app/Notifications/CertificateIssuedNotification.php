@@ -32,12 +32,20 @@ final class CertificateIssuedNotification extends Notification implements Should
     }
 
     /**
-     * @return array{type: string, certificate_id: int, verification_code: string}
+     * @return array{type: string, message: string, certificate_id: int, verification_code: string}
      */
     public function toDatabase(User $notifiable): array
     {
+        // withoutTenantScope(): see App\Mail\CertificateIssued's identical
+        // comment -- CourseAssignment is TenantScoped and this runs with
+        // no ambient tenant.
+        $course = $this->certificate->courseAssignment()->withoutTenantScope()->first()?->course()->first();
+
         return [
             'type' => NotificationType::Certificate->value,
+            'message' => trans('Your certificate for :course is ready', [
+                'course' => $course === null ? trans('your course') : $course->title,
+            ]),
             'certificate_id' => $this->certificate->id,
             'verification_code' => $this->certificate->verification_code,
         ];

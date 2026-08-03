@@ -45,8 +45,8 @@ it('builds the CourseAssigned mailable addressed to the cursist', function (): v
         ->and($mail->to[0]['address'])->toBe('cursist@example.test');
 });
 
-it('stores a typed database payload', function (): void {
-    $course = Course::factory()->create();
+it('stores a typed database payload with a rendered message', function (): void {
+    $course = Course::factory()->create(['title' => 'Fire Safety 101']);
     $cursist = User::factory()->create(['reseller_id' => $this->reseller->id]);
     $assignment = CourseAssignment::factory()->create([
         'reseller_id' => $this->reseller->id,
@@ -57,6 +57,7 @@ it('stores a typed database payload', function (): void {
     $payload = (new CourseAssignedNotification($assignment))->toDatabase($cursist);
 
     expect($payload['type'])->toBe(NotificationType::Assignment->value)
+        ->and($payload['message'])->toBe('You have been assigned Fire Safety 101')
         ->and($payload['course_assignment_id'])->toBe($assignment->id)
         ->and($payload['course_id'])->toBe($course->id);
 });

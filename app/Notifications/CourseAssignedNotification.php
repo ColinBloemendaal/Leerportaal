@@ -32,12 +32,21 @@ final class CourseAssignedNotification extends Notification implements ShouldQue
     }
 
     /**
-     * @return array{type: string, course_assignment_id: int, course_id: int|null}
+     * @return array{type: string, message: string, course_assignment_id: int, course_id: int|null}
      */
     public function toDatabase(User $notifiable): array
     {
+        // Queried explicitly, not $this->assignment->course: rendering a
+        // human-readable line for the in-app notification centre needs the
+        // title now, at send time, not a lazy-loaded property that may
+        // never have been populated on this instance.
+        $course = $this->assignment->course()->first();
+
         return [
             'type' => NotificationType::Assignment->value,
+            'message' => trans('You have been assigned :course', [
+                'course' => $course === null ? trans('a new course') : $course->title,
+            ]),
             'course_assignment_id' => $this->assignment->id,
             'course_id' => $this->assignment->course_id,
         ];

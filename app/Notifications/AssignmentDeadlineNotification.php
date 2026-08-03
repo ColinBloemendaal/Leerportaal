@@ -35,12 +35,18 @@ final class AssignmentDeadlineNotification extends Notification implements Shoul
     }
 
     /**
-     * @return array{type: string, course_assignment_id: int, days_before: int}
+     * @return array{type: string, message: string, course_assignment_id: int, days_before: int}
      */
     public function toDatabase(User $notifiable): array
     {
+        $course = $this->assignment->course()->first();
+
         return [
             'type' => NotificationType::Deadline->value,
+            'message' => trans(':course is due in :days day(s)', [
+                'course' => $course === null ? trans('Your course') : $course->title,
+                'days' => $this->daysBefore,
+            ]),
             'course_assignment_id' => $this->assignment->id,
             'days_before' => $this->daysBefore,
         ];

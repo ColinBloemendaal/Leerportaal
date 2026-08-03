@@ -32,5 +32,6 @@ it('routes through mail and database channels, and builds a mailable addressed t
 
     $payload = $notification->toDatabase($cursist);
     expect($payload['type'])->toBe(NotificationType::Overdue->value)
+        ->and($payload['message'])->toBeString()
         ->and($payload['course_assignment_id'])->toBe($assignment->id);
 });

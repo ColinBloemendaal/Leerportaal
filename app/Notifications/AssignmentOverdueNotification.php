@@ -32,12 +32,17 @@ final class AssignmentOverdueNotification extends Notification implements Should
     }
 
     /**
-     * @return array{type: string, course_assignment_id: int}
+     * @return array{type: string, message: string, course_assignment_id: int}
      */
     public function toDatabase(User $notifiable): array
     {
+        $course = $this->assignment->course()->first();
+
         return [
             'type' => NotificationType::Overdue->value,
+            'message' => trans(':course is overdue', [
+                'course' => $course === null ? trans('Your course') : $course->title,
+            ]),
             'course_assignment_id' => $this->assignment->id,
         ];
     }

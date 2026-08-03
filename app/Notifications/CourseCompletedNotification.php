@@ -32,12 +32,17 @@ final class CourseCompletedNotification extends Notification implements ShouldQu
     }
 
     /**
-     * @return array{type: string, course_assignment_id: int}
+     * @return array{type: string, message: string, course_assignment_id: int}
      */
     public function toDatabase(User $notifiable): array
     {
+        $course = $this->assignment->course()->first();
+
         return [
             'type' => NotificationType::Completion->value,
+            'message' => trans('You completed :course', [
+                'course' => $course === null ? trans('a course') : $course->title,
+            ]),
             'course_assignment_id' => $this->assignment->id,
         ];
     }
