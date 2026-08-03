@@ -11,6 +11,7 @@ use App\Models\CourseAssignment;
 use App\Support\Filtering\QueryFilterApplier;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\LazyCollection;
 
 final class EloquentCourseAssignmentRepository implements CourseAssignmentRepository
 {
@@ -24,6 +25,17 @@ final class EloquentCourseAssignmentRepository implements CourseAssignmentReposi
             ->with('course')
             ->orderByDesc('assigned_at')
             ->get();
+    }
+
+    public function dueForDeadlineEvaluation(): LazyCollection
+    {
+        // Platform-wide by design -- see the interface docblock.
+        return CourseAssignment::query()
+            ->withoutTenantScope()
+            ->whereNull('revoked_at')
+            ->whereNotNull('deadline_at')
+            ->with(['course', 'user', 'reseller'])
+            ->cursor();
     }
 
     public function paginate(FilterRequestData $filters, int $perPage = 15): LengthAwarePaginator

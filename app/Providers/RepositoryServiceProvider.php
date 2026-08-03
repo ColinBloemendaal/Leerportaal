@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Contracts\Repositories\ActivityLogRepository;
+use App\Contracts\Repositories\AssignmentReminderRepository;
 use App\Contracts\Repositories\CertificateRepository;
 use App\Contracts\Repositories\CourseAccessGrantRepository;
 use App\Contracts\Repositories\CourseAssignmentRepository;
@@ -28,6 +29,7 @@ use App\Contracts\Repositories\SavedFilterRepository;
 use App\Contracts\Repositories\UserInviteRepository;
 use App\Contracts\Repositories\UserRepository;
 use App\Repositories\Eloquent\EloquentActivityLogRepository;
+use App\Repositories\Eloquent\EloquentAssignmentReminderRepository;
 use App\Repositories\Eloquent\EloquentCertificateRepository;
 use App\Repositories\Eloquent\EloquentCourseAccessGrantRepository;
 use App\Repositories\Eloquent\EloquentCourseAssignmentRepository;
@@ -75,6 +77,7 @@ final class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(QuestionRepository::class, EloquentQuestionRepository::class);
         $this->app->bind(CertificateRepository::class, EloquentCertificateRepository::class);
         $this->app->bind(CourseAssignmentRepository::class, EloquentCourseAssignmentRepository::class);
+        $this->app->bind(AssignmentReminderRepository::class, EloquentAssignmentReminderRepository::class);
         $this->app->bind(CourseAccessGrantRepository::class, EloquentCourseAccessGrantRepository::class);
         $this->app->bind(ResellerKlantCourseGrantRepository::class, EloquentResellerKlantCourseGrantRepository::class);
         $this->app->bind(PlatformDashboardRepository::class, EloquentPlatformDashboardRepository::class);

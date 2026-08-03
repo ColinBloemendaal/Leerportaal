@@ -8,6 +8,7 @@ use App\DataTransferObjects\Filtering\FilterRequestData;
 use App\Models\CourseAssignment;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\LazyCollection;
 
 /**
  * @extends FilterablePaginator<CourseAssignment>
@@ -21,6 +22,16 @@ interface CourseAssignmentRepository extends FilterablePaginator
      * @return Collection<int, CourseAssignment>
      */
     public function forUser(int $userId): Collection;
+
+    /**
+     * Every active, deadlined assignment across every reseller --
+     * platform-context iteration for the daily deadline/overdue reminder
+     * command, deliberately bypassing the tenant scope (documented on the
+     * implementation), same reasoning as ResellerKlantRepository::all().
+     *
+     * @return LazyCollection<int, CourseAssignment>
+     */
+    public function dueForDeadlineEvaluation(): LazyCollection;
 
     /**
      * For the reseller admin assignments index -- CourseAssignment is
