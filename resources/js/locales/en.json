@@ -304,6 +304,10 @@
                 "preview": "Preview (with sample values)",
                 "usingDefault": "Using the default template body."
             }
+        },
+        "notificationPreferences": {
+            "title": "Notification preferences",
+            "notification": "Notification"
         }
     },
     "dashboard": {

@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Enums\NotificationChannel;
 use App\Enums\NotificationType;
 use App\Mail\Welcome;
+use App\Models\NotificationPreference;
 use App\Models\Reseller;
 use App\Models\User;
 use App\Notifications\WelcomeNotification;
@@ -12,10 +14,22 @@ use Tests\TestCase;
 
 uses(TestCase::class, RefreshDatabase::class);
 
-it('routes through mail and database channels', function (): void {
+it('routes through mail and database channels by default', function (): void {
     $user = User::factory()->create();
 
     expect((new WelcomeNotification)->via($user))->toBe(['mail', 'database']);
+});
+
+it('excludes a channel the user has disabled for this notification type', function (): void {
+    $user = User::factory()->create();
+    NotificationPreference::factory()->create([
+        'user_id' => $user->id,
+        'type' => NotificationType::Welcome,
+        'channel' => NotificationChannel::Mail,
+        'enabled' => false,
+    ]);
+
+    expect((new WelcomeNotification)->via($user))->toBe(['database']);
 });
 
 it('builds the Welcome mailable for the notified user', function (): void {

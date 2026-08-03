@@ -304,6 +304,10 @@
                 "preview": "Voorbeeld (met voorbeeldwaarden)",
                 "usingDefault": "Gebruikt de standaard sjabloontekst."
             }
+        },
+        "notificationPreferences": {
+            "title": "Meldingsvoorkeuren",
+            "notification": "Melding"
         }
     },
     "dashboard": {

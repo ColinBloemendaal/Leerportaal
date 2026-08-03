@@ -8,6 +8,7 @@ use App\Enums\NotificationType;
 use App\Mail\AssignmentOverdue;
 use App\Models\CourseAssignment;
 use App\Models\User;
+use App\Notifications\Concerns\RespectsPreferences;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
@@ -15,6 +16,7 @@ use Illuminate\Notifications\Notification;
 final class AssignmentOverdueNotification extends Notification implements ShouldQueue
 {
     use Queueable;
+    use RespectsPreferences;
 
     public function __construct(private readonly CourseAssignment $assignment) {}
 
@@ -23,7 +25,7 @@ final class AssignmentOverdueNotification extends Notification implements Should
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'database'];
+        return $this->filterByPreference($notifiable, NotificationType::Overdue, ['mail', 'database']);
     }
 
     public function toMail(User $notifiable): AssignmentOverdue

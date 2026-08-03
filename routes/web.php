@@ -20,6 +20,7 @@ use App\Http\Controllers\ExportController;
 use App\Http\Controllers\InvitesController;
 use App\Http\Controllers\KlantDashboardController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\NotificationPreferenceController;
 use App\Http\Controllers\PlatformDashboardController;
 use App\Http\Controllers\PlatformHealthController;
 use App\Http\Controllers\QuizAttemptIndexController;
@@ -107,6 +108,9 @@ Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->grou
 
         Route::get('/theme', [ResellerThemeController::class, 'edit'])->name('theme.edit');
         Route::put('/theme', [ResellerThemeController::class, 'update'])->name('theme.update');
+
+        Route::get('/notifications', [NotificationPreferenceController::class, 'edit'])->name('notifications.edit');
+        Route::put('/notifications', [NotificationPreferenceController::class, 'update'])->name('notifications.update');
 
         Route::get('/email-templates', [ResellerMailTemplateController::class, 'index'])
             ->name('email-templates.index');

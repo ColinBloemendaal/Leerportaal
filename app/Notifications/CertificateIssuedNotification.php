@@ -8,6 +8,7 @@ use App\Enums\NotificationType;
 use App\Mail\CertificateIssued;
 use App\Models\Certificate;
 use App\Models\User;
+use App\Notifications\Concerns\RespectsPreferences;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
@@ -15,6 +16,7 @@ use Illuminate\Notifications\Notification;
 final class CertificateIssuedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
+    use RespectsPreferences;
 
     public function __construct(private readonly Certificate $certificate) {}
 
@@ -23,7 +25,7 @@ final class CertificateIssuedNotification extends Notification implements Should
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'database'];
+        return $this->filterByPreference($notifiable, NotificationType::Certificate, ['mail', 'database']);
     }
 
     public function toMail(User $notifiable): CertificateIssued

@@ -7,6 +7,7 @@ namespace App\Notifications;
 use App\Enums\NotificationType;
 use App\Mail\Welcome as WelcomeMail;
 use App\Models\User;
+use App\Notifications\Concerns\RespectsPreferences;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
@@ -14,13 +15,14 @@ use Illuminate\Notifications\Notification;
 final class WelcomeNotification extends Notification implements ShouldQueue
 {
     use Queueable;
+    use RespectsPreferences;
 
     /**
      * @return list<string>
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'database'];
+        return $this->filterByPreference($notifiable, NotificationType::Welcome, ['mail', 'database']);
     }
 
     public function toMail(User $notifiable): WelcomeMail
