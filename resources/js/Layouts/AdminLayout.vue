@@ -20,6 +20,9 @@ import { Link } from '@inertiajs/vue3';
                     <li class="nav-item">
                         <Link href="/admin/platform/resellers" class="nav-link text-white">Resellers</Link>
                     </li>
+                    <li class="nav-item">
+                        <Link href="/admin/platform/users" class="nav-link text-white">Users</Link>
+                    </li>
                 </ul>
             </aside>
 

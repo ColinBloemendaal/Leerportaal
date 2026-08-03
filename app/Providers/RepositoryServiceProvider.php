@@ -22,6 +22,7 @@ use App\Contracts\Repositories\ResellerRepository;
 use App\Contracts\Repositories\ResellerThemeRepository;
 use App\Contracts\Repositories\SavedFilterRepository;
 use App\Contracts\Repositories\UserInviteRepository;
+use App\Contracts\Repositories\UserRepository;
 use App\Repositories\Eloquent\EloquentCertificateRepository;
 use App\Repositories\Eloquent\EloquentCourseAccessGrantRepository;
 use App\Repositories\Eloquent\EloquentCourseAssignmentRepository;
@@ -40,6 +41,7 @@ use App\Repositories\Eloquent\EloquentResellerRepository;
 use App\Repositories\Eloquent\EloquentResellerThemeRepository;
 use App\Repositories\Eloquent\EloquentSavedFilterRepository;
 use App\Repositories\Eloquent\EloquentUserInviteRepository;
+use App\Repositories\Eloquent\EloquentUserRepository;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -70,5 +72,6 @@ final class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(PlatformDashboardRepository::class, EloquentPlatformDashboardRepository::class);
         $this->app->bind(ResellerDashboardRepository::class, EloquentResellerDashboardRepository::class);
         $this->app->bind(SavedFilterRepository::class, EloquentSavedFilterRepository::class);
+        $this->app->bind(UserRepository::class, EloquentUserRepository::class);
     }
 }
