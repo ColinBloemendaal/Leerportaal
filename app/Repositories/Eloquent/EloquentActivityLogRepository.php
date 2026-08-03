@@ -10,6 +10,7 @@ use App\DataTransferObjects\Filtering\FilterRequestData;
 use App\Models\User;
 use App\Support\Filtering\QueryFilterApplier;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\Activitylog\Models\Activity;
 
@@ -59,5 +60,19 @@ final class EloquentActivityLogRepository implements ActivityLogRepository
         );
 
         return $this->filters->apply($query, $remainingFilters, $spec)->paginate($perPage);
+    }
+
+    public function timelineForUser(int $userId): Collection
+    {
+        return Activity::query()
+            ->with('causer')
+            ->where(function (Builder $query) use ($userId): void {
+                $query->where('causer_id', $userId)->where('causer_type', User::class)
+                    ->orWhere(function (Builder $subject) use ($userId): void {
+                        $subject->where('subject_id', $userId)->where('subject_type', User::class);
+                    });
+            })
+            ->orderByDesc('created_at')
+            ->get();
     }
 }

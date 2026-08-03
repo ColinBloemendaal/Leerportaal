@@ -18,4 +18,10 @@ interface UserRepository
      * @return LengthAwarePaginator<int, User>
      */
     public function paginate(FilterRequestData $filters, int $perPage = 15): LengthAwarePaginator;
+
+    /**
+     * For the per-user detail page. Deliberately not tenant-scoped, same
+     * reasoning as paginate() -- a platform admin can look up any user.
+     */
+    public function findById(int $id): ?User;
 }

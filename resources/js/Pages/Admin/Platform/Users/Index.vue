@@ -2,6 +2,7 @@
 import { useIndexFilters } from '@/Composables/useIndexFilters';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import type { FilterQuery, PaginatedCollection } from '@/types/filtering';
+import { Link } from '@inertiajs/vue3';
 
 interface UserRow {
     id: number;
@@ -52,7 +53,9 @@ const { search, sort, direction, sortBy } = useIndexFilters('/admin/platform/use
         </thead>
         <tbody>
             <tr v-for="user in users.data" :key="user.id">
-                <td>{{ user.name }}</td>
+                <td>
+                    <Link :href="`/admin/platform/users/${user.id}`">{{ user.name }}</Link>
+                </td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.reseller_name ?? '—' }}</td>
                 <td>{{ user.platform_role ?? '—' }}</td>

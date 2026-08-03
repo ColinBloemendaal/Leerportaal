@@ -63,6 +63,31 @@ it('filters by the causer\'s reseller', function (): void {
     expect($result->total())->toBe(1);
 });
 
+it('builds a timeline of everything a user did and everything done to them', function (): void {
+    $reseller = Reseller::factory()->create();
+    $actor = User::factory()->create(['reseller_id' => $reseller->id]);
+    $admin = User::factory()->create(['reseller_id' => $reseller->id]);
+    $bystander = User::factory()->create(['reseller_id' => $reseller->id]);
+
+    $this->actingAs($actor);
+    ResellerKlant::factory()->create(['reseller_id' => $reseller->id]); // actor as causer
+
+    // A different acting user so this update's causer isn't $actor --
+    // isolates the "actor as subject" branch from the "actor as causer"
+    // branch tested above.
+    $this->actingAs($admin);
+    $actor->update(['name' => 'Renamed Actor']); // actor as subject
+    $bystander->update(['name' => 'Renamed Bystander']); // neither causer nor subject is $actor
+
+    $timeline = app(EloquentActivityLogRepository::class)->timelineForUser($actor->id);
+
+    // 3, not 2: $actor's own factory-create() already logged a fourth
+    // activity (subject=$actor, causer=null, since no one was acting
+    // yet) before the two deliberate actions below it -- that's a
+    // genuine "done to them" entry too, not test noise.
+    expect($timeline)->toHaveCount(3);
+});
+
 it('filters by a date range', function (): void {
     // Backdate the reseller's own creation activity too -- it's just
     // fixture setup, not the entity under test, and would otherwise

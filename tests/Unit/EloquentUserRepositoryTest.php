@@ -40,3 +40,17 @@ it('filters by reseller_id', function (): void {
 
     expect($result->total())->toBe(1);
 });
+
+it('finds a user by id, eager-loading their reseller', function (): void {
+    $reseller = Reseller::factory()->create(['name' => 'Acme']);
+    $user = User::factory()->create(['reseller_id' => $reseller->id]);
+
+    $found = app(EloquentUserRepository::class)->findById($user->id);
+
+    expect($found?->id)->toBe($user->id)
+        ->and($found?->reseller?->name)->toBe('Acme');
+});
+
+it('returns null for a non-existent user id', function (): void {
+    expect(app(EloquentUserRepository::class)->findById(999999))->toBeNull();
+});

@@ -26,6 +26,7 @@ use App\Http\Controllers\ResellerIndexController;
 use App\Http\Controllers\ResellerKlantController;
 use App\Http\Controllers\ResellerMailTemplateController;
 use App\Http\Controllers\ResellerThemeController;
+use App\Http\Controllers\UserDetailController;
 use App\Http\Controllers\UserIndexController;
 use App\Http\Middleware\EnsureTwoFactorAuthenticationIsEnabled;
 use Illuminate\Support\Facades\Route;
@@ -147,6 +148,7 @@ Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->grou
         Route::get('/', [PlatformDashboardController::class, 'index'])->name('dashboard');
         Route::get('/resellers', [ResellerIndexController::class, 'index'])->name('resellers.index');
         Route::get('/users', [UserIndexController::class, 'index'])->name('users.index');
+        Route::get('/users/{user}', [UserDetailController::class, 'show'])->name('users.show');
         Route::get('/activity', [ActivityLogIndexController::class, 'index'])->name('activity.index');
     });
 

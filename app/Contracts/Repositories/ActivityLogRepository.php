@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Contracts\Repositories;
 
 use App\DataTransferObjects\Filtering\FilterRequestData;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\Activitylog\Models\Activity;
 
@@ -18,4 +19,12 @@ interface ActivityLogRepository
      * @return LengthAwarePaginator<int, Activity>
      */
     public function paginate(FilterRequestData $filters, int $perPage = 25): LengthAwarePaginator;
+
+    /**
+     * Everything a user did (causer) and everything done to them
+     * (subject) -- for the per-user detail page's timeline.
+     *
+     * @return Collection<int, Activity>
+     */
+    public function timelineForUser(int $userId): Collection;
 }

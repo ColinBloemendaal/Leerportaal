@@ -26,4 +26,9 @@ final class EloquentUserRepository implements UserRepository
 
         return $this->filters->apply(User::query()->with('reseller'), $filters, $spec)->paginate($perPage);
     }
+
+    public function findById(int $id): ?User
+    {
+        return User::query()->with('reseller')->find($id);
+    }
 }
