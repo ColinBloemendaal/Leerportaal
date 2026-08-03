@@ -81,10 +81,13 @@ it('sends and records a deadline reminder for each due offset, once each', funct
 });
 
 it('never sends anything once the course has been completed, even past the deadline', function (): void {
-    Notification::fake();
     $reseller = Reseller::factory()->create();
     [$assignment, , $block] = assignmentWithCourse($reseller, ['deadline_at' => now()->subDay()]);
+    // Completing the block fires its own CourseCompletedNotification --
+    // fake only starts after that setup step, so this test's assertion
+    // is about the reminder Action under test, not MarkBlockCompleted's.
     app(MarkBlockCompleted::class)($assignment, $block);
+    Notification::fake();
 
     $sent = reminderAction()($assignment->fresh(['course', 'user', 'reseller']), Carbon::today());
 

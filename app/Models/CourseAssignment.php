@@ -42,6 +42,7 @@ final class CourseAssignment extends Model
         return [
             'assigned_at' => 'immutable_datetime',
             'first_opened_at' => 'immutable_datetime',
+            'completed_at' => 'immutable_datetime',
             'revoked_at' => 'immutable_datetime',
             'deadline_at' => 'immutable_datetime',
             'reminder_days_before' => 'array',
