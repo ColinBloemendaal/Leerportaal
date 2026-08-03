@@ -3,6 +3,7 @@ import { useExportRequest } from '@/Composables/useExportRequest';
 import { useIndexFilters } from '@/Composables/useIndexFilters';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import type { FilterQuery, PaginatedCollection } from '@/types/filtering';
+import { useI18n } from 'vue-i18n';
 
 interface ActivityRow {
     id: number;
@@ -24,39 +25,71 @@ const props = defineProps<{
 
 const { search, sort, direction, filters, sortBy } = useIndexFilters('/admin/platform/activity', props.query);
 const { requestExport } = useExportRequest('activity', props.query);
+const { t } = useI18n();
 </script>
 
 <template>
-    <h1 class="h4 mb-4">Activity log</h1>
+    <h1 class="h4 mb-4">{{ t('admin.platform.activity.title') }}</h1>
 
     <div class="row g-2 mb-3 align-items-center">
         <div class="col-auto">
-            <input v-model="search" type="search" class="form-control" placeholder="Search description" />
+            <input
+                v-model="search"
+                type="search"
+                class="form-control"
+                :placeholder="t('admin.platform.activity.searchPlaceholder')"
+            />
         </div>
         <div class="col-auto">
-            <input v-model="filters.causer_id" type="number" class="form-control" placeholder="Actor (user id)" />
+            <input
+                v-model="filters.causer_id"
+                type="number"
+                class="form-control"
+                :placeholder="t('admin.platform.activity.actorPlaceholder')"
+            />
         </div>
         <div class="col-auto">
             <input
                 v-model="filters.subject_type"
                 class="form-control"
-                placeholder="Subject type (e.g. App\Models\Course)"
+                :placeholder="t('admin.platform.activity.subjectTypePlaceholder')"
             />
         </div>
         <div class="col-auto">
-            <input v-model="filters.event" class="form-control" placeholder="Action (created/updated/deleted)" />
+            <input
+                v-model="filters.event"
+                class="form-control"
+                :placeholder="t('admin.platform.activity.actionPlaceholder')"
+            />
         </div>
         <div class="col-auto">
-            <input v-model="filters.reseller_id" type="number" class="form-control" placeholder="Reseller id" />
+            <input
+                v-model="filters.reseller_id"
+                type="number"
+                class="form-control"
+                :placeholder="t('admin.platform.activity.resellerPlaceholder')"
+            />
         </div>
         <div class="col-auto">
-            <input v-model="filters.date_from" type="date" class="form-control" aria-label="From date" />
+            <input
+                v-model="filters.date_from"
+                type="date"
+                class="form-control"
+                :aria-label="t('admin.platform.activity.fromDate')"
+            />
         </div>
         <div class="col-auto">
-            <input v-model="filters.date_to" type="date" class="form-control" aria-label="To date" />
+            <input
+                v-model="filters.date_to"
+                type="date"
+                class="form-control"
+                :aria-label="t('admin.platform.activity.toDate')"
+            />
         </div>
         <div class="col-auto ms-auto">
-            <button type="button" class="btn btn-sm btn-outline-secondary" @click="requestExport">Export as CSV</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary" @click="requestExport">
+                {{ t('common.exportCsv') }}
+            </button>
         </div>
     </div>
 
@@ -64,16 +97,16 @@ const { requestExport } = useExportRequest('activity', props.query);
         <thead>
             <tr>
                 <th scope="col" role="button" @click="sortBy('created_at')">
-                    When
+                    {{ t('admin.platform.activity.when') }}
                     <span v-if="sort === 'created_at'">{{ direction === 'asc' ? '▲' : '▼' }}</span>
                 </th>
-                <th scope="col">Causer</th>
-                <th scope="col">Subject</th>
+                <th scope="col">{{ t('admin.platform.activity.causer') }}</th>
+                <th scope="col">{{ t('admin.platform.activity.subject') }}</th>
                 <th scope="col" role="button" @click="sortBy('event')">
-                    Event
+                    {{ t('admin.platform.activity.event') }}
                     <span v-if="sort === 'event'">{{ direction === 'asc' ? '▲' : '▼' }}</span>
                 </th>
-                <th scope="col">Description</th>
+                <th scope="col">{{ t('admin.platform.activity.description') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -87,12 +120,18 @@ const { requestExport } = useExportRequest('activity', props.query);
                 <td>{{ entry.description }}</td>
             </tr>
             <tr v-if="activity.data.length === 0">
-                <td colspan="5" class="text-muted">No activity matches these filters.</td>
+                <td colspan="5" class="text-muted">{{ t('common.noResultsFiltered') }}</td>
             </tr>
         </tbody>
     </table>
 
     <div v-if="activity.meta.last_page > 1" class="text-muted small">
-        Page {{ activity.meta.current_page }} of {{ activity.meta.last_page }} ({{ activity.meta.total }} total)
+        {{
+            t('common.pagination', {
+                current: activity.meta.current_page,
+                last: activity.meta.last_page,
+                total: activity.meta.total,
+            })
+        }}
     </div>
 </template>

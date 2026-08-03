@@ -64,5 +64,86 @@
             "passwordConfirmation": "Confirm password",
             "submit": "Activate account"
         }
+    },
+    "common": {
+        "exportCsv": "Export as CSV",
+        "pagination": "Page {current} of {last} ({total} total)",
+        "noResultsFiltered": "No results match these filters."
+    },
+    "admin": {
+        "platform": {
+            "dashboard": {
+                "title": "Platform dashboard",
+                "resellers": "Resellers",
+                "users": "Users",
+                "courses": "Courses",
+                "storageUsed": "Storage used",
+                "ofIncluded": "of {included} included",
+                "billedRevenue": "Billed revenue",
+                "pendingRevenue": "Pending revenue"
+            },
+            "resellers": {
+                "title": "Resellers",
+                "searchPlaceholder": "Search name or slug",
+                "allStatuses": "All statuses",
+                "active": "Active",
+                "suspended": "Suspended",
+                "name": "Name",
+                "slug": "Slug",
+                "status": "Status",
+                "created": "Created"
+            },
+            "users": {
+                "title": "Users",
+                "searchPlaceholder": "Search name or email",
+                "name": "Name",
+                "email": "Email",
+                "reseller": "Reseller",
+                "platformRole": "Platform role",
+                "created": "Created"
+            },
+            "userDetail": {
+                "back": "« Back to users",
+                "reasonPlaceholder": "Reason for impersonating",
+                "impersonate": "Impersonate",
+                "reseller": "Reseller",
+                "platformRole": "Platform role",
+                "memberSince": "Member since",
+                "timeline": "Timeline",
+                "when": "When",
+                "actor": "Actor",
+                "subject": "Subject",
+                "event": "Event",
+                "description": "Description",
+                "noActivity": "No activity recorded for this user yet."
+            },
+            "activity": {
+                "title": "Activity log",
+                "searchPlaceholder": "Search description",
+                "actorPlaceholder": "Actor (user id)",
+                "subjectTypePlaceholder": "Subject type (e.g. App\\Models\\Course)",
+                "actionPlaceholder": "Action (created/updated/deleted)",
+                "resellerPlaceholder": "Reseller id",
+                "fromDate": "From date",
+                "toDate": "To date",
+                "when": "When",
+                "causer": "Causer",
+                "subject": "Subject",
+                "event": "Event",
+                "description": "Description"
+            },
+            "health": {
+                "title": "Platform health",
+                "failedJobs": "Failed jobs",
+                "failedJobsLast24h": "Failed jobs (last 24h)",
+                "storageUsed": "Storage used",
+                "queueDepth": "Queue depth",
+                "queue": "Queue",
+                "pendingJobs": "Pending jobs",
+                "waitTime": "Wait time",
+                "workers": "Workers",
+                "noQueues": "No active queues."
+            }
+        }
     }
 }

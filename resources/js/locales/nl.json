@@ -64,5 +64,86 @@
             "passwordConfirmation": "Bevestig wachtwoord",
             "submit": "Account activeren"
         }
+    },
+    "common": {
+        "exportCsv": "Exporteren als CSV",
+        "pagination": "Pagina {current} van {last} ({total} totaal)",
+        "noResultsFiltered": "Geen resultaten voor deze filters."
+    },
+    "admin": {
+        "platform": {
+            "dashboard": {
+                "title": "Platform dashboard",
+                "resellers": "Resellers",
+                "users": "Gebruikers",
+                "courses": "Cursussen",
+                "storageUsed": "Opslag gebruikt",
+                "ofIncluded": "van {included} inbegrepen",
+                "billedRevenue": "Gefactureerde omzet",
+                "pendingRevenue": "Openstaande omzet"
+            },
+            "resellers": {
+                "title": "Resellers",
+                "searchPlaceholder": "Zoek op naam of slug",
+                "allStatuses": "Alle statussen",
+                "active": "Actief",
+                "suspended": "Geschorst",
+                "name": "Naam",
+                "slug": "Slug",
+                "status": "Status",
+                "created": "Aangemaakt"
+            },
+            "users": {
+                "title": "Gebruikers",
+                "searchPlaceholder": "Zoek op naam of e-mailadres",
+                "name": "Naam",
+                "email": "E-mailadres",
+                "reseller": "Reseller",
+                "platformRole": "Platformrol",
+                "created": "Aangemaakt"
+            },
+            "userDetail": {
+                "back": "« Terug naar gebruikers",
+                "reasonPlaceholder": "Reden voor impersonatie",
+                "impersonate": "Impersoneren",
+                "reseller": "Reseller",
+                "platformRole": "Platformrol",
+                "memberSince": "Lid sinds",
+                "timeline": "Tijdlijn",
+                "when": "Wanneer",
+                "actor": "Actor",
+                "subject": "Onderwerp",
+                "event": "Gebeurtenis",
+                "description": "Omschrijving",
+                "noActivity": "Nog geen activiteit voor deze gebruiker."
+            },
+            "activity": {
+                "title": "Activiteitenlog",
+                "searchPlaceholder": "Zoek in omschrijving",
+                "actorPlaceholder": "Actor (gebruikers-id)",
+                "subjectTypePlaceholder": "Type onderwerp (bijv. App\\Models\\Course)",
+                "actionPlaceholder": "Actie (created/updated/deleted)",
+                "resellerPlaceholder": "Reseller-id",
+                "fromDate": "Vanaf datum",
+                "toDate": "Tot datum",
+                "when": "Wanneer",
+                "causer": "Actor",
+                "subject": "Onderwerp",
+                "event": "Gebeurtenis",
+                "description": "Omschrijving"
+            },
+            "health": {
+                "title": "Platformstatus",
+                "failedJobs": "Mislukte taken",
+                "failedJobsLast24h": "Mislukte taken (laatste 24u)",
+                "storageUsed": "Opslag gebruikt",
+                "queueDepth": "Wachtrijdiepte",
+                "queue": "Wachtrij",
+                "pendingJobs": "Openstaande taken",
+                "waitTime": "Wachttijd",
+                "workers": "Workers",
+                "noQueues": "Geen actieve wachtrijen."
+            }
+        }
     }
 }

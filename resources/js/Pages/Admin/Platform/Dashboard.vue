@@ -2,8 +2,11 @@
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import type { PlatformDashboardStats } from '@/types/admin';
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 defineOptions({ layout: AdminLayout });
+
+const { t } = useI18n();
 
 const props = defineProps<{ stats: PlatformDashboardStats }>();
 
@@ -28,13 +31,13 @@ const storagePercent = computed(() => {
 </script>
 
 <template>
-    <h1 class="h4 mb-4">Platform dashboard</h1>
+    <h1 class="h4 mb-4">{{ t('admin.platform.dashboard.title') }}</h1>
 
     <div class="row g-3 mb-4">
         <div class="col-sm-6 col-lg-3">
             <div class="card h-100">
                 <div class="card-body">
-                    <div class="text-muted small text-uppercase">Resellers</div>
+                    <div class="text-muted small text-uppercase">{{ t('admin.platform.dashboard.resellers') }}</div>
                     <div class="fs-3 fw-semibold">{{ stats.resellerCount }}</div>
                 </div>
             </div>
@@ -42,7 +45,7 @@ const storagePercent = computed(() => {
         <div class="col-sm-6 col-lg-3">
             <div class="card h-100">
                 <div class="card-body">
-                    <div class="text-muted small text-uppercase">Users</div>
+                    <div class="text-muted small text-uppercase">{{ t('admin.platform.dashboard.users') }}</div>
                     <div class="fs-3 fw-semibold">{{ stats.userCount }}</div>
                 </div>
             </div>
@@ -50,7 +53,7 @@ const storagePercent = computed(() => {
         <div class="col-sm-6 col-lg-3">
             <div class="card h-100">
                 <div class="card-body">
-                    <div class="text-muted small text-uppercase">Courses</div>
+                    <div class="text-muted small text-uppercase">{{ t('admin.platform.dashboard.courses') }}</div>
                     <div class="fs-3 fw-semibold">{{ stats.courseCount }}</div>
                 </div>
             </div>
@@ -58,7 +61,7 @@ const storagePercent = computed(() => {
         <div class="col-sm-6 col-lg-3">
             <div class="card h-100">
                 <div class="card-body">
-                    <div class="text-muted small text-uppercase">Storage used</div>
+                    <div class="text-muted small text-uppercase">{{ t('admin.platform.dashboard.storageUsed') }}</div>
                     <div class="fs-3 fw-semibold">{{ formatBytes(stats.storageUsedBytes) }}</div>
                     <div
                         class="progress mt-2"
@@ -69,7 +72,13 @@ const storagePercent = computed(() => {
                     >
                         <div class="progress-bar" :style="{ width: `${storagePercent}%` }"></div>
                     </div>
-                    <div class="small text-muted mt-1">of {{ formatBytes(stats.storageIncludedBytes) }} included</div>
+                    <div class="small text-muted mt-1">
+                        {{
+                            t('admin.platform.dashboard.ofIncluded', {
+                                included: formatBytes(stats.storageIncludedBytes),
+                            })
+                        }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -79,7 +88,7 @@ const storagePercent = computed(() => {
         <div class="col-sm-6 col-lg-3">
             <div class="card h-100">
                 <div class="card-body">
-                    <div class="text-muted small text-uppercase">Billed revenue</div>
+                    <div class="text-muted small text-uppercase">{{ t('admin.platform.dashboard.billedRevenue') }}</div>
                     <div class="fs-3 fw-semibold">{{ formatMoney(stats.billedRevenue.cents) }}</div>
                 </div>
             </div>
@@ -87,7 +96,9 @@ const storagePercent = computed(() => {
         <div class="col-sm-6 col-lg-3">
             <div class="card h-100">
                 <div class="card-body">
-                    <div class="text-muted small text-uppercase">Pending revenue</div>
+                    <div class="text-muted small text-uppercase">
+                        {{ t('admin.platform.dashboard.pendingRevenue') }}
+                    </div>
                     <div class="fs-3 fw-semibold">{{ formatMoney(stats.pendingRevenue.cents) }}</div>
                 </div>
             </div>

@@ -4,6 +4,7 @@ import { useIndexFilters } from '@/Composables/useIndexFilters';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import type { FilterQuery, PaginatedCollection } from '@/types/filtering';
 import { Link } from '@inertiajs/vue3';
+import { useI18n } from 'vue-i18n';
 
 interface UserRow {
     id: number;
@@ -23,17 +24,25 @@ const props = defineProps<{
 
 const { search, sort, direction, sortBy } = useIndexFilters('/admin/platform/users', props.query);
 const { requestExport } = useExportRequest('users', props.query);
+const { t } = useI18n();
 </script>
 
 <template>
-    <h1 class="h4 mb-4">Users</h1>
+    <h1 class="h4 mb-4">{{ t('admin.platform.users.title') }}</h1>
 
     <div class="row g-2 mb-3 align-items-center">
         <div class="col-auto">
-            <input v-model="search" type="search" class="form-control" placeholder="Search name or email" />
+            <input
+                v-model="search"
+                type="search"
+                class="form-control"
+                :placeholder="t('admin.platform.users.searchPlaceholder')"
+            />
         </div>
         <div class="col-auto ms-auto">
-            <button type="button" class="btn btn-sm btn-outline-secondary" @click="requestExport">Export as CSV</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary" @click="requestExport">
+                {{ t('common.exportCsv') }}
+            </button>
         </div>
     </div>
 
@@ -41,17 +50,17 @@ const { requestExport } = useExportRequest('users', props.query);
         <thead>
             <tr>
                 <th scope="col" role="button" @click="sortBy('name')">
-                    Name
+                    {{ t('admin.platform.users.name') }}
                     <span v-if="sort === 'name'">{{ direction === 'asc' ? '▲' : '▼' }}</span>
                 </th>
                 <th scope="col" role="button" @click="sortBy('email')">
-                    Email
+                    {{ t('admin.platform.users.email') }}
                     <span v-if="sort === 'email'">{{ direction === 'asc' ? '▲' : '▼' }}</span>
                 </th>
-                <th scope="col">Reseller</th>
-                <th scope="col">Platform role</th>
+                <th scope="col">{{ t('admin.platform.users.reseller') }}</th>
+                <th scope="col">{{ t('admin.platform.users.platformRole') }}</th>
                 <th scope="col" role="button" @click="sortBy('created_at')">
-                    Created
+                    {{ t('admin.platform.users.created') }}
                     <span v-if="sort === 'created_at'">{{ direction === 'asc' ? '▲' : '▼' }}</span>
                 </th>
             </tr>
@@ -67,12 +76,18 @@ const { requestExport } = useExportRequest('users', props.query);
                 <td>{{ user.created_at }}</td>
             </tr>
             <tr v-if="users.data.length === 0">
-                <td colspan="5" class="text-muted">No users match these filters.</td>
+                <td colspan="5" class="text-muted">{{ t('common.noResultsFiltered') }}</td>
             </tr>
         </tbody>
     </table>
 
     <div v-if="users.meta.last_page > 1" class="text-muted small">
-        Page {{ users.meta.current_page }} of {{ users.meta.last_page }} ({{ users.meta.total }} total)
+        {{
+            t('common.pagination', {
+                current: users.meta.current_page,
+                last: users.meta.last_page,
+                total: users.meta.total,
+            })
+        }}
     </div>
 </template>

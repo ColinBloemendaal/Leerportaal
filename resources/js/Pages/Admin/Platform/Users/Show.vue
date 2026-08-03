@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Link, useForm } from '@inertiajs/vue3';
+import { useI18n } from 'vue-i18n';
 
 interface UserDetail {
     id: number;
@@ -32,6 +33,7 @@ const props = defineProps<{
 defineOptions({ layout: AdminLayout });
 
 const impersonateForm = useForm({ reason: '' });
+const { t } = useI18n();
 
 function impersonate() {
     impersonateForm.post(`/impersonate/${props.user.data.id}`);
@@ -39,7 +41,7 @@ function impersonate() {
 </script>
 
 <template>
-    <Link href="/admin/platform/users" class="d-inline-block mb-3">&laquo; Back to users</Link>
+    <Link href="/admin/platform/users" class="d-inline-block mb-3">{{ t('admin.platform.userDetail.back') }}</Link>
 
     <div class="d-flex justify-content-between align-items-start mb-4">
         <div>
@@ -54,15 +56,15 @@ function impersonate() {
                     type="text"
                     class="form-control form-control-sm"
                     :class="{ 'is-invalid': impersonateForm.errors.reason }"
-                    placeholder="Reason for impersonating"
-                    aria-label="Reason for impersonating"
+                    :placeholder="t('admin.platform.userDetail.reasonPlaceholder')"
+                    :aria-label="t('admin.platform.userDetail.reasonPlaceholder')"
                 />
                 <div v-if="impersonateForm.errors.reason" class="invalid-feedback">
                     {{ impersonateForm.errors.reason }}
                 </div>
             </div>
             <button type="submit" class="btn btn-sm btn-outline-warning" :disabled="impersonateForm.processing">
-                Impersonate
+                {{ t('admin.platform.userDetail.impersonate') }}
             </button>
         </form>
     </div>
@@ -71,7 +73,7 @@ function impersonate() {
         <div class="col-sm-6 col-lg-3">
             <div class="card h-100">
                 <div class="card-body">
-                    <div class="text-muted small text-uppercase">Reseller</div>
+                    <div class="text-muted small text-uppercase">{{ t('admin.platform.userDetail.reseller') }}</div>
                     <div class="fw-semibold">{{ user.data.reseller_name ?? '—' }}</div>
                 </div>
             </div>
@@ -79,7 +81,7 @@ function impersonate() {
         <div class="col-sm-6 col-lg-3">
             <div class="card h-100">
                 <div class="card-body">
-                    <div class="text-muted small text-uppercase">Platform role</div>
+                    <div class="text-muted small text-uppercase">{{ t('admin.platform.userDetail.platformRole') }}</div>
                     <div class="fw-semibold">{{ user.data.platform_role ?? '—' }}</div>
                 </div>
             </div>
@@ -87,23 +89,23 @@ function impersonate() {
         <div class="col-sm-6 col-lg-3">
             <div class="card h-100">
                 <div class="card-body">
-                    <div class="text-muted small text-uppercase">Member since</div>
+                    <div class="text-muted small text-uppercase">{{ t('admin.platform.userDetail.memberSince') }}</div>
                     <div class="fw-semibold">{{ user.data.created_at }}</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <h2 class="h5 mb-3">Timeline</h2>
+    <h2 class="h5 mb-3">{{ t('admin.platform.userDetail.timeline') }}</h2>
 
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">When</th>
-                <th scope="col">Actor</th>
-                <th scope="col">Subject</th>
-                <th scope="col">Event</th>
-                <th scope="col">Description</th>
+                <th scope="col">{{ t('admin.platform.userDetail.when') }}</th>
+                <th scope="col">{{ t('admin.platform.userDetail.actor') }}</th>
+                <th scope="col">{{ t('admin.platform.userDetail.subject') }}</th>
+                <th scope="col">{{ t('admin.platform.userDetail.event') }}</th>
+                <th scope="col">{{ t('admin.platform.userDetail.description') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -117,7 +119,7 @@ function impersonate() {
                 <td>{{ entry.description }}</td>
             </tr>
             <tr v-if="timeline.data.length === 0">
-                <td colspan="5" class="text-muted">No activity recorded for this user yet.</td>
+                <td colspan="5" class="text-muted">{{ t('admin.platform.userDetail.noActivity') }}</td>
             </tr>
         </tbody>
     </table>
