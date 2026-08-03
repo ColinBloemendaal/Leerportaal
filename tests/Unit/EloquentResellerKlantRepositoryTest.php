@@ -25,3 +25,17 @@ it('searches and sorts klanten for the current reseller', function (): void {
 
     expect(collect($result->items())->pluck('name')->all())->toBe(['Acme BV', 'Zebra BV']);
 });
+
+it('lists klanten across every reseller regardless of ambient tenant', function (): void {
+    $resellerA = Reseller::factory()->create();
+    $resellerB = Reseller::factory()->create();
+
+    ResellerKlant::factory()->create(['reseller_id' => $resellerA->id]);
+    ResellerKlant::factory()->create(['reseller_id' => $resellerB->id]);
+
+    app(TenantContext::class)->set($resellerA);
+
+    $repository = app(EloquentResellerKlantRepository::class);
+
+    expect($repository->all()->count())->toBe(2);
+});

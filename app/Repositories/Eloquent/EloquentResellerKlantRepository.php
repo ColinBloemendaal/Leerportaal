@@ -12,10 +12,19 @@ use App\Models\User;
 use App\Support\Filtering\QueryFilterApplier;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\LazyCollection;
 
 final class EloquentResellerKlantRepository implements ResellerKlantRepository
 {
     public function __construct(private readonly QueryFilterApplier $filters) {}
+
+    public function all(): LazyCollection
+    {
+        // ResellerKlant is TenantScoped -- this deliberately bypasses that
+        // for platform-context iteration across every reseller, see the
+        // interface docblock.
+        return ResellerKlant::query()->withoutTenantScope()->cursor();
+    }
 
     public function paginate(FilterRequestData $filters, int $perPage = 15): LengthAwarePaginator
     {
