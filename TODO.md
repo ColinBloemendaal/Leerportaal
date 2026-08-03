@@ -246,17 +246,19 @@ Human decision on scope: the "sender name, reply-to" branding task above and thi
 ### Billing
 
 - [x] `PaymentGateway` interface + `MollieGateway` implementation. The interface itself was already locked in during Phase 0 (`createPayment(int $amountCents, string $description, string $redirectUrl): array`, `getPaymentStatus(string $paymentId): string`), with `tests/Fakes/FakePaymentGateway` already bound globally in `tests/TestCase.php` for every test -- this task only had to build the real implementation. `App\Services\Billing\MollieGateway` talks to Mollie's REST API directly via Laravel's own `Illuminate\Http\Client\Factory`, the same shape as the existing `App\Services\Ploi\HttpPloiClient`, rather than pulling in the `mollie/mollie-api-php` SDK -- Mollie's API is a plain JSON REST API underneath, so a real dependency wasn't needed, and this keeps it trivially testable with `Http::fake()` (mirroring `HttpPloiClientTest`) instead of having to fake a third-party SDK client. `createPayment()` posts amount (formatted as a `"12.34"` string per Mollie's API, converted from cents), description, and redirect URL, and returns `id`/`checkoutUrl`/`status` (defensively `is_string()`-checked against the decoded JSON response, matching the established defensive-parsing convention from `MailgunWebhookParser`, rather than trusting the shape). `getPaymentStatus()` is a plain GET. Bound in `AppServiceProvider` (config-based API key via `services.mollie.key` / `MOLLIE_KEY`, already reserved in `.env.example` since Phase 0), same closure-construction pattern as the `PloiClient` binding right above it.
-- [ ] Normalized webhook handler (idempotent, signature-verified, replay-safe)
-- [ ] Billable event on course assignment
-- [ ] Pricing: `max(15% × reseller_price, €3.00)` for reseller courses; fixed platform price for catalog courses
-- [ ] Platform admin manual price-floor override per reseller course
-- [ ] 14-day revocation: free only if `first_opened_at` is null and within window
-- [ ] Authoring add-on subscription (€250/year) gating custom course creation
-- [ ] Storage overage metering and charging beyond 5 GB
-- [ ] Invoice generation (immutable), credit notes for corrections
-- [ ] VAT handling incl. reverse charge / VAT ID validation
-- [ ] Dunning: failed payment retries, suspension rules
-- [ ] Reseller billing dashboard: current period, breakdown per klant, history
+- [x] Pricing: `max(15% × reseller_price, €3.00)` for reseller courses; fixed platform price for catalog courses. Already fully built (an earlier Phase 5/7-era commit, before this Billing section was reached top-to-bottom) as `App\Services\Billing\AssignmentPricingService::priceFor()`, wired into `AssignCourseToCursist` to snapshot `CourseAssignment.price_cents` at assignment time. Only the TODO.md checkbox was outstanding -- checking it off now that the Billing section is actually being worked, rather than leaving it looking unbuilt.
+- [x] Platform admin manual price-floor override per reseller course. Also already built as part of the same `AssignmentPricingService` (`Course.price_floor_override_cents`, applied as a `max()` after either pricing branch, never auto-detected per §11). Checkbox-only catch-up, same as the task above.
+- [ ] Reordered below into the real dependency chain (CLAUDE.md §0 rule 4): there is no `Invoice` model yet anywhere in the codebase, and "normalized webhook handler" / "billable event" / "invoice generation" / "dunning" / "reseller billing dashboard" all need one to exist and mean the same thing before they can be built individually. Sub-tasks, in build order:
+  - [ ] Invoice + InvoiceLine domain model (immutable once issued, one line per billed `CourseAssignment`)
+  - [ ] Billable event on course assignment (attaches a line to the reseller's current period, using the pricing already built above)
+  - [ ] Normalized Mollie webhook handler (idempotent, replay-safe -- Mollie's own recommended pattern: the webhook body carries only a payment id, never trusted directly, always re-verified via an authenticated `PaymentGateway::getPaymentStatus()` call back to Mollie)
+  - [ ] 14-day revocation: free only if `first_opened_at` is null and within window
+  - [ ] Authoring add-on subscription (€250/year) gating custom course creation
+  - [ ] Storage overage metering and charging beyond 5 GB
+  - [ ] Invoice generation (immutable), credit notes for corrections
+  - [ ] VAT handling incl. reverse charge / VAT ID validation
+  - [ ] Dunning: failed payment retries, suspension rules
+  - [ ] Reseller billing dashboard: current period, breakdown per klant, history
 - [ ] Exhaustive unit tests on every pricing calculation
 
 ### GDPR
