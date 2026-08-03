@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Contracts\Repositories;
 
+use App\DataTransferObjects\Filtering\FilterRequestData;
 use App\Models\ResellerKlant;
 use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -14,7 +15,7 @@ interface ResellerKlantRepository
     /**
      * @return LengthAwarePaginator<int, ResellerKlant>
      */
-    public function paginate(?string $search = null, int $perPage = 15): LengthAwarePaginator;
+    public function paginate(FilterRequestData $filters, int $perPage = 15): LengthAwarePaginator;
 
     public function findById(int $id): ?ResellerKlant;
 

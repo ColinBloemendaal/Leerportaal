@@ -9,6 +9,7 @@ use App\Actions\Invites\RestoreInvite;
 use App\Actions\Invites\RevokeInvite;
 use App\Contracts\Repositories\ResellerKlantRepository;
 use App\Contracts\Repositories\UserInviteRepository;
+use App\DataTransferObjects\Filtering\FilterRequestData;
 use App\Enums\Role;
 use App\Http\Requests\Invites\StoreInviteRequest;
 use App\Http\Resources\ResellerKlantResource;
@@ -24,7 +25,9 @@ final class InvitesController extends Controller
         return Inertia::render('Invites/Index', [
             'invites' => UserInviteResource::collection($invites->pendingForCurrentReseller()),
             'revoked' => UserInviteResource::collection($invites->revokedForCurrentReseller()),
-            'klanten' => ResellerKlantResource::collection($resellerKlanten->paginate(perPage: 1000)),
+            'klanten' => ResellerKlantResource::collection(
+                $resellerKlanten->paginate(new FilterRequestData(search: null, sort: null, sortDirection: 'asc', filters: []), perPage: 1000),
+            ),
             'klantRoles' => $this->roleOptions(Role::klantRoles()),
             'resellerRoles' => $this->roleOptions(Role::resellerRoles()),
         ]);

@@ -5,19 +5,27 @@ declare(strict_types=1);
 namespace App\Repositories\Eloquent;
 
 use App\Contracts\Repositories\ResellerKlantRepository;
+use App\DataTransferObjects\Filtering\FilterableSpec;
+use App\DataTransferObjects\Filtering\FilterRequestData;
 use App\Models\ResellerKlant;
 use App\Models\User;
+use App\Support\Filtering\QueryFilterApplier;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 final class EloquentResellerKlantRepository implements ResellerKlantRepository
 {
-    public function paginate(?string $search = null, int $perPage = 15): LengthAwarePaginator
+    public function __construct(private readonly QueryFilterApplier $filters) {}
+
+    public function paginate(FilterRequestData $filters, int $perPage = 15): LengthAwarePaginator
     {
-        return ResellerKlant::query()
-            ->when($search !== null, fn ($query) => $query->where('name', 'like', "%{$search}%"))
-            ->orderBy('name')
-            ->paginate($perPage);
+        $spec = new FilterableSpec(
+            searchableColumns: ['name'],
+            allowedSorts: ['name', 'created_at'],
+            defaultSort: 'name',
+        );
+
+        return $this->filters->apply(ResellerKlant::query(), $filters, $spec)->paginate($perPage);
     }
 
     public function findById(int $id): ?ResellerKlant

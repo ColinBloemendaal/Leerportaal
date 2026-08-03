@@ -1,14 +1,19 @@
 <script setup lang="ts">
+import { useIndexFilters } from '@/Composables/useIndexFilters';
 import AppLayout from '@/Layouts/AppLayout.vue';
+import type { FilterQuery } from '@/types/filtering';
 import type { PaginatedKlanten, ResellerKlant } from '@/types/klanten';
 import { router, useForm } from '@inertiajs/vue3';
 
 defineOptions({ layout: AppLayout });
 
-defineProps<{
+const props = defineProps<{
     klanten: PaginatedKlanten;
     trashed: ResellerKlant[];
+    query: FilterQuery;
 }>();
+
+const { search, sort, direction, sortBy } = useIndexFilters('/klanten', props.query);
 
 const form = useForm({
     name: '',
@@ -49,10 +54,19 @@ function restore(klant: ResellerKlant) {
         </div>
     </form>
 
+    <div class="row g-2 mb-3">
+        <div class="col-auto">
+            <input v-model="search" type="search" class="form-control" placeholder="Zoeken" aria-label="Zoeken" />
+        </div>
+    </div>
+
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">Naam</th>
+                <th scope="col" role="button" @click="sortBy('name')">
+                    Naam
+                    <span v-if="sort === 'name'">{{ direction === 'asc' ? '▲' : '▼' }}</span>
+                </th>
                 <th scope="col"></th>
             </tr>
         </thead>

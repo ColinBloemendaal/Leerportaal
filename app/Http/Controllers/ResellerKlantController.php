@@ -8,6 +8,7 @@ use App\Actions\ResellerKlanten\CreateResellerKlant;
 use App\Actions\ResellerKlanten\DeleteResellerKlant;
 use App\Actions\ResellerKlanten\RestoreResellerKlant;
 use App\Contracts\Repositories\ResellerKlantRepository;
+use App\DataTransferObjects\Filtering\FilterRequestData;
 use App\Http\Requests\ResellerKlanten\StoreResellerKlantRequest;
 use App\Http\Resources\ResellerKlantResource;
 use Illuminate\Http\RedirectResponse;
@@ -19,13 +20,17 @@ final class ResellerKlantController extends Controller
 {
     public function index(Request $request, ResellerKlantRepository $resellerKlanten): Response
     {
-        $search = $request->string('search')->value();
+        $filters = FilterRequestData::fromRequest($request);
 
         return Inertia::render('Klanten/Index', [
-            'klanten' => ResellerKlantResource::collection(
-                $resellerKlanten->paginate($search !== '' ? $search : null),
-            ),
+            'klanten' => ResellerKlantResource::collection($resellerKlanten->paginate($filters)),
             'trashed' => ResellerKlantResource::collection($resellerKlanten->trashed()),
+            'query' => [
+                'search' => $filters->search,
+                'sort' => $filters->sort,
+                'direction' => $filters->sortDirection,
+                'filters' => $filters->filters,
+            ],
         ]);
     }
 
