@@ -16,6 +16,7 @@ use Illuminate\Support\Carbon;
  * @property ?string $event
  * @property ?string $subject_type
  * @property ?int $subject_id
+ * @property ?int $causer_id
  * @property ?object $causer
  * @property Carbon $created_at
  */
@@ -33,6 +34,7 @@ final class ActivityLogResource extends JsonResource
             'event' => $this->event,
             'subject_type' => $this->subject_type === null ? null : class_basename($this->subject_type),
             'subject_id' => $this->subject_id,
+            'causer_id' => $this->causer_id,
             'causer_name' => $this->causer instanceof User ? $this->causer->name : null,
             'created_at' => $this->created_at->toIso8601String(),
         ];

@@ -21,7 +21,7 @@ const props = defineProps<{
     query: FilterQuery;
 }>();
 
-const { search, sort, direction, sortBy } = useIndexFilters('/admin/platform/activity', props.query);
+const { search, sort, direction, filters, sortBy } = useIndexFilters('/admin/platform/activity', props.query);
 </script>
 
 <template>
@@ -30,6 +30,28 @@ const { search, sort, direction, sortBy } = useIndexFilters('/admin/platform/act
     <div class="row g-2 mb-3">
         <div class="col-auto">
             <input v-model="search" type="search" class="form-control" placeholder="Search description" />
+        </div>
+        <div class="col-auto">
+            <input v-model="filters.causer_id" type="number" class="form-control" placeholder="Actor (user id)" />
+        </div>
+        <div class="col-auto">
+            <input
+                v-model="filters.subject_type"
+                class="form-control"
+                placeholder="Subject type (e.g. App\Models\Course)"
+            />
+        </div>
+        <div class="col-auto">
+            <input v-model="filters.event" class="form-control" placeholder="Action (created/updated/deleted)" />
+        </div>
+        <div class="col-auto">
+            <input v-model="filters.reseller_id" type="number" class="form-control" placeholder="Reseller id" />
+        </div>
+        <div class="col-auto">
+            <input v-model="filters.date_from" type="date" class="form-control" aria-label="From date" />
+        </div>
+        <div class="col-auto">
+            <input v-model="filters.date_to" type="date" class="form-control" aria-label="To date" />
         </div>
     </div>
 
