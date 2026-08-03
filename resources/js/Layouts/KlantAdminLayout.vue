@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import ImpersonationBanner from '@/Components/ImpersonationBanner.vue';
 import { Link } from '@inertiajs/vue3';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 </script>
 
 <template>
@@ -15,7 +18,7 @@ import { Link } from '@inertiajs/vue3';
 
                 <ul class="nav nav-pills flex-column">
                     <li class="nav-item">
-                        <Link href="/admin/klant" class="nav-link text-white">Dashboard</Link>
+                        <Link href="/admin/klant" class="nav-link text-white">{{ t('layouts.klant.dashboard') }}</Link>
                     </li>
                 </ul>
             </aside>

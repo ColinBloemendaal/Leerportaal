@@ -1,0 +1,28 @@
+{
+    "layouts": {
+        "admin": {
+            "dashboard": "Dashboard",
+            "resellers": "Resellers",
+            "users": "Users",
+            "activity": "Activity",
+            "health": "Health",
+            "myExports": "My exports"
+        },
+        "reseller": {
+            "dashboard": "Dashboard",
+            "klanten": "Clients",
+            "courses": "Courses",
+            "assignments": "Assignments",
+            "attempts": "Attempts",
+            "invites": "Invites",
+            "myExports": "My exports"
+        },
+        "klant": {
+            "dashboard": "Dashboard"
+        },
+        "app": {
+            "dashboard": "Dashboard",
+            "myExports": "My exports"
+        }
+    }
+}

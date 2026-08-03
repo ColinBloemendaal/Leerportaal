@@ -1,0 +1,28 @@
+{
+    "layouts": {
+        "admin": {
+            "dashboard": "Dashboard",
+            "resellers": "Resellers",
+            "users": "Gebruikers",
+            "activity": "Activiteit",
+            "health": "Status",
+            "myExports": "Mijn exports"
+        },
+        "reseller": {
+            "dashboard": "Dashboard",
+            "klanten": "Klanten",
+            "courses": "Cursussen",
+            "assignments": "Toewijzingen",
+            "attempts": "Pogingen",
+            "invites": "Uitnodigingen",
+            "myExports": "Mijn exports"
+        },
+        "klant": {
+            "dashboard": "Dashboard"
+        },
+        "app": {
+            "dashboard": "Dashboard",
+            "myExports": "Mijn exports"
+        }
+    }
+}

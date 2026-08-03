@@ -9,7 +9,8 @@ it('renders the unbranded fallback experience with no tenant resolved', function
         ->assertOk()
         ->assertInertia(fn (AssertableInertia $page) => $page
             ->component('Welcome')
-            ->where('appName', config('app.name')));
+            ->where('appName', config('app.name'))
+            ->where('locale', config('app.locale')));
 });
 
 it('renders the same unbranded page for an unresolvable reseller_slug cookie', function (): void {

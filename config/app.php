@@ -78,7 +78,12 @@ return [
     |
     */
 
-    'locale' => env('APP_LOCALE', 'en'),
+    // Dutch by default, not Laravel's own skeleton default -- this
+    // product's own domain vocabulary (cursist, klant, resellerklant,
+    // voorlees) and its existing hardcoded UI strings are predominantly
+    // Dutch, so that's the more honest default for actual deployments.
+    // Still fully overridable per-environment via APP_LOCALE.
+    'locale' => env('APP_LOCALE', 'nl'),
 
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
 

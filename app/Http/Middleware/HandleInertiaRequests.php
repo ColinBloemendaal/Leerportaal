@@ -41,6 +41,7 @@ final class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'appName' => config('app.name'),
+            'locale' => app()->getLocale(),
             'flash' => [
                 'status' => fn () => $request->session()->get('status'),
                 'success' => fn () => $request->session()->get('success'),

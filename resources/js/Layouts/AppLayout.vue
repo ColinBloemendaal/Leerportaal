@@ -2,6 +2,9 @@
 import AppFooter from '@/Components/AppFooter.vue';
 import ImpersonationBanner from '@/Components/ImpersonationBanner.vue';
 import { Link } from '@inertiajs/vue3';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 </script>
 
 <template>
@@ -29,10 +32,10 @@ import { Link } from '@inertiajs/vue3';
                 <div id="appNavbar" class="collapse navbar-collapse">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <Link href="/dashboard" class="nav-link">Dashboard</Link>
+                            <Link href="/dashboard" class="nav-link">{{ t('layouts.app.dashboard') }}</Link>
                         </li>
                         <li class="nav-item">
-                            <Link href="/admin/exports" class="nav-link">My exports</Link>
+                            <Link href="/admin/exports" class="nav-link">{{ t('layouts.app.myExports') }}</Link>
                         </li>
                     </ul>
                 </div>

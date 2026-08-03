@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import ImpersonationBanner from '@/Components/ImpersonationBanner.vue';
 import { Link } from '@inertiajs/vue3';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 </script>
 
 <template>
@@ -15,22 +18,34 @@ import { Link } from '@inertiajs/vue3';
 
                 <ul class="nav nav-pills flex-column">
                     <li class="nav-item">
-                        <Link href="/admin/platform" class="nav-link text-white">Dashboard</Link>
+                        <Link href="/admin/platform" class="nav-link text-white">{{
+                            t('layouts.admin.dashboard')
+                        }}</Link>
                     </li>
                     <li class="nav-item">
-                        <Link href="/admin/platform/resellers" class="nav-link text-white">Resellers</Link>
+                        <Link href="/admin/platform/resellers" class="nav-link text-white">{{
+                            t('layouts.admin.resellers')
+                        }}</Link>
                     </li>
                     <li class="nav-item">
-                        <Link href="/admin/platform/users" class="nav-link text-white">Users</Link>
+                        <Link href="/admin/platform/users" class="nav-link text-white">{{
+                            t('layouts.admin.users')
+                        }}</Link>
                     </li>
                     <li class="nav-item">
-                        <Link href="/admin/platform/activity" class="nav-link text-white">Activity</Link>
+                        <Link href="/admin/platform/activity" class="nav-link text-white">{{
+                            t('layouts.admin.activity')
+                        }}</Link>
                     </li>
                     <li class="nav-item">
-                        <Link href="/admin/platform/health" class="nav-link text-white">Health</Link>
+                        <Link href="/admin/platform/health" class="nav-link text-white">{{
+                            t('layouts.admin.health')
+                        }}</Link>
                     </li>
                     <li class="nav-item">
-                        <Link href="/admin/exports" class="nav-link text-white">My exports</Link>
+                        <Link href="/admin/exports" class="nav-link text-white">{{
+                            t('layouts.admin.myExports')
+                        }}</Link>
                     </li>
                 </ul>
             </aside>

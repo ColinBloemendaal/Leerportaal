@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import ImpersonationBanner from '@/Components/ImpersonationBanner.vue';
 import { Link } from '@inertiajs/vue3';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 </script>
 
 <template>
@@ -15,25 +18,35 @@ import { Link } from '@inertiajs/vue3';
 
                 <ul class="nav nav-pills flex-column">
                     <li class="nav-item">
-                        <Link href="/admin/reseller" class="nav-link text-white">Dashboard</Link>
+                        <Link href="/admin/reseller" class="nav-link text-white">{{
+                            t('layouts.reseller.dashboard')
+                        }}</Link>
                     </li>
                     <li class="nav-item">
-                        <Link href="/klanten" class="nav-link text-white">Klanten</Link>
+                        <Link href="/klanten" class="nav-link text-white">{{ t('layouts.reseller.klanten') }}</Link>
                     </li>
                     <li class="nav-item">
-                        <Link href="/admin/reseller/courses" class="nav-link text-white">Courses</Link>
+                        <Link href="/admin/reseller/courses" class="nav-link text-white">{{
+                            t('layouts.reseller.courses')
+                        }}</Link>
                     </li>
                     <li class="nav-item">
-                        <Link href="/admin/reseller/assignments" class="nav-link text-white">Assignments</Link>
+                        <Link href="/admin/reseller/assignments" class="nav-link text-white">{{
+                            t('layouts.reseller.assignments')
+                        }}</Link>
                     </li>
                     <li class="nav-item">
-                        <Link href="/admin/reseller/attempts" class="nav-link text-white">Attempts</Link>
+                        <Link href="/admin/reseller/attempts" class="nav-link text-white">{{
+                            t('layouts.reseller.attempts')
+                        }}</Link>
                     </li>
                     <li class="nav-item">
-                        <Link href="/invites" class="nav-link text-white">Invites</Link>
+                        <Link href="/invites" class="nav-link text-white">{{ t('layouts.reseller.invites') }}</Link>
                     </li>
                     <li class="nav-item">
-                        <Link href="/admin/exports" class="nav-link text-white">My exports</Link>
+                        <Link href="/admin/exports" class="nav-link text-white">{{
+                            t('layouts.reseller.myExports')
+                        }}</Link>
                     </li>
                 </ul>
             </aside>
