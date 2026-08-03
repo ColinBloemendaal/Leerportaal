@@ -8,8 +8,10 @@ use App\Enums\AssignmentBillingState;
 use App\Models\Course;
 use App\Models\Reseller;
 use App\Models\User;
+use App\Notifications\CourseAssignedNotification;
 use App\Tenancy\TenantContext;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 uses(TestCase::class, RefreshDatabase::class);
@@ -23,7 +25,9 @@ beforeEach(function (): void {
     app(TenantContext::class)->set(Reseller::factory()->create());
 });
 
-it('creates a pending, priced assignment', function (): void {
+it('creates a pending, priced assignment and notifies the cursist', function (): void {
+    Notification::fake();
+
     $course = Course::factory()->create(['platform_price_cents' => 2500]);
     $cursist = User::factory()->create();
     $admin = User::factory()->create();
@@ -38,6 +42,8 @@ it('creates a pending, priced assignment', function (): void {
         ->and($assignment->assigned_at)->not->toBeNull()
         ->and($assignment->first_opened_at)->toBeNull()
         ->and($assignment->revoked_at)->toBeNull();
+
+    Notification::assertSentTo($cursist, CourseAssignedNotification::class);
 });
 
 it('creates a fresh assignment row for a repeat rather than reusing an existing one', function (): void {
