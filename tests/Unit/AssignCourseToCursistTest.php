@@ -62,7 +62,7 @@ it('records the billable event as an invoice line on the reseller\'s current dra
 
     expect($invoice)->not->toBeNull()
         ->and($invoice->status)->toBe(InvoiceStatus::Draft)
-        ->and($invoice->total_cents->cents)->toBe(2500)
+        ->and($invoice->subtotal_cents->cents)->toBe(2500)
         ->and($invoice->lines()->count())->toBe(1)
         ->and($invoice->lines()->first()->course_assignment_id)->toBe($assignment->id)
         ->and($invoice->lines()->first()->amount_cents->cents)->toBe(2500);

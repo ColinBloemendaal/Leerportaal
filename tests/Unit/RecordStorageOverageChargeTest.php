@@ -36,7 +36,7 @@ it('creates a storage overage line and bumps the invoice total when over the lim
     $invoice = Invoice::query()->withoutTenantScope()->where('reseller_id', $reseller->id)->first();
 
     expect($invoice)->not->toBeNull()
-        ->and($invoice->total_cents->cents)->toBe(150)
+        ->and($invoice->subtotal_cents->cents)->toBe(150)
         ->and($invoice->lines()->count())->toBe(1)
         ->and($invoice->lines()->first()->course_assignment_id)->toBeNull();
 });
@@ -56,7 +56,7 @@ it('updates the same line rather than duplicating it when run again with more us
     $invoice = Invoice::query()->withoutTenantScope()->where('reseller_id', $reseller->id)->first();
 
     expect($invoice->lines()->count())->toBe(1)
-        ->and($invoice->total_cents->cents)->toBe(200);
+        ->and($invoice->subtotal_cents->cents)->toBe(200);
 });
 
 it('removes the line and credits the invoice back once usage drops under the limit again', function (): void {
@@ -72,6 +72,6 @@ it('removes the line and credits the invoice back once usage drops under the lim
 
     $invoice = Invoice::query()->withoutTenantScope()->where('reseller_id', $reseller->id)->first();
 
-    expect($invoice->total_cents->cents)->toBe(0)
+    expect($invoice->subtotal_cents->cents)->toBe(0)
         ->and(InvoiceLine::query()->where('invoice_id', $invoice->id)->count())->toBe(0);
 });

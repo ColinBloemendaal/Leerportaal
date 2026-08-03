@@ -29,7 +29,7 @@ final class EloquentInvoiceRepository implements InvoiceRepository
             ->withoutTenantScope()
             ->where('status', InvoiceStatus::Draft)
             ->where('period_end', '<', now())
-            ->where('total_cents', '>', 0)
+            ->where('subtotal_cents', '>', 0)
             ->cursor();
     }
 }

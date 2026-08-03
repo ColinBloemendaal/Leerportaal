@@ -43,8 +43,8 @@ final readonly class RecordBillableAssignment
             // Not Invoice::increment(): MoneyCast's get() returns a Money
             // object, not an int, so Eloquent's increment() would try to
             // evaluate "Money object + int" and throw a TypeError.
-            $currentTotalCents = $invoice->total_cents === null ? 0 : $invoice->total_cents->cents;
-            $invoice->total_cents = Money::fromCents($currentTotalCents + $amountCents);
+            $currentSubtotalCents = $invoice->subtotal_cents === null ? 0 : $invoice->subtotal_cents->cents;
+            $invoice->subtotal_cents = Money::fromCents($currentSubtotalCents + $amountCents);
             $invoice->save();
 
             $assignment->billing_state = AssignmentBillingState::Billed;

@@ -17,9 +17,9 @@ use App\Tenancy\TenantContext;
  * decides *whether* a revocation qualifies as free before calling this.
  *
  * A line still sitting on a Draft invoice is reversed directly (removed,
- * invoice total reduced) -- nothing has been issued yet, so there's
+ * invoice subtotal reduced) -- nothing has been issued yet, so there's
  * nothing to preserve. Once the invoice is Issued/Paid, CLAUDE.md §11 says
- * it's immutable: the line and total stay exactly as issued, and the
+ * it's immutable: the line and totals stay exactly as issued, and the
  * correction is a separate IssueCreditNote record instead, for the
  * already-invoiced amount.
  */
@@ -51,8 +51,8 @@ final readonly class WaiveAssignmentBilling
                 $lineAmountCents = $line->amount_cents === null ? 0 : $line->amount_cents->cents;
 
                 if ($invoice->status === InvoiceStatus::Draft) {
-                    $currentTotalCents = $invoice->total_cents === null ? 0 : $invoice->total_cents->cents;
-                    $invoice->total_cents = Money::fromCents(max(0, $currentTotalCents - $lineAmountCents));
+                    $currentSubtotalCents = $invoice->subtotal_cents === null ? 0 : $invoice->subtotal_cents->cents;
+                    $invoice->subtotal_cents = Money::fromCents(max(0, $currentSubtotalCents - $lineAmountCents));
                     $invoice->save();
 
                     $line->delete();

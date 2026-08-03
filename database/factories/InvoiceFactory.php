@@ -28,6 +28,7 @@ final class InvoiceFactory extends Factory
             'status' => InvoiceStatus::Draft,
             'period_start' => $start,
             'period_end' => $start->copy()->endOfMonth(),
+            'subtotal_cents' => 0,
             'total_cents' => 0,
         ];
     }

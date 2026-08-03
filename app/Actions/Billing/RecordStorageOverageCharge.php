@@ -20,7 +20,7 @@ use Illuminate\Database\ConnectionInterface;
  * idempotent against that: it upserts the *one* storage-overage line on
  * the current draft invoice (matched by invoice + course_assignment_id
  * IS NULL + this fixed description) rather than adding a new line every
- * time it runs, and adjusts the invoice's total by the delta, not the
+ * time it runs, and adjusts the invoice's subtotal by the delta, not the
  * full new amount. If usage drops back under the included amount, the
  * line is removed and the invoice credited back -- there's nothing to
  * dispute since the invoice is still a draft at that point.
@@ -70,7 +70,7 @@ final readonly class RecordStorageOverageCharge
 
             if ($chargeCents <= 0) {
                 if ($existingLine !== null) {
-                    $this->adjustInvoiceTotal($invoice, -$previousAmountCents);
+                    $this->adjustInvoiceSubtotal($invoice, -$previousAmountCents);
                     $existingLine->delete();
                 }
 
@@ -80,7 +80,7 @@ final readonly class RecordStorageOverageCharge
             if ($existingLine !== null) {
                 $existingLine->amount_cents = Money::fromCents($chargeCents);
                 $existingLine->save();
-                $this->adjustInvoiceTotal($invoice, $chargeCents - $previousAmountCents);
+                $this->adjustInvoiceSubtotal($invoice, $chargeCents - $previousAmountCents);
 
                 return $existingLine;
             }
@@ -91,16 +91,16 @@ final readonly class RecordStorageOverageCharge
                 'description' => self::DESCRIPTION,
                 'amount_cents' => $chargeCents,
             ]);
-            $this->adjustInvoiceTotal($invoice, $chargeCents);
+            $this->adjustInvoiceSubtotal($invoice, $chargeCents);
 
             return $line;
         });
     }
 
-    private function adjustInvoiceTotal(Invoice $invoice, int $deltaCents): void
+    private function adjustInvoiceSubtotal(Invoice $invoice, int $deltaCents): void
     {
-        $currentTotalCents = $invoice->total_cents === null ? 0 : $invoice->total_cents->cents;
-        $invoice->total_cents = Money::fromCents(max(0, $currentTotalCents + $deltaCents));
+        $currentSubtotalCents = $invoice->subtotal_cents === null ? 0 : $invoice->subtotal_cents->cents;
+        $invoice->subtotal_cents = Money::fromCents(max(0, $currentSubtotalCents + $deltaCents));
         $invoice->save();
     }
 }

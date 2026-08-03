@@ -19,7 +19,7 @@ uses(TestCase::class, RefreshDatabase::class);
 it('removes the line and reduces the draft invoice total, then waives the assignment', function (): void {
     $reseller = Reseller::factory()->create();
     app(TenantContext::class)->set($reseller);
-    $invoice = Invoice::factory()->for($reseller)->create(['total_cents' => 5000]);
+    $invoice = Invoice::factory()->for($reseller)->create(['subtotal_cents' => 5000]);
     $assignment = CourseAssignment::factory()->for($reseller, 'reseller')
         ->create(['billing_state' => AssignmentBillingState::Billed, 'price_cents' => 1500]);
     InvoiceLine::factory()->for($invoice)->for($assignment, 'courseAssignment')->create(['amount_cents' => 1500]);
@@ -27,7 +27,7 @@ it('removes the line and reduces the draft invoice total, then waives the assign
     app(WaiveAssignmentBilling::class)($assignment);
 
     expect($assignment->fresh()->billing_state)->toBe(AssignmentBillingState::Waived)
-        ->and($invoice->fresh()->total_cents->cents)->toBe(3500)
+        ->and($invoice->fresh()->subtotal_cents->cents)->toBe(3500)
         ->and(InvoiceLine::query()->where('course_assignment_id', $assignment->id)->exists())->toBeFalse();
 });
 

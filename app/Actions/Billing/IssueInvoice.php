@@ -7,21 +7,28 @@ namespace App\Actions\Billing;
 use App\Contracts\Billing\PaymentGateway;
 use App\Enums\InvoiceStatus;
 use App\Models\Invoice;
+use App\Services\Billing\VatCalculator;
+use App\Support\Money;
 use App\Tenancy\TenantContext;
 use Illuminate\Database\ConnectionInterface;
 use LogicException;
 
 /**
- * Draft -> Issued, exactly once: creates the real Mollie payment for the
- * invoice's already-accumulated total and stamps the result on the
- * invoice. From this point on the invoice is immutable (CLAUDE.md §11) --
- * no code path may add another line to it after this runs (see
+ * Draft -> Issued, exactly once: computes VAT for the invoice's
+ * already-accumulated subtotal (deliberately at issue time, not while
+ * still a draft -- the reseller's country/VAT ID could still change while
+ * lines are still accumulating, and only the value at the moment of
+ * issuing should ever be locked in), creates the real Mollie payment for
+ * the resulting grand total, and stamps everything on the invoice. From
+ * this point on the invoice is immutable (CLAUDE.md §11) -- no code path
+ * may add another line to it after this runs (see
  * InvoiceStatus::isOpenForNewLines()).
  */
 final readonly class IssueInvoice
 {
     public function __construct(
         private PaymentGateway $paymentGateway,
+        private VatCalculator $vatCalculator,
         private TenantContext $tenantContext,
         private ConnectionInterface $db,
     ) {}
@@ -32,9 +39,9 @@ final readonly class IssueInvoice
             throw new LogicException("Invoice #{$invoice->id} is not a draft and cannot be issued again.");
         }
 
-        $totalCents = $invoice->total_cents === null ? 0 : $invoice->total_cents->cents;
+        $subtotalCents = $invoice->subtotal_cents === null ? 0 : $invoice->subtotal_cents->cents;
 
-        if ($totalCents <= 0) {
+        if ($subtotalCents <= 0) {
             throw new LogicException("Invoice #{$invoice->id} has nothing billed and cannot be issued.");
         }
 
@@ -48,7 +55,14 @@ final readonly class IssueInvoice
             $this->tenantContext->set($reseller);
         }
 
-        return $this->db->transaction(function () use ($invoice, $reseller, $totalCents): Invoice {
+        $vat = $this->vatCalculator->calculate(
+            $subtotalCents,
+            $reseller?->country_code,
+            $reseller?->vat_id,
+        );
+        $totalCents = $subtotalCents + $vat->vatCents;
+
+        return $this->db->transaction(function () use ($invoice, $reseller, $vat, $totalCents): Invoice {
             $description = $reseller === null
                 ? "Invoice #{$invoice->id}"
                 : "Invoice for {$reseller->name}, {$invoice->period_start->format('F Y')}";
@@ -60,6 +74,10 @@ final readonly class IssueInvoice
 
             $invoice->status = InvoiceStatus::Issued;
             $invoice->mollie_payment_id = is_string($payment['id'] ?? null) ? $payment['id'] : null;
+            $invoice->vat_rate_percent = max(0, $vat->ratePercent);
+            $invoice->vat_cents = Money::fromCents($vat->vatCents);
+            $invoice->reverse_charge = $vat->reverseCharge;
+            $invoice->total_cents = Money::fromCents($totalCents);
             $invoice->issued_at = now()->toImmutable();
             $invoice->due_at = now()->addDays(14)->toImmutable();
             $invoice->save();

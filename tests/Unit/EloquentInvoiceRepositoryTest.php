@@ -40,17 +40,17 @@ it('finds drafts ready to issue across every reseller, ignoring empty or already
 
     $ready = Invoice::factory()->for($resellerA)->create([
         'period_end' => now()->subDay(),
-        'total_cents' => 1500,
+        'subtotal_cents' => 1500,
     ]);
     // Still within its period -- not ready yet.
     Invoice::factory()->for($resellerA)->create([
         'period_end' => now()->addDay(),
-        'total_cents' => 1500,
+        'subtotal_cents' => 1500,
     ]);
     // Period ended, but nothing was billed.
     Invoice::factory()->for($resellerB)->create([
         'period_end' => now()->subDay(),
-        'total_cents' => 0,
+        'subtotal_cents' => 0,
     ]);
     // Period ended and billed, but already issued.
     Invoice::factory()->for($resellerB)->issued()->create([

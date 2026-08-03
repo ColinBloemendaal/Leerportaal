@@ -33,7 +33,7 @@ final readonly class FindOrCreateDraftInvoice
             'status' => InvoiceStatus::Draft,
             'period_start' => $periodStart,
             'period_end' => $periodStart->copy()->endOfMonth(),
-            'total_cents' => 0,
+            'subtotal_cents' => 0,
         ]);
     }
 }

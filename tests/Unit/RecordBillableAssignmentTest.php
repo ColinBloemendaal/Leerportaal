@@ -29,7 +29,7 @@ it('creates a new draft invoice and line when the reseller has none yet', functi
         ->and($line->amount_cents->cents)->toBe(1500)
         ->and($invoice)->not->toBeNull()
         ->and($invoice->status)->toBe(InvoiceStatus::Draft)
-        ->and($invoice->total_cents->cents)->toBe(1500)
+        ->and($invoice->subtotal_cents->cents)->toBe(1500)
         ->and($assignment->fresh()->billing_state)->toBe(AssignmentBillingState::Billed);
 });
 
@@ -47,7 +47,7 @@ it('reuses the existing draft invoice and accumulates the total for a second ass
 
     $invoice = Invoice::query()->where('reseller_id', $reseller->id)->first();
 
-    expect($invoice->total_cents->cents)->toBe(3000)
+    expect($invoice->subtotal_cents->cents)->toBe(3000)
         ->and($invoice->lines()->count())->toBe(2);
 });
 

@@ -19,7 +19,7 @@ it('waives a never-opened assignment revoked within 14 days, reversing the draft
     $reseller = Reseller::factory()->create();
     app(TenantContext::class)->set($reseller);
     $course = Course::factory()->create();
-    $invoice = Invoice::factory()->for($reseller)->create(['total_cents' => 3000]);
+    $invoice = Invoice::factory()->for($reseller)->create(['subtotal_cents' => 3000]);
     $assignment = CourseAssignment::factory()->for($reseller, 'reseller')->for($course)->create([
         'billing_state' => AssignmentBillingState::Billed,
         'price_cents' => 3000,
@@ -32,7 +32,7 @@ it('waives a never-opened assignment revoked within 14 days, reversing the draft
 
     expect($revoked->revoked_at)->not->toBeNull()
         ->and($revoked->billing_state)->toBe(AssignmentBillingState::Waived)
-        ->and($invoice->fresh()->total_cents->cents)->toBe(0);
+        ->and($invoice->fresh()->subtotal_cents->cents)->toBe(0);
 });
 
 it('bills a revoked assignment that was already opened, even within 14 days', function (): void {
