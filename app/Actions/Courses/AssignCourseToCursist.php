@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Courses;
 
+use App\Actions\Billing\RecordBillableAssignment;
 use App\DataTransferObjects\Courses\AssignCourseData;
 use App\Enums\AssignmentBillingState;
 use App\Models\Course;
@@ -16,13 +17,14 @@ final readonly class AssignCourseToCursist
 {
     public function __construct(
         private AssignmentPricingService $pricing,
+        private RecordBillableAssignment $recordBillableAssignment,
         private ConnectionInterface $db,
     ) {}
 
     public function __invoke(Course $course, AssignCourseData $data): CourseAssignment
     {
         $assignment = $this->db->transaction(function () use ($course, $data): CourseAssignment {
-            return CourseAssignment::query()->create([
+            $assignment = CourseAssignment::query()->create([
                 'user_id' => $data->userId,
                 'course_id' => $course->id,
                 'assigned_by_user_id' => $data->assignedByUserId,
@@ -30,6 +32,10 @@ final readonly class AssignCourseToCursist
                 'price_cents' => $this->pricing->priceFor($course),
                 'billing_state' => AssignmentBillingState::Pending,
             ]);
+
+            ($this->recordBillableAssignment)($assignment);
+
+            return $assignment;
         });
 
         // Sent after the transaction commits, not from inside it -- same
