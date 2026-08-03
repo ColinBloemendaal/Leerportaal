@@ -2,6 +2,7 @@
 
 use App\Console\Commands\CheckPlatformHealthCommand;
 use App\Console\Commands\IssueDueInvoicesCommand;
+use App\Console\Commands\ProcessOverdueInvoicesCommand;
 use App\Console\Commands\RecordStorageOverageChargesCommand;
 use App\Console\Commands\SendAssignmentDeadlineRemindersCommand;
 use App\Console\Commands\SendDailyNotificationDigestsCommand;
@@ -53,3 +54,9 @@ Schedule::command(IssueDueInvoicesCommand::class)->dailyAt('02:00');
 // charge (or credit-back, if they drop under the limit again) just stays
 // current with today's usage until the invoice is actually issued.
 Schedule::command(RecordStorageOverageChargesCommand::class)->dailyAt('03:00');
+
+// Daily: RetryOverdueInvoicePayment's own cooldown (3 days between
+// attempts) is what actually paces retries, not the schedule interval --
+// this just needs to run often enough to catch a newly-overdue invoice
+// or a cooldown that just elapsed promptly.
+Schedule::command(ProcessOverdueInvoicesCommand::class)->dailyAt('04:00');

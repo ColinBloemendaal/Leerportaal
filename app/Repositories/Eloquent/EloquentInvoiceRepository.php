@@ -32,4 +32,14 @@ final class EloquentInvoiceRepository implements InvoiceRepository
             ->where('subtotal_cents', '>', 0)
             ->cursor();
     }
+
+    public function overdue(): LazyCollection
+    {
+        // withoutTenantScope(): same reasoning as draftsReadyToIssue() --
+        // dunning runs across every reseller in one batch.
+        return Invoice::query()
+            ->withoutTenantScope()
+            ->where('status', InvoiceStatus::Overdue)
+            ->cursor();
+    }
 }

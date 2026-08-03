@@ -62,3 +62,15 @@ it('finds drafts ready to issue across every reseller, ignoring empty or already
 
     expect($found->pluck('id')->all())->toBe([$ready->id]);
 });
+
+it('finds overdue invoices across every reseller', function (): void {
+    $reseller = Reseller::factory()->create();
+
+    $overdue = Invoice::factory()->for($reseller)->issued()->create(['status' => InvoiceStatus::Overdue]);
+    Invoice::factory()->for($reseller)->issued()->create();
+    Invoice::factory()->for($reseller)->paid()->create();
+
+    $found = (new EloquentInvoiceRepository)->overdue();
+
+    expect($found->pluck('id')->all())->toBe([$overdue->id]);
+});

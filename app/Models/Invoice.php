@@ -40,6 +40,7 @@ final class Invoice extends Model
             'vat_cents' => MoneyCast::class,
             'reverse_charge' => 'boolean',
             'total_cents' => MoneyCast::class,
+            'last_dunning_attempt_at' => 'immutable_datetime',
             'issued_at' => 'immutable_datetime',
             'paid_at' => 'immutable_datetime',
             'due_at' => 'immutable_datetime',
