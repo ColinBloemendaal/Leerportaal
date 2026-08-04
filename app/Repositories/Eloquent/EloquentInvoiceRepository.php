@@ -7,6 +7,7 @@ namespace App\Repositories\Eloquent;
 use App\Contracts\Repositories\InvoiceRepository;
 use App\Enums\InvoiceStatus;
 use App\Models\Invoice;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\LazyCollection;
 
 final class EloquentInvoiceRepository implements InvoiceRepository
@@ -18,6 +19,26 @@ final class EloquentInvoiceRepository implements InvoiceRepository
             ->where('status', InvoiceStatus::Draft)
             ->latest('period_start')
             ->first();
+    }
+
+    public function currentDraftForResellerWithLines(int $resellerId): ?Invoice
+    {
+        return Invoice::query()
+            ->where('reseller_id', $resellerId)
+            ->where('status', InvoiceStatus::Draft)
+            ->with('lines.courseAssignment.user.resellerKlant')
+            ->latest('period_start')
+            ->first();
+    }
+
+    public function historyForReseller(int $resellerId, int $limit = 12): Collection
+    {
+        return Invoice::query()
+            ->where('reseller_id', $resellerId)
+            ->where('status', '!=', InvoiceStatus::Draft)
+            ->latest('period_start')
+            ->limit($limit)
+            ->get();
     }
 
     public function draftsReadyToIssue(): LazyCollection

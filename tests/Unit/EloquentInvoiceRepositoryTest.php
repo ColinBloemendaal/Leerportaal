@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Enums\InvoiceStatus;
 use App\Models\Invoice;
+use App\Models\InvoiceLine;
 use App\Models\Reseller;
 use App\Repositories\Eloquent\EloquentInvoiceRepository;
 use App\Tenancy\TenantContext;
@@ -73,4 +74,29 @@ it('finds overdue invoices across every reseller', function (): void {
     $found = (new EloquentInvoiceRepository)->overdue();
 
     expect($found->pluck('id')->all())->toBe([$overdue->id]);
+});
+
+it('finds the current draft invoice with its lines eager-loaded', function (): void {
+    $reseller = Reseller::factory()->create();
+    app(TenantContext::class)->set($reseller);
+    $draft = Invoice::factory()->for($reseller)->create();
+    InvoiceLine::factory()->for($draft)->create();
+
+    $found = (new EloquentInvoiceRepository)->currentDraftForResellerWithLines($reseller->id);
+
+    expect($found)->not->toBeNull()
+        ->and($found->relationLoaded('lines'))->toBeTrue()
+        ->and($found->lines)->toHaveCount(1);
+});
+
+it('lists a reseller\'s own past invoices, most recent period first, excluding drafts', function (): void {
+    $reseller = Reseller::factory()->create();
+    app(TenantContext::class)->set($reseller);
+    Invoice::factory()->for($reseller)->create(); // draft, excluded
+    $older = Invoice::factory()->for($reseller)->issued()->create(['period_start' => now()->subMonths(2)->startOfMonth()]);
+    $newer = Invoice::factory()->for($reseller)->paid()->create(['period_start' => now()->subMonth()->startOfMonth()]);
+
+    $found = (new EloquentInvoiceRepository)->historyForReseller($reseller->id);
+
+    expect($found->pluck('id')->all())->toBe([$newer->id, $older->id]);
 });

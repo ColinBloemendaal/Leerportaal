@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Contracts\Repositories;
 
 use App\Models\Invoice;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\LazyCollection;
 
 interface InvoiceRepository
@@ -15,6 +16,23 @@ interface InvoiceRepository
      * event on course assignment," is what creates the first one).
      */
     public function currentDraftForReseller(int $resellerId): ?Invoice;
+
+    /**
+     * Same as currentDraftForReseller(), but with its lines and each
+     * line's course assignment/cursist/klant eager-loaded -- only the
+     * reseller billing dashboard's per-klant breakdown needs that, so it's
+     * a separate method rather than always paying for the extra joins on
+     * every other caller of the lean version above.
+     */
+    public function currentDraftForResellerWithLines(int $resellerId): ?Invoice;
+
+    /**
+     * The reseller's own past (non-draft) invoices, most recent period
+     * first -- the billing dashboard's history section.
+     *
+     * @return Collection<int, Invoice>
+     */
+    public function historyForReseller(int $resellerId, int $limit = 12): Collection;
 
     /**
      * Every reseller's draft invoice whose period has ended and that has

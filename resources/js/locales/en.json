@@ -14,6 +14,7 @@
             "courses": "Courses",
             "assignments": "Assignments",
             "attempts": "Attempts",
+            "billing": "Billing",
             "invites": "Invites",
             "myExports": "My exports"
         },
@@ -195,6 +196,22 @@
                 "result": "Result",
                 "started": "Started",
                 "submitted": "Submitted"
+            },
+            "billing": {
+                "title": "Billing",
+                "currentPeriod": "Current period",
+                "noCurrentPeriod": "Nothing billed yet this period.",
+                "klantBreakdown": "Breakdown per client",
+                "klant": "Client",
+                "subtotal": "Subtotal",
+                "noBreakdown": "Nothing to break down yet.",
+                "history": "Invoice history",
+                "period": "Period",
+                "status": "Status",
+                "total": "Total",
+                "issued": "Issued",
+                "paid": "Paid",
+                "noHistory": "No invoices yet."
             }
         },
         "klant": {

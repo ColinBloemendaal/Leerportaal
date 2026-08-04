@@ -26,6 +26,7 @@ use App\Http\Controllers\NotificationPreferenceController;
 use App\Http\Controllers\PlatformDashboardController;
 use App\Http\Controllers\PlatformHealthController;
 use App\Http\Controllers\QuizAttemptIndexController;
+use App\Http\Controllers\ResellerBillingDashboardController;
 use App\Http\Controllers\ResellerBrandingController;
 use App\Http\Controllers\ResellerDashboardController;
 use App\Http\Controllers\ResellerIndexController;
@@ -195,6 +196,7 @@ Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->grou
         Route::get('/courses', [CourseIndexController::class, 'index'])->name('courses.index');
         Route::get('/assignments', [CourseAssignmentIndexController::class, 'index'])->name('assignments.index');
         Route::get('/attempts', [QuizAttemptIndexController::class, 'index'])->name('attempts.index');
+        Route::get('/billing', [ResellerBillingDashboardController::class, 'index'])->name('billing');
     });
 
     Route::prefix('admin/klant')->name('admin.klant.')->group(function () {

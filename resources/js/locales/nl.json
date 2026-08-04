@@ -14,6 +14,7 @@
             "courses": "Cursussen",
             "assignments": "Toewijzingen",
             "attempts": "Pogingen",
+            "billing": "Facturatie",
             "invites": "Uitnodigingen",
             "myExports": "Mijn exports"
         },
@@ -195,6 +196,22 @@
                 "result": "Resultaat",
                 "started": "Gestart",
                 "submitted": "Ingediend"
+            },
+            "billing": {
+                "title": "Facturatie",
+                "currentPeriod": "Huidige periode",
+                "noCurrentPeriod": "Nog niets gefactureerd deze periode.",
+                "klantBreakdown": "Verdeling per klant",
+                "klant": "Klant",
+                "subtotal": "Subtotaal",
+                "noBreakdown": "Nog niets om te verdelen.",
+                "history": "Factuurgeschiedenis",
+                "period": "Periode",
+                "status": "Status",
+                "total": "Totaal",
+                "issued": "Verzonden",
+                "paid": "Betaald",
+                "noHistory": "Nog geen facturen."
             }
         },
         "klant": {
