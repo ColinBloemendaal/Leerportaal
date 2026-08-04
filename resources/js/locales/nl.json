@@ -363,7 +363,11 @@
             "neverAccepted": "Bekijk en accepteer de verwerkersovereenkomst hieronder.",
             "staleNotice": "De verwerkersovereenkomst is bijgewerkt naar versie {version}. Bekijk en accepteer deze opnieuw.",
             "acceptedNotice": "Geaccepteerd op {date}.",
-            "accept": "Accepteren"
+            "accept": "Accepteren",
+            "viewSubprocessors": "Bekijk de huidige lijst met subverwerkers"
+        },
+        "subprocessors": {
+            "title": "Subverwerkers"
         }
     },
     "dashboard": {

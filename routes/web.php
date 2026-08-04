@@ -37,6 +37,7 @@ use App\Http\Controllers\ResellerIndexController;
 use App\Http\Controllers\ResellerKlantController;
 use App\Http\Controllers\ResellerMailTemplateController;
 use App\Http\Controllers\ResellerThemeController;
+use App\Http\Controllers\SubprocessorsController;
 use App\Http\Controllers\UserDetailController;
 use App\Http\Controllers\UserIndexController;
 use App\Http\Middleware\EnsureTwoFactorAuthenticationIsEnabled;
@@ -146,6 +147,8 @@ Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->grou
 
         Route::get('/dpa', [DataProcessingAgreementController::class, 'show'])->name('dpa.show');
         Route::post('/dpa/accept', [DataProcessingAgreementController::class, 'accept'])->name('dpa.accept');
+
+        Route::get('/subprocessors', [SubprocessorsController::class, 'show'])->name('subprocessors.show');
     });
 
     // Reference vertical slice (FormRequest -> DTO -> Action -> Repository

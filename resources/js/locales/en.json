@@ -363,7 +363,11 @@
             "neverAccepted": "Please review and accept the Data Processing Agreement below.",
             "staleNotice": "The Data Processing Agreement has been updated to version {version}. Please review and accept it again.",
             "acceptedNotice": "Accepted on {date}.",
-            "accept": "Accept"
+            "accept": "Accept",
+            "viewSubprocessors": "View the current sub-processor list"
+        },
+        "subprocessors": {
+            "title": "Sub-processors"
         }
     },
     "dashboard": {

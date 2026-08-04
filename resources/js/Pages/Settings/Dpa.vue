@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { router } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -39,9 +39,13 @@ function accept() {
 
     <pre class="dpa-document border rounded p-3 bg-body-tertiary">{{ props.document }}</pre>
 
-    <button v-if="needsAcceptance" type="button" class="btn btn-primary" :disabled="accepting" @click="accept">
+    <button v-if="needsAcceptance" type="button" class="btn btn-primary mb-3" :disabled="accepting" @click="accept">
         {{ t('settings.dpa.accept') }}
     </button>
+
+    <p>
+        <Link href="/settings/subprocessors">{{ t('settings.dpa.viewSubprocessors') }}</Link>
+    </p>
 </template>
 
 <style scoped>
