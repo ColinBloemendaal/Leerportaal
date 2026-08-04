@@ -55,3 +55,17 @@ it('treats a non-EU reseller as outside the scope of VAT', function (): void {
         ->and($result->vatCents)->toBe(0)
         ->and($result->reverseCharge)->toBeTrue();
 });
+
+it('rounds a fractional VAT amount to the nearest cent', function (): void {
+    // 333 * 21% = 69.93 -> rounds to 70.
+    $result = (new VatCalculator)->calculate(333, 'NL', null);
+
+    expect($result->vatCents)->toBe(70);
+});
+
+it('charges zero VAT on a zero subtotal', function (): void {
+    $result = (new VatCalculator)->calculate(0, 'NL', null);
+
+    expect($result->vatCents)->toBe(0)
+        ->and($result->reverseCharge)->toBeFalse();
+});
