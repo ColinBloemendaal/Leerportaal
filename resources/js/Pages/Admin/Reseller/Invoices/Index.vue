@@ -85,7 +85,11 @@ function formatMoney(cents: number): string {
                 <td>{{ invoice.status }}</td>
                 <td>{{ formatMoney(invoice.subtotal_cents) }}</td>
                 <td>
-                    {{ invoice.reverse_charge ? t('admin.reseller.invoices.reverseCharge') : formatMoney(invoice.vat_cents) }}
+                    {{
+                        invoice.reverse_charge
+                            ? t('admin.reseller.invoices.reverseCharge')
+                            : formatMoney(invoice.vat_cents)
+                    }}
                 </td>
                 <td>{{ formatMoney(invoice.total_cents) }}</td>
                 <td>{{ invoice.issued_at ?? '—' }}</td>

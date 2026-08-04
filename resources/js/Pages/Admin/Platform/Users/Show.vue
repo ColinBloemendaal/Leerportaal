@@ -49,11 +49,7 @@ function erase() {
     }
 
     erasing.value = true;
-    router.post(
-        `/admin/platform/users/${props.user.data.id}/erase`,
-        {},
-        { onFinish: () => (erasing.value = false) },
-    );
+    router.post(`/admin/platform/users/${props.user.data.id}/erase`, {}, { onFinish: () => (erasing.value = false) });
 }
 </script>
 
