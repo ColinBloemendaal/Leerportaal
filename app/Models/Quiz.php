@@ -86,4 +86,19 @@ final class Quiz extends Model
     {
         return $this->hasMany(QuizAttempt::class);
     }
+
+    /**
+     * Not a relation (there's no single FK path -- see the class docblock):
+     * walks whichever parent is actually set, module -> course or
+     * lesson -> module -> course. Named to not be mistaken for a
+     * BelongsTo/HasMany like module()/lesson() above it.
+     */
+    public function resolveCourse(): ?Course
+    {
+        if ($this->module_id !== null) {
+            return $this->module()->first()?->course()->first();
+        }
+
+        return $this->lesson()->first()?->module()->first()?->course()->first();
+    }
 }

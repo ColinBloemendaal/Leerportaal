@@ -619,5 +619,15 @@
         "markAllRead": "Mark all as read",
         "markRead": "Mark as read",
         "empty": "No notifications yet."
+    },
+    "quizzes": {
+        "attempt": {
+            "title": "Attempt {number}",
+            "submit": "Submit",
+            "previousResult": "Your previous attempt",
+            "passed": "Passed -- {score} / {max} points",
+            "failed": "Not passed -- {score} / {max} points",
+            "pendingGrading": "Awaiting grading"
+        }
     }
 }

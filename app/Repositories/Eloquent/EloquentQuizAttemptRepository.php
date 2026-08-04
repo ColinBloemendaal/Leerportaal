@@ -41,4 +41,19 @@ final class EloquentQuizAttemptRepository implements QuizAttemptRepository
     {
         return QuizAttempt::query()->where('user_id', $userId)->with('quiz')->get();
     }
+
+    public function findById(int $id): ?QuizAttempt
+    {
+        return QuizAttempt::query()->find($id);
+    }
+
+    public function latestSubmittedForQuizAndUser(int $quizId, int $userId): ?QuizAttempt
+    {
+        return QuizAttempt::query()
+            ->where('quiz_id', $quizId)
+            ->where('user_id', $userId)
+            ->whereNotNull('submitted_at')
+            ->orderByDesc('attempt_number')
+            ->first();
+    }
 }

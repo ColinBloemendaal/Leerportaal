@@ -619,5 +619,15 @@
         "markAllRead": "Alles als gelezen markeren",
         "markRead": "Als gelezen markeren",
         "empty": "Nog geen meldingen."
+    },
+    "quizzes": {
+        "attempt": {
+            "title": "Poging {number}",
+            "submit": "Indienen",
+            "previousResult": "Je vorige poging",
+            "passed": "Geslaagd -- {score} / {max} punten",
+            "failed": "Niet geslaagd -- {score} / {max} punten",
+            "pendingGrading": "Wacht op beoordeling"
+        }
     }
 }

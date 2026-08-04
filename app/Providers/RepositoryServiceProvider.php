@@ -23,6 +23,7 @@ use App\Contracts\Repositories\NotificationRepository;
 use App\Contracts\Repositories\PlatformDashboardRepository;
 use App\Contracts\Repositories\QuestionRepository;
 use App\Contracts\Repositories\QuizAttemptRepository;
+use App\Contracts\Repositories\QuizRepository;
 use App\Contracts\Repositories\ResellerDashboardRepository;
 use App\Contracts\Repositories\ResellerKlantCourseGrantRepository;
 use App\Contracts\Repositories\ResellerKlantRepository;
@@ -52,6 +53,7 @@ use App\Repositories\Eloquent\EloquentNotificationRepository;
 use App\Repositories\Eloquent\EloquentPlatformDashboardRepository;
 use App\Repositories\Eloquent\EloquentQuestionRepository;
 use App\Repositories\Eloquent\EloquentQuizAttemptRepository;
+use App\Repositories\Eloquent\EloquentQuizRepository;
 use App\Repositories\Eloquent\EloquentResellerDashboardRepository;
 use App\Repositories\Eloquent\EloquentResellerKlantCourseGrantRepository;
 use App\Repositories\Eloquent\EloquentResellerKlantRepository;
@@ -103,5 +105,6 @@ final class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(SuppressedEmailRepository::class, EloquentSuppressedEmailRepository::class);
         $this->app->bind(InvoiceRepository::class, EloquentInvoiceRepository::class);
         $this->app->bind(GroupRepository::class, EloquentGroupRepository::class);
+        $this->app->bind(QuizRepository::class, EloquentQuizRepository::class);
     }
 }

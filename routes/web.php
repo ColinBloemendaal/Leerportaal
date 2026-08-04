@@ -30,6 +30,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\NotificationPreferenceController;
 use App\Http\Controllers\PlatformDashboardController;
 use App\Http\Controllers\PlatformHealthController;
+use App\Http\Controllers\QuizAttemptController;
 use App\Http\Controllers\QuizAttemptIndexController;
 use App\Http\Controllers\ResellerBillingDashboardController;
 use App\Http\Controllers\ResellerBrandingController;
@@ -182,6 +183,9 @@ Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->grou
     Route::delete('/impersonate', [ImpersonationController::class, 'destroy'])->name('impersonate.stop');
 
     Route::get('/dashboard', [CursistDashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/quizzes/{quiz}/attempt', [QuizAttemptController::class, 'show'])->name('quizzes.attempt.show');
+    Route::post('/quiz-attempts/{attempt}/submit', [QuizAttemptController::class, 'submit'])->name('quiz-attempts.submit');
 
     Route::prefix('admin/exports')->name('admin.exports.')->group(function () {
         Route::get('/', [ExportController::class, 'index'])->name('index');

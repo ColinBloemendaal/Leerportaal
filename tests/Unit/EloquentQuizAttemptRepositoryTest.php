@@ -46,3 +46,21 @@ it('finds every attempt for a user regardless of reseller', function (): void {
 
     expect($found)->toHaveCount(2);
 });
+
+it('finds an attempt by id with no additional scoping', function (): void {
+    $attempt = QuizAttempt::factory()->create();
+
+    expect(app(EloquentQuizAttemptRepository::class)->findById($attempt->id)?->id)->toBe($attempt->id);
+});
+
+it('finds the most recent submitted attempt for a quiz and user, ignoring in-progress ones', function (): void {
+    $quiz = Quiz::factory()->create();
+    $cursist = User::factory()->create();
+    QuizAttempt::factory()->for($quiz)->for($cursist, 'user')->submitted()->create(['attempt_number' => 1]);
+    $latest = QuizAttempt::factory()->for($quiz)->for($cursist, 'user')->submitted()->create(['attempt_number' => 2]);
+    QuizAttempt::factory()->for($quiz)->for($cursist, 'user')->create(['attempt_number' => 3]); // still in progress
+
+    $found = app(EloquentQuizAttemptRepository::class)->latestSubmittedForQuizAndUser($quiz->id, $cursist->id);
+
+    expect($found?->id)->toBe($latest->id);
+});
