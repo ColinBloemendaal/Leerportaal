@@ -25,7 +25,10 @@ return new class extends Migration
             $table->timestamp('sent_at');
             $table->timestamps();
 
-            $table->unique(['course_assignment_id', 'type', 'days_before']);
+            // Explicit name: the auto-generated one (table + all three
+            // column names + "_unique") exceeds MySQL's 64-char identifier
+            // limit.
+            $table->unique(['course_assignment_id', 'type', 'days_before'], 'assignment_reminders_assignment_type_days_unique');
         });
     }
 
