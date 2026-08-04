@@ -1,6 +1,7 @@
 <?php
 
 use App\Console\Commands\CheckPlatformHealthCommand;
+use App\Console\Commands\EnforceRetentionPoliciesCommand;
 use App\Console\Commands\IssueDueInvoicesCommand;
 use App\Console\Commands\ProcessOverdueInvoicesCommand;
 use App\Console\Commands\RecordStorageOverageChargesCommand;
@@ -60,3 +61,8 @@ Schedule::command(RecordStorageOverageChargesCommand::class)->dailyAt('03:00');
 // this just needs to run often enough to catch a newly-overdue invoice
 // or a cooldown that just elapsed promptly.
 Schedule::command(ProcessOverdueInvoicesCommand::class)->dailyAt('04:00');
+
+// Daily: nothing here is urgent, but running daily (rather than weekly)
+// means a shortened per-reseller retention override takes effect
+// promptly instead of waiting up to a week.
+Schedule::command(EnforceRetentionPoliciesCommand::class)->dailyAt('05:00');

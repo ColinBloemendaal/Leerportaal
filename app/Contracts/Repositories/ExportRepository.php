@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Contracts\Repositories;
 
 use App\Models\Export;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Collection;
 
 interface ExportRepository
@@ -24,4 +25,13 @@ interface ExportRepository
      * @return Collection<int, Export>
      */
     public function forUser(int $userId): Collection;
+
+    /**
+     * For the GDPR retention purge (App\Actions\Gdpr\PurgeExpiredExports):
+     * exports that expired before the given cutoff, for one reseller (or,
+     * when $resellerId is null, platform-wide resource types).
+     *
+     * @return Collection<int, Export>
+     */
+    public function expiredBefore(CarbonInterface $cutoff, ?int $resellerId): Collection;
 }
