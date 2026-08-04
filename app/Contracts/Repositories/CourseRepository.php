@@ -24,6 +24,13 @@ interface CourseRepository extends FilterablePaginator
     public function visibleToCurrentReseller(): Collection;
 
     /**
+     * Plain lookup by id, for a controller that already validated
+     * visibility/ownership itself (e.g. the course-assignment
+     * FormRequests' own Rule::exists()) -- no additional scoping here.
+     */
+    public function findById(int $id): ?Course;
+
+    /**
      * Same visibility scope as visibleToCurrentReseller(), with
      * search/sort/filter for the reseller admin courses index --
      * deliberately not additionally gated by CourseAccessChecker, which

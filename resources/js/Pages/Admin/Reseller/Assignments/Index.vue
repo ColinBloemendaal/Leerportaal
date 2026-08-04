@@ -3,6 +3,7 @@ import { useExportRequest } from '@/Composables/useExportRequest';
 import { useIndexFilters } from '@/Composables/useIndexFilters';
 import ResellerAdminLayout from '@/Layouts/ResellerAdminLayout.vue';
 import type { FilterQuery, PaginatedCollection } from '@/types/filtering';
+import { Link } from '@inertiajs/vue3';
 import { useI18n } from 'vue-i18n';
 
 interface AssignmentRow {
@@ -32,7 +33,12 @@ function formatMoney(cents: number): string {
 </script>
 
 <template>
-    <h1 class="h4 mb-4">{{ t('admin.reseller.assignments.title') }}</h1>
+    <div class="d-flex justify-content-between align-items-start mb-4">
+        <h1 class="h4 mb-0">{{ t('admin.reseller.assignments.title') }}</h1>
+        <Link href="/admin/reseller/assignments/create" class="btn btn-primary btn-sm">
+            {{ t('admin.reseller.assignments.assignCourse') }}
+        </Link>
+    </div>
 
     <div class="row g-2 mb-3 align-items-center">
         <div class="col-auto">

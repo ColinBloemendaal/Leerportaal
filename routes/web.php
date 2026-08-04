@@ -13,6 +13,7 @@ use App\Http\Controllers\Auth\TenantLoginController;
 use App\Http\Controllers\Auth\TwoFactorAuthenticationController;
 use App\Http\Controllers\Auth\TwoFactorChallengeController;
 use App\Http\Controllers\CertificateVerificationController;
+use App\Http\Controllers\CourseAssignmentController;
 use App\Http\Controllers\CourseAssignmentIndexController;
 use App\Http\Controllers\CourseIndexController;
 use App\Http\Controllers\CursistDashboardController;
@@ -210,6 +211,10 @@ Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->grou
         Route::get('/', [ResellerDashboardController::class, 'index'])->name('dashboard');
         Route::get('/courses', [CourseIndexController::class, 'index'])->name('courses.index');
         Route::get('/assignments', [CourseAssignmentIndexController::class, 'index'])->name('assignments.index');
+        Route::get('/assignments/create', [CourseAssignmentController::class, 'create'])->name('assignments.create');
+        Route::post('/assignments', [CourseAssignmentController::class, 'store'])->name('assignments.store');
+        Route::post('/assignments/bulk', [CourseAssignmentController::class, 'storeBulk'])->name('assignments.store-bulk');
+        Route::post('/assignments/group', [CourseAssignmentController::class, 'storeGroup'])->name('assignments.store-group');
         Route::get('/attempts', [QuizAttemptIndexController::class, 'index'])->name('attempts.index');
         Route::get('/invoices', [InvoiceIndexController::class, 'index'])->name('invoices.index');
         Route::get('/billing', [ResellerBillingDashboardController::class, 'index'])->name('billing');

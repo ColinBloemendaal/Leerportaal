@@ -190,7 +190,19 @@
                 "billingState": "Factureringsstatus",
                 "price": "Prijs",
                 "assigned": "Toegewezen",
-                "deadline": "Deadline"
+                "deadline": "Deadline",
+                "back": "« Terug naar toewijzingen",
+                "assignCourse": "Cursus toewijzen",
+                "modeIndividual": "Individueel",
+                "modeBulk": "Bulk",
+                "modeGroup": "Per groep",
+                "selectCourse": "Selecteer een cursus",
+                "selectCursist": "Selecteer een cursist",
+                "selectGroup": "Selecteer een groep",
+                "cursisten": "Cursisten",
+                "group": "Groep",
+                "multiSelectHint": "Houd Ctrl (Cmd op Mac) ingedrukt om meerdere cursisten te selecteren.",
+                "assign": "Toewijzen"
             },
             "attempts": {
                 "title": "Quizpogingen",

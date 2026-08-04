@@ -26,6 +26,11 @@ final class EloquentCourseRepository implements CourseRepository
         return $this->visibilityScope()->get();
     }
 
+    public function findById(int $id): ?Course
+    {
+        return Course::query()->find($id);
+    }
+
     public function paginate(FilterRequestData $filters, int $perPage = 15): LengthAwarePaginator
     {
         $spec = new FilterableSpec(

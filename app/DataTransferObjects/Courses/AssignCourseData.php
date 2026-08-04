@@ -19,4 +19,15 @@ final readonly class AssignCourseData
         public int $userId,
         public int $assignedByUserId,
     ) {}
+
+    /**
+     * @param  array<string, mixed>  $data
+     */
+    public static function fromArray(array $data): self
+    {
+        return new self(
+            userId: (int) $data['user_id'],
+            assignedByUserId: (int) $data['assigned_by_user_id'],
+        );
+    }
 }

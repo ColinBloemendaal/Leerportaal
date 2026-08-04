@@ -45,4 +45,14 @@ interface UserRepository extends FilterablePaginator
      * @return LazyCollection<int, User>
      */
     public function withDigestFrequency(DigestFrequency $frequency): LazyCollection;
+
+    /**
+     * Cursisten (resellerklant_id set, i.e. not the reseller's own staff)
+     * belonging to one reseller -- the course-assignment picker's source.
+     * Unlike paginate()/findById() above, this one method is deliberately
+     * reseller-scoped, not platform-wide.
+     *
+     * @return Collection<int, User>
+     */
+    public function cursistenForReseller(int $resellerId): Collection;
 }

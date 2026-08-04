@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\DataTransferObjects\Filtering\FilterRequestData;
 use App\Enums\Role;
 use App\Models\Reseller;
+use App\Models\ResellerKlant;
 use App\Models\User;
 use App\Repositories\Eloquent\EloquentUserRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -63,4 +64,16 @@ it('lists only platform staff with the super-admin role', function (): void {
     $superAdmins = app(EloquentUserRepository::class)->superAdmins();
 
     expect($superAdmins->pluck('id')->all())->toBe([$superAdmin->id]);
+});
+
+it('lists only cursisten for one reseller, excluding reseller staff and other resellers', function (): void {
+    $reseller = Reseller::factory()->create();
+    $klant = ResellerKlant::factory()->for($reseller)->create();
+    $cursist = User::factory()->create(['reseller_id' => $reseller->id, 'resellerklant_id' => $klant->id, 'name' => 'Jane Cursist']);
+    User::factory()->create(['reseller_id' => $reseller->id, 'resellerklant_id' => null]); // reseller staff, no klant
+    User::factory()->create(); // a different reseller entirely
+
+    $found = app(EloquentUserRepository::class)->cursistenForReseller($reseller->id);
+
+    expect($found->pluck('id')->all())->toBe([$cursist->id]);
 });

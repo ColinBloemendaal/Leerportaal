@@ -190,7 +190,19 @@
                 "billingState": "Billing state",
                 "price": "Price",
                 "assigned": "Assigned",
-                "deadline": "Deadline"
+                "deadline": "Deadline",
+                "back": "« Back to assignments",
+                "assignCourse": "Assign course",
+                "modeIndividual": "Individual",
+                "modeBulk": "Bulk",
+                "modeGroup": "By group",
+                "selectCourse": "Select a course",
+                "selectCursist": "Select a student",
+                "selectGroup": "Select a group",
+                "cursisten": "Students",
+                "group": "Group",
+                "multiSelectHint": "Hold Ctrl (Cmd on Mac) to select multiple students.",
+                "assign": "Assign"
             },
             "attempts": {
                 "title": "Quiz attempts",

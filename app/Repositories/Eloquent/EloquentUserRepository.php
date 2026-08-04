@@ -45,4 +45,13 @@ final class EloquentUserRepository implements UserRepository
     {
         return User::query()->where('notification_digest_frequency', $frequency)->cursor();
     }
+
+    public function cursistenForReseller(int $resellerId): Collection
+    {
+        return User::query()
+            ->where('reseller_id', $resellerId)
+            ->whereNotNull('resellerklant_id')
+            ->orderBy('name')
+            ->get();
+    }
 }
