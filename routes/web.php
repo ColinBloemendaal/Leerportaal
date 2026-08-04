@@ -17,6 +17,7 @@ use App\Http\Controllers\CourseAssignmentIndexController;
 use App\Http\Controllers\CourseIndexController;
 use App\Http\Controllers\CursistDashboardController;
 use App\Http\Controllers\DataSubjectExportController;
+use App\Http\Controllers\EraseDataSubjectController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\InvitesController;
 use App\Http\Controllers\InvoiceIndexController;
@@ -193,6 +194,7 @@ Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->grou
         Route::get('/resellers', [ResellerIndexController::class, 'index'])->name('resellers.index');
         Route::get('/users', [UserIndexController::class, 'index'])->name('users.index');
         Route::get('/users/{user}', [UserDetailController::class, 'show'])->name('users.show');
+        Route::post('/users/{user}/erase', [EraseDataSubjectController::class, 'store'])->name('users.erase');
         Route::get('/activity', [ActivityLogIndexController::class, 'index'])->name('activity.index');
         Route::get('/health', [PlatformHealthController::class, 'index'])->name('health');
     });

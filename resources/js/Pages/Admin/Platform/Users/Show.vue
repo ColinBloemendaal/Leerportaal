@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-import { Link, useForm } from '@inertiajs/vue3';
+import { Link, router, useForm } from '@inertiajs/vue3';
+import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 interface UserDetail {
@@ -10,6 +11,7 @@ interface UserDetail {
     reseller_name: string | null;
     platform_role: string | null;
     created_at: string;
+    erased_at: string | null;
 }
 
 interface TimelineEntry {
@@ -28,15 +30,30 @@ const props = defineProps<{
     user: { data: UserDetail };
     timeline: { data: TimelineEntry[] };
     canImpersonate: boolean;
+    canErase: boolean;
 }>();
 
 defineOptions({ layout: AdminLayout });
 
 const impersonateForm = useForm({ reason: '' });
 const { t } = useI18n();
+const erasing = ref(false);
 
 function impersonate() {
     impersonateForm.post(`/impersonate/${props.user.data.id}`);
+}
+
+function erase() {
+    if (!window.confirm(t('admin.platform.userDetail.eraseConfirm'))) {
+        return;
+    }
+
+    erasing.value = true;
+    router.post(
+        `/admin/platform/users/${props.user.data.id}/erase`,
+        {},
+        { onFinish: () => (erasing.value = false) },
+    );
 }
 </script>
 
@@ -47,26 +64,37 @@ function impersonate() {
         <div>
             <h1 class="h4 mb-1">{{ user.data.name }}</h1>
             <p class="text-muted mb-0">{{ user.data.email }}</p>
+            <span v-if="user.data.erased_at" class="badge text-bg-secondary mt-1">
+                {{ t('admin.platform.userDetail.erased', { date: user.data.erased_at }) }}
+            </span>
         </div>
 
-        <form v-if="canImpersonate" class="d-flex gap-2" @submit.prevent="impersonate">
-            <div>
-                <input
-                    v-model="impersonateForm.reason"
-                    type="text"
-                    class="form-control form-control-sm"
-                    :class="{ 'is-invalid': impersonateForm.errors.reason }"
-                    :placeholder="t('admin.platform.userDetail.reasonPlaceholder')"
-                    :aria-label="t('admin.platform.userDetail.reasonPlaceholder')"
-                />
-                <div v-if="impersonateForm.errors.reason" class="invalid-feedback">
-                    {{ impersonateForm.errors.reason }}
+        <div class="d-flex gap-2">
+            <form v-if="canImpersonate" class="d-flex gap-2" @submit.prevent="impersonate">
+                <div>
+                    <input
+                        v-model="impersonateForm.reason"
+                        type="text"
+                        class="form-control form-control-sm"
+                        :class="{ 'is-invalid': impersonateForm.errors.reason }"
+                        :placeholder="t('admin.platform.userDetail.reasonPlaceholder')"
+                        :aria-label="t('admin.platform.userDetail.reasonPlaceholder')"
+                    />
+                    <div v-if="impersonateForm.errors.reason" class="invalid-feedback">
+                        {{ impersonateForm.errors.reason }}
+                    </div>
                 </div>
-            </div>
-            <button type="submit" class="btn btn-sm btn-outline-warning" :disabled="impersonateForm.processing">
-                {{ t('admin.platform.userDetail.impersonate') }}
-            </button>
-        </form>
+                <button type="submit" class="btn btn-sm btn-outline-warning" :disabled="impersonateForm.processing">
+                    {{ t('admin.platform.userDetail.impersonate') }}
+                </button>
+            </form>
+
+            <form v-if="canErase && !user.data.erased_at" @submit.prevent="erase">
+                <button type="submit" class="btn btn-sm btn-outline-danger" :disabled="erasing">
+                    {{ t('admin.platform.userDetail.erase') }}
+                </button>
+            </form>
+        </div>
     </div>
 
     <div class="row g-3 mb-4">

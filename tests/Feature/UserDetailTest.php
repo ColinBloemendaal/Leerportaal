@@ -20,7 +20,10 @@ it('shows a user\'s detail page with their timeline to platform staff', function
             ->where('user.data.reseller_name', 'Acme')
             // A plain platform staffer (no special role) can't impersonate --
             // only a super-admin can, per UserPolicy::impersonate().
-            ->where('canImpersonate', false));
+            ->where('canImpersonate', false)
+            // ...but any platform staffer may trigger GDPR erasure, per
+            // UserPolicy::erase() -- a deliberately broader boundary.
+            ->where('canErase', true));
 });
 
 it('offers the impersonation entry point to a super-admin viewing a reseller-side user', function (): void {

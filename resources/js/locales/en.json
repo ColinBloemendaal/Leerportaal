@@ -118,7 +118,10 @@
                 "subject": "Subject",
                 "event": "Event",
                 "description": "Description",
-                "noActivity": "No activity recorded for this user yet."
+                "noActivity": "No activity recorded for this user yet.",
+                "erase": "Erase personal data",
+                "eraseConfirm": "This permanently erases this user's name, email, and login credentials. It cannot be undone. Continue?",
+                "erased": "Personal data erased on {date}"
             },
             "activity": {
                 "title": "Activity log",

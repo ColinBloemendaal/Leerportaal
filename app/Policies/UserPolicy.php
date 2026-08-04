@@ -38,6 +38,23 @@ final class UserPolicy
     }
 
     /**
+     * GDPR erasure (CLAUDE.md §8): broader than delete() on purpose --
+     * platform staff handle requests for any user across every reseller
+     * (they're the ones with access to the cross-reseller
+     * Admin/Platform/Users pages this hangs off), while a reseller-side
+     * user may only erase within their own reseller, same boundary as
+     * delete(). Never allowed against yourself.
+     */
+    public function erase(User $user, User $target): bool
+    {
+        if ($user->is($target)) {
+            return false;
+        }
+
+        return $user->reseller_id === null || $user->reseller_id === $target->reseller_id;
+    }
+
+    /**
      * Impersonation hierarchy (human decision, CLAUDE.md §7): anyone who
      * "owns" other users can impersonate them.
      * - super-admin: any reseller-side user, any reseller (also covered

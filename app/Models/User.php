@@ -75,7 +75,13 @@ final class User extends Authenticatable implements MustVerifyEmail
             'platform_role' => Role::class,
             'notification_digest_frequency' => DigestFrequency::class,
             'notification_digest_sent_at' => 'immutable_datetime',
+            'erased_at' => 'immutable_datetime',
         ];
+    }
+
+    public function isErased(): bool
+    {
+        return $this->erased_at !== null;
     }
 
     public function hasEnabledTwoFactorAuthentication(): bool

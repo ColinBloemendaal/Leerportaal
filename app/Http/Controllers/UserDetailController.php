@@ -32,6 +32,7 @@ final class UserDetailController extends Controller
             // UserResource, since it depends on who's viewing, not just
             // who's viewed.
             'canImpersonate' => $request->user()?->can('impersonate', $found) ?? false,
+            'canErase' => $request->user()?->can('erase', $found) ?? false,
         ]);
     }
 }

@@ -118,7 +118,10 @@
                 "subject": "Onderwerp",
                 "event": "Gebeurtenis",
                 "description": "Omschrijving",
-                "noActivity": "Nog geen activiteit voor deze gebruiker."
+                "noActivity": "Nog geen activiteit voor deze gebruiker.",
+                "erase": "Persoonsgegevens wissen",
+                "eraseConfirm": "Dit wist definitief de naam, e-mail en inloggegevens van deze gebruiker. Dit kan niet ongedaan worden gemaakt. Doorgaan?",
+                "erased": "Persoonsgegevens gewist op {date}"
             },
             "activity": {
                 "title": "Activiteitenlog",
