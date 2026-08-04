@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Actions\Exporting\RequestExport;
 use App\DataTransferObjects\Exporting\RequestExportData;
+use App\Enums\ExportFormat;
 use App\Enums\ExportStatus;
 use App\Enums\FilterableResource;
 use App\Jobs\GenerateExportJob;
@@ -23,6 +24,7 @@ it('creates a pending export and dispatches the generation job', function (): vo
         userId: $user->id,
         resellerId: null,
         resourceType: FilterableResource::Resellers,
+        format: ExportFormat::Csv,
         filters: ['search' => 'acme'],
     ));
 
