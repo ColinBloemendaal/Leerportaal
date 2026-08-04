@@ -25,6 +25,26 @@ it('requests an export for platform staff and dispatches the job', function (): 
     ]);
 });
 
+it('defaults the export format to csv when none is given', function (): void {
+    Queue::fake();
+    $staff = User::factory()->platformStaff()->twoFactorEnabled()->create();
+
+    $this->actingAs($staff)->post('/admin/exports', ['resource_type' => 'resellers'])->assertRedirect();
+
+    $this->assertDatabaseHas('exports', ['user_id' => $staff->id, 'format' => 'csv']);
+});
+
+it('requests an xlsx export when explicitly asked for', function (): void {
+    Queue::fake();
+    $staff = User::factory()->platformStaff()->twoFactorEnabled()->create();
+
+    $this->actingAs($staff)
+        ->post('/admin/exports', ['resource_type' => 'resellers', 'format' => 'xlsx'])
+        ->assertRedirect();
+
+    $this->assertDatabaseHas('exports', ['user_id' => $staff->id, 'format' => 'xlsx']);
+});
+
 it('denies a reseller-side user from exporting a platform-only resource', function (): void {
     $user = User::factory()->create();
 
@@ -74,6 +94,20 @@ it('downloads a completed export via its signed URL', function (): void {
     $url = URL::temporarySignedRoute('admin.exports.download', $export->expires_at, ['export' => $export->id]);
 
     $this->actingAs($user)->get($url)->assertOk();
+});
+
+it('downloads an xlsx export with the right filename extension and content type', function (): void {
+    Storage::fake('local');
+    $user = User::factory()->create();
+    $export = Export::factory()->completed()->xlsx()->create(['user_id' => $user->id, 'path' => 'exports/test.xlsx']);
+    Storage::disk('local')->put($export->path, 'fake-xlsx-bytes');
+
+    $url = URL::temporarySignedRoute('admin.exports.download', $export->expires_at, ['export' => $export->id]);
+
+    $this->actingAs($user)->get($url)
+        ->assertOk()
+        ->assertHeader('content-type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        ->assertHeader('content-disposition', 'attachment; filename=export-resellers.xlsx');
 });
 
 it('denies downloading someone else\'s export even with the right signature shape', function (): void {

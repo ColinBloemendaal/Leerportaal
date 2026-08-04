@@ -69,6 +69,7 @@
     },
     "common": {
         "exportCsv": "Exporteren als CSV",
+        "exportXlsx": "Exporteren als XLSX",
         "pagination": "Pagina {current} van {last} ({total} totaal)",
         "noResultsFiltered": "Geen resultaten voor deze filters.",
         "notifications": "Meldingen"
@@ -264,6 +265,7 @@
         "exports": {
             "title": "Mijn exports",
             "resource": "Bron",
+            "format": "Formaat",
             "status": "Status",
             "requested": "Aangevraagd",
             "expires": "Verloopt",

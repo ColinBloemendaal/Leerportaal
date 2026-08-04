@@ -6,7 +6,7 @@ Infra: Hetzner (server) + Ploi (provisioning/deploys). No Docker.
 
 These are Ploi dashboard actions, not something scriptable from this repo:
 
-1. **Create the server** on Hetzner via Ploi's server provisioning flow (PHP 8.5, MySQL or the chosen DB, Redis, Node for asset builds).
+1. **Create the server** on Hetzner via Ploi's server provisioning flow (PHP 8.5, MySQL or the chosen DB, Redis, Node for asset builds). Ploi's default PHP provisioning already includes `ext-gd` and `ext-zip` (both required by `phpoffice/phpspreadsheet` for XLSX exports) -- no extra step needed unless a custom/minimal PHP build is used instead.
 2. **Create the site** for this repo, connect the GitHub repository, set the branch to deploy.
 3. Paste [`deploy/ploi-deploy.sh`](../deploy/ploi-deploy.sh)'s contents into Site -> **Deploy Script**. Keep the two in sync by hand -- Ploi does not read the file from the repo.
 4. Enable **Zero-downtime deployment** in Site -> Settings. Ploi then builds each release in a fresh directory and atomically symlinks it into place once the deploy script exits `0`.

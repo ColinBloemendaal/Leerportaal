@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Concerns\HasAuditLog;
+use App\Enums\ExportFormat;
 use App\Enums\ExportStatus;
 use App\Enums\FilterableResource;
 use Database\Factories\ExportFactory;
@@ -38,6 +39,7 @@ final class Export extends Model
         return [
             'resource_type' => FilterableResource::class,
             'status' => ExportStatus::class,
+            'format' => ExportFormat::class,
             'filters' => 'array',
             'expires_at' => 'immutable_datetime',
         ];

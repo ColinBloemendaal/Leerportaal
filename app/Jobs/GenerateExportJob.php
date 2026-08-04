@@ -6,6 +6,7 @@ namespace App\Jobs;
 
 use App\Contracts\Repositories\ExportRepository;
 use App\DataTransferObjects\Filtering\FilterRequestData;
+use App\Enums\ExportFormat;
 use App\Enums\ExportStatus;
 use App\Services\Exporting\ExportResourceRegistry;
 use App\Tenancy\TenantContext;
@@ -18,13 +19,16 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Str;
 use LogicException;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx as XlsxWriter;
 use Throwable;
 
 /**
- * Generates one export's CSV file. Reuses each index's existing
- * JsonResource for row-shaping -- the exact same columns the browser
- * page already renders, sourced through ExportResourceRegistry rather
- * than a second, parallel set of column definitions.
+ * Generates one export's file (CSV or XLSX, see Export::format). Reuses
+ * each index's existing JsonResource for row-shaping -- the exact same
+ * columns the browser page already renders, sourced through
+ * ExportResourceRegistry rather than a second, parallel set of column
+ * definitions.
  */
 final class GenerateExportJob implements ShouldQueue
 {
@@ -82,8 +86,9 @@ final class GenerateExportJob implements ShouldQueue
         }
 
         $disk = 'local';
-        $path = 'exports/'.Str::uuid()->toString().'.csv';
-        $filesystem->disk($disk)->put($path, $this->toCsv($rows));
+        $path = 'exports/'.Str::uuid()->toString().'.'.$export->format->extension();
+        $content = $export->format === ExportFormat::Xlsx ? $this->toXlsx($rows) : $this->toCsv($rows);
+        $filesystem->disk($disk)->put($path, $content);
 
         $export->update([
             'status' => ExportStatus::Completed,
@@ -128,5 +133,44 @@ final class GenerateExportJob implements ShouldQueue
         fclose($handle);
 
         return $csv === false ? '' : $csv;
+    }
+
+    /**
+     * @param  list<array<string, mixed>>  $rows
+     */
+    private function toXlsx(array $rows): string
+    {
+        $spreadsheet = new Spreadsheet;
+        $sheet = $spreadsheet->getActiveSheet();
+
+        if ($rows !== []) {
+            $sheet->fromArray(array_keys($rows[0]), null, 'A1');
+
+            $sheet->fromArray(array_map(
+                static fn (array $row): array => array_map(
+                    static fn (mixed $value): string => is_scalar($value) ? (string) $value : (string) json_encode($value),
+                    $row,
+                ),
+                $rows,
+            ), null, 'A2');
+        }
+
+        // PhpSpreadsheet's writer only writes to a real file path, not a
+        // stream -- a temp file round-trip is the simplest way to get the
+        // bytes back out to hand to the Filesystem disk.
+        $tempPath = tempnam(sys_get_temp_dir(), 'export-xlsx-');
+
+        if ($tempPath === false) {
+            throw new LogicException('Could not create a temporary file to build the export XLSX.');
+        }
+
+        try {
+            (new XlsxWriter($spreadsheet))->save($tempPath);
+            $contents = file_get_contents($tempPath);
+
+            return $contents === false ? '' : $contents;
+        } finally {
+            unlink($tempPath);
+        }
     }
 }

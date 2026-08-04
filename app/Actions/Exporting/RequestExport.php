@@ -17,6 +17,7 @@ final readonly class RequestExport
             'user_id' => $data->userId,
             'reseller_id' => $data->resellerId,
             'resource_type' => $data->resourceType,
+            'format' => $data->format,
             'filters' => $data->filters,
             // Explicit rather than relying on the migration's DB-level
             // default: Eloquent doesn't refetch column defaults onto the

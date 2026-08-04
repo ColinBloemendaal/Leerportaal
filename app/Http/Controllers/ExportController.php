@@ -64,7 +64,11 @@ final class ExportController extends Controller
 
         abort_if($found === null || ! $found->isDownloadable() || $found->disk === null || $found->path === null, 404);
 
-        return Storage::disk($found->disk)->download($found->path, "export-{$found->resource_type->value}.csv");
+        $filename = "export-{$found->resource_type->value}.{$found->format->extension()}";
+
+        return Storage::disk($found->disk)->download($found->path, $filename, [
+            'Content-Type' => $found->format->mimeType(),
+        ]);
     }
 
     /**

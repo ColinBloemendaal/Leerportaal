@@ -13,6 +13,7 @@ use App\Models\ResellerKlant;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx as XlsxReader;
 use Tests\TestCase;
 
 uses(TestCase::class, RefreshDatabase::class);
@@ -92,6 +93,36 @@ it('exports a reseller\'s own invoices, using the tenant context from the export
 
     expect($csv)->toContain('4500')
         ->and($csv)->not->toContain('9900');
+});
+
+it('generates a real, readable XLSX file when the format is xlsx', function (): void {
+    Reseller::factory()->create(['name' => 'Acme']);
+    $user = User::factory()->create();
+    $export = Export::factory()->xlsx()->create([
+        'user_id' => $user->id,
+        'resource_type' => FilterableResource::Resellers,
+        'filters' => (new FilterRequestData(search: null, sort: null, sortDirection: 'asc', filters: []))->filters,
+    ]);
+
+    app()->call([new GenerateExportJob($export->id), 'handle']);
+
+    $export->refresh();
+
+    expect($export->status)->toBe(ExportStatus::Completed)
+        ->and($export->path)->toEndWith('.xlsx');
+
+    $contents = Storage::disk('local')->get($export->path);
+    expect($contents)->not->toBeNull();
+
+    $tempPath = tempnam(sys_get_temp_dir(), 'xlsx-read-test-');
+    file_put_contents($tempPath, $contents);
+
+    $spreadsheet = (new XlsxReader)->load($tempPath);
+    $sheetData = $spreadsheet->getActiveSheet()->toArray();
+
+    unlink($tempPath);
+
+    expect(collect($sheetData)->flatten()->all())->toContain('Acme');
 });
 
 it('marks the export as failed via the job\'s failed() hook', function (): void {

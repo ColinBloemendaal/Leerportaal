@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Enums\ExportFormat;
 use App\Enums\ExportStatus;
 use App\Enums\FilterableResource;
 use Illuminate\Http\Request;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\URL;
  * @property int $id
  * @property FilterableResource $resource_type
  * @property ExportStatus $status
+ * @property ExportFormat $format
  * @property ?string $failure_reason
  * @property ?Carbon $expires_at
  * @property Carbon $created_at
@@ -30,6 +32,7 @@ final class ExportResource extends JsonResource
             'id' => $this->id,
             'resource_type' => $this->resource_type->value,
             'status' => $this->status->value,
+            'format' => $this->format->value,
             'failure_reason' => $this->failure_reason,
             'expires_at' => $this->expires_at?->toIso8601String(),
             'created_at' => $this->created_at->toIso8601String(),

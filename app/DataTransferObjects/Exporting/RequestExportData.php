@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataTransferObjects\Exporting;
 
+use App\Enums\ExportFormat;
 use App\Enums\FilterableResource;
 
 final readonly class RequestExportData
@@ -15,6 +16,7 @@ final readonly class RequestExportData
         public int $userId,
         public ?int $resellerId,
         public FilterableResource $resourceType,
+        public ExportFormat $format,
         public array $filters,
     ) {}
 }

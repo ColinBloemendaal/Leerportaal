@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enums\ExportFormat;
 use App\Enums\ExportStatus;
 use App\Enums\FilterableResource;
 use App\Models\Export;
@@ -26,6 +27,7 @@ final class ExportFactory extends Factory
             'user_id' => User::factory(),
             'reseller_id' => null,
             'resource_type' => FilterableResource::Resellers,
+            'format' => ExportFormat::Csv,
             'filters' => [],
             'status' => ExportStatus::Pending,
             'disk' => null,
@@ -43,6 +45,11 @@ final class ExportFactory extends Factory
             'path' => 'exports/'.fake()->uuid().'.csv',
             'expires_at' => now()->addDay(),
         ]);
+    }
+
+    public function xlsx(): self
+    {
+        return $this->state(fn (): array => ['format' => ExportFormat::Xlsx]);
     }
 
     public function failed(string $reason = 'Something went wrong.'): self

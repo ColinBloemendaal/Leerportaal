@@ -6,6 +6,7 @@ namespace App\Http\Requests\Exporting;
 
 use App\DataTransferObjects\Exporting\RequestExportData;
 use App\DataTransferObjects\Filtering\FilterRequestData;
+use App\Enums\ExportFormat;
 use App\Enums\FilterableResource;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
@@ -31,17 +32,20 @@ final class StoreExportRequest extends FormRequest
     {
         return [
             'resource_type' => ['required', new Enum(FilterableResource::class)],
+            'format' => ['nullable', new Enum(ExportFormat::class)],
         ];
     }
 
     public function toDto(int $userId, ?int $resellerId): RequestExportData
     {
         $filters = FilterRequestData::fromRequest($this);
+        $format = $this->validated('format');
 
         return new RequestExportData(
             userId: $userId,
             resellerId: $resellerId,
             resourceType: FilterableResource::from((string) $this->validated('resource_type')),
+            format: $format === null ? ExportFormat::Csv : ExportFormat::from((string) $format),
             filters: [
                 'search' => $filters->search,
                 'sort' => $filters->sort,

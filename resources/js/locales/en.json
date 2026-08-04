@@ -69,6 +69,7 @@
     },
     "common": {
         "exportCsv": "Export as CSV",
+        "exportXlsx": "Export as XLSX",
         "pagination": "Page {current} of {last} ({total} total)",
         "noResultsFiltered": "No results match these filters.",
         "notifications": "Notifications"
@@ -264,6 +265,7 @@
         "exports": {
             "title": "My exports",
             "resource": "Resource",
+            "format": "Format",
             "status": "Status",
             "requested": "Requested",
             "expires": "Expires",

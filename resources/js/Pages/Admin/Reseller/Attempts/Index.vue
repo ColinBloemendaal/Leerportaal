@@ -47,8 +47,11 @@ function passedLabel(passed: boolean | null): string {
             </select>
         </div>
         <div class="col-auto ms-auto">
-            <button type="button" class="btn btn-sm btn-outline-secondary" @click="requestExport">
+            <button type="button" class="btn btn-sm btn-outline-secondary" @click="requestExport('csv')">
                 {{ t('common.exportCsv') }}
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-secondary" @click="requestExport('xlsx')">
+                {{ t('common.exportXlsx') }}
             </button>
         </div>
     </div>

@@ -23,6 +23,7 @@ const { t } = useI18n();
         <thead>
             <tr>
                 <th scope="col">{{ t('admin.exports.resource') }}</th>
+                <th scope="col">{{ t('admin.exports.format') }}</th>
                 <th scope="col">{{ t('admin.exports.status') }}</th>
                 <th scope="col">{{ t('admin.exports.requested') }}</th>
                 <th scope="col">{{ t('admin.exports.expires') }}</th>
@@ -32,6 +33,7 @@ const { t } = useI18n();
         <tbody>
             <tr v-for="row in exports.data" :key="row.id">
                 <td>{{ row.resource_type }}</td>
+                <td>{{ row.format.toUpperCase() }}</td>
                 <td>
                     {{ row.status }}
                     <span v-if="row.status === 'failed' && row.failure_reason" class="text-danger small">
@@ -47,7 +49,7 @@ const { t } = useI18n();
                 </td>
             </tr>
             <tr v-if="exports.data.length === 0">
-                <td colspan="5" class="text-muted">{{ t('admin.exports.noExports') }}</td>
+                <td colspan="6" class="text-muted">{{ t('admin.exports.noExports') }}</td>
             </tr>
         </tbody>
     </table>
