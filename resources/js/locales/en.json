@@ -14,6 +14,7 @@
             "courses": "Courses",
             "assignments": "Assignments",
             "attempts": "Attempts",
+            "invoices": "Invoices",
             "billing": "Billing",
             "invites": "Invites",
             "myExports": "My exports"
@@ -212,6 +213,21 @@
                 "issued": "Issued",
                 "paid": "Paid",
                 "noHistory": "No invoices yet."
+            },
+            "invoices": {
+                "title": "Invoices",
+                "allStatuses": "All statuses",
+                "draft": "Draft",
+                "issued": "Issued",
+                "paid": "Paid",
+                "overdue": "Overdue",
+                "void": "Void",
+                "period": "Period",
+                "status": "Status",
+                "subtotal": "Subtotal",
+                "vat": "VAT",
+                "reverseCharge": "Reverse charged",
+                "total": "Total"
             }
         },
         "klant": {

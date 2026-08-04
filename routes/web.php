@@ -18,6 +18,7 @@ use App\Http\Controllers\CourseIndexController;
 use App\Http\Controllers\CursistDashboardController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\InvitesController;
+use App\Http\Controllers\InvoiceIndexController;
 use App\Http\Controllers\KlantDashboardController;
 use App\Http\Controllers\MailWebhookController;
 use App\Http\Controllers\MollieWebhookController;
@@ -196,6 +197,7 @@ Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->grou
         Route::get('/courses', [CourseIndexController::class, 'index'])->name('courses.index');
         Route::get('/assignments', [CourseAssignmentIndexController::class, 'index'])->name('assignments.index');
         Route::get('/attempts', [QuizAttemptIndexController::class, 'index'])->name('attempts.index');
+        Route::get('/invoices', [InvoiceIndexController::class, 'index'])->name('invoices.index');
         Route::get('/billing', [ResellerBillingDashboardController::class, 'index'])->name('billing');
     });
 

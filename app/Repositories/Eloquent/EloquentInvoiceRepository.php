@@ -5,13 +5,19 @@ declare(strict_types=1);
 namespace App\Repositories\Eloquent;
 
 use App\Contracts\Repositories\InvoiceRepository;
+use App\DataTransferObjects\Filtering\FilterableSpec;
+use App\DataTransferObjects\Filtering\FilterRequestData;
 use App\Enums\InvoiceStatus;
 use App\Models\Invoice;
+use App\Support\Filtering\QueryFilterApplier;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\LazyCollection;
 
 final class EloquentInvoiceRepository implements InvoiceRepository
 {
+    public function __construct(private readonly QueryFilterApplier $filters) {}
+
     public function currentDraftForReseller(int $resellerId): ?Invoice
     {
         return Invoice::query()
@@ -62,5 +68,16 @@ final class EloquentInvoiceRepository implements InvoiceRepository
             ->withoutTenantScope()
             ->where('status', InvoiceStatus::Overdue)
             ->cursor();
+    }
+
+    public function paginate(FilterRequestData $filters, int $perPage = 15): LengthAwarePaginator
+    {
+        $spec = new FilterableSpec(
+            allowedSorts: ['period_start', 'status', 'total_cents'],
+            allowedFilters: ['status'],
+            defaultSort: 'period_start',
+        );
+
+        return $this->filters->apply(Invoice::query(), $filters, $spec)->paginate($perPage);
     }
 }

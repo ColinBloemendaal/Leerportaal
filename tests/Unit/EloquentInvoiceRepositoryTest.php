@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\DataTransferObjects\Filtering\FilterRequestData;
 use App\Enums\InvoiceStatus;
 use App\Models\Invoice;
 use App\Models\InvoiceLine;
@@ -20,7 +21,7 @@ it('finds the current draft invoice for a reseller', function (): void {
     $draft = Invoice::factory()->for($reseller)->create(['status' => InvoiceStatus::Draft]);
     Invoice::factory()->for($reseller)->issued()->create();
 
-    $found = (new EloquentInvoiceRepository)->currentDraftForReseller($reseller->id);
+    $found = app(EloquentInvoiceRepository::class)->currentDraftForReseller($reseller->id);
 
     expect($found)->not->toBeNull()
         ->and($found->is($draft))->toBeTrue();
@@ -32,7 +33,7 @@ it('returns null when the reseller has no draft invoice', function (): void {
 
     Invoice::factory()->for($reseller)->issued()->create();
 
-    expect((new EloquentInvoiceRepository)->currentDraftForReseller($reseller->id))->toBeNull();
+    expect(app(EloquentInvoiceRepository::class)->currentDraftForReseller($reseller->id))->toBeNull();
 });
 
 it('finds drafts ready to issue across every reseller, ignoring empty or already-issued ones', function (): void {
@@ -59,7 +60,7 @@ it('finds drafts ready to issue across every reseller, ignoring empty or already
         'total_cents' => 1500,
     ]);
 
-    $found = (new EloquentInvoiceRepository)->draftsReadyToIssue();
+    $found = app(EloquentInvoiceRepository::class)->draftsReadyToIssue();
 
     expect($found->pluck('id')->all())->toBe([$ready->id]);
 });
@@ -71,7 +72,7 @@ it('finds overdue invoices across every reseller', function (): void {
     Invoice::factory()->for($reseller)->issued()->create();
     Invoice::factory()->for($reseller)->paid()->create();
 
-    $found = (new EloquentInvoiceRepository)->overdue();
+    $found = app(EloquentInvoiceRepository::class)->overdue();
 
     expect($found->pluck('id')->all())->toBe([$overdue->id]);
 });
@@ -82,7 +83,7 @@ it('finds the current draft invoice with its lines eager-loaded', function (): v
     $draft = Invoice::factory()->for($reseller)->create();
     InvoiceLine::factory()->for($draft)->create();
 
-    $found = (new EloquentInvoiceRepository)->currentDraftForResellerWithLines($reseller->id);
+    $found = app(EloquentInvoiceRepository::class)->currentDraftForResellerWithLines($reseller->id);
 
     expect($found)->not->toBeNull()
         ->and($found->relationLoaded('lines'))->toBeTrue()
@@ -96,7 +97,21 @@ it('lists a reseller\'s own past invoices, most recent period first, excluding d
     $older = Invoice::factory()->for($reseller)->issued()->create(['period_start' => now()->subMonths(2)->startOfMonth()]);
     $newer = Invoice::factory()->for($reseller)->paid()->create(['period_start' => now()->subMonth()->startOfMonth()]);
 
-    $found = (new EloquentInvoiceRepository)->historyForReseller($reseller->id);
+    $found = app(EloquentInvoiceRepository::class)->historyForReseller($reseller->id);
 
     expect($found->pluck('id')->all())->toBe([$newer->id, $older->id]);
+});
+
+it('paginates the current reseller\'s invoices, filterable by status', function (): void {
+    $reseller = Reseller::factory()->create();
+    app(TenantContext::class)->set($reseller);
+    $issued = Invoice::factory()->for($reseller)->issued()->create();
+    Invoice::factory()->for($reseller)->paid()->create();
+
+    $filters = new FilterRequestData(search: null, sort: null, sortDirection: 'asc', filters: ['status' => 'issued']);
+
+    $page = app(EloquentInvoiceRepository::class)->paginate($filters);
+
+    expect($page->total())->toBe(1)
+        ->and($page->items()[0]->is($issued))->toBeTrue();
 });

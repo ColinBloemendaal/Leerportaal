@@ -31,10 +31,25 @@ it('denies a reseller-side user from exporting a platform-only resource', functi
     $this->actingAs($user)->post('/admin/exports', ['resource_type' => 'resellers'])->assertForbidden();
 });
 
-it('404s for the invoices resource, which has no export mechanism yet', function (): void {
+it('requests an export of invoices for a reseller-side user', function (): void {
+    Queue::fake();
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->post('/admin/exports', ['resource_type' => 'invoices'])
+        ->assertRedirect();
+
+    $this->assertDatabaseHas('exports', [
+        'user_id' => $user->id,
+        'resource_type' => 'invoices',
+        'status' => ExportStatus::Pending->value,
+    ]);
+});
+
+it('denies platform staff from exporting the reseller-scoped invoices resource', function (): void {
     $staff = User::factory()->platformStaff()->twoFactorEnabled()->create();
 
-    $this->actingAs($staff)->post('/admin/exports', ['resource_type' => 'invoices'])->assertNotFound();
+    $this->actingAs($staff)->post('/admin/exports', ['resource_type' => 'invoices'])->assertForbidden();
 });
 
 it('lists a user\'s own exports with a signed download link when completed', function (): void {

@@ -7,6 +7,7 @@ namespace App\Services\Exporting;
 use App\Contracts\Repositories\ActivityLogRepository;
 use App\Contracts\Repositories\CourseAssignmentRepository;
 use App\Contracts\Repositories\CourseRepository;
+use App\Contracts\Repositories\InvoiceRepository;
 use App\Contracts\Repositories\QuizAttemptRepository;
 use App\Contracts\Repositories\ResellerKlantRepository;
 use App\Contracts\Repositories\ResellerRepository;
@@ -16,12 +17,12 @@ use App\Enums\FilterableResource;
 use App\Http\Resources\ActivityLogResource;
 use App\Http\Resources\CourseAssignmentIndexResource;
 use App\Http\Resources\CourseIndexResource;
+use App\Http\Resources\InvoiceIndexResource;
 use App\Http\Resources\QuizAttemptIndexResource;
 use App\Http\Resources\ResellerKlantResource;
 use App\Http\Resources\ResellerResource;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Resources\Json\JsonResource;
-use LogicException;
 
 /**
  * Maps a FilterableResource to the repository/resource pair its
@@ -55,7 +56,7 @@ final readonly class ExportResourceRegistry
             FilterableResource::Assignments => app(CourseAssignmentRepository::class)->paginate($filters, $perPage)->items(),
             FilterableResource::Attempts => app(QuizAttemptRepository::class)->paginate($filters, $perPage)->items(),
             FilterableResource::Activity => app(ActivityLogRepository::class)->paginate($filters, $perPage)->items(),
-            FilterableResource::Invoices => throw new LogicException('Invoices export is not available yet -- no invoices table exists (Phase 8).'),
+            FilterableResource::Invoices => app(InvoiceRepository::class)->paginate($filters, $perPage)->items(),
         });
     }
 
@@ -72,17 +73,17 @@ final readonly class ExportResourceRegistry
             FilterableResource::Assignments => CourseAssignmentIndexResource::class,
             FilterableResource::Attempts => QuizAttemptIndexResource::class,
             FilterableResource::Activity => ActivityLogResource::class,
-            FilterableResource::Invoices => throw new LogicException('Invoices export is not available yet -- no invoices table exists (Phase 8).'),
+            FilterableResource::Invoices => InvoiceIndexResource::class,
         };
     }
 
     /**
      * Whether this resource's repository relies on an ambient
-     * TenantContext (Klanten/Courses/Assignments/Attempts) -- the queued
-     * job has no HTTP request to resolve one from, so it must be set
-     * explicitly from Export::reseller_id first. False for platform-wide
-     * resources (Resellers/Users/Activity), which never look at
-     * TenantContext at all.
+     * TenantContext (Klanten/Courses/Assignments/Attempts/Invoices) --
+     * the queued job has no HTTP request to resolve one from, so it must
+     * be set explicitly from Export::reseller_id first. False for
+     * platform-wide resources (Resellers/Users/Activity), which never
+     * look at TenantContext at all.
      */
     public function requiresTenantContext(FilterableResource $resource): bool
     {
@@ -90,11 +91,11 @@ final readonly class ExportResourceRegistry
             FilterableResource::Klanten,
             FilterableResource::Courses,
             FilterableResource::Assignments,
-            FilterableResource::Attempts => true,
+            FilterableResource::Attempts,
+            FilterableResource::Invoices => true,
             FilterableResource::Resellers,
             FilterableResource::Users,
-            FilterableResource::Activity,
-            FilterableResource::Invoices => false,
+            FilterableResource::Activity => false,
         };
     }
 }

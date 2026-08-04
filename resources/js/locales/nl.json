@@ -14,6 +14,7 @@
             "courses": "Cursussen",
             "assignments": "Toewijzingen",
             "attempts": "Pogingen",
+            "invoices": "Facturen",
             "billing": "Facturatie",
             "invites": "Uitnodigingen",
             "myExports": "Mijn exports"
@@ -212,6 +213,21 @@
                 "issued": "Verzonden",
                 "paid": "Betaald",
                 "noHistory": "Nog geen facturen."
+            },
+            "invoices": {
+                "title": "Facturen",
+                "allStatuses": "Alle statussen",
+                "draft": "Concept",
+                "issued": "Verzonden",
+                "paid": "Betaald",
+                "overdue": "Achterstallig",
+                "void": "Ongeldig",
+                "period": "Periode",
+                "status": "Status",
+                "subtotal": "Subtotaal",
+                "vat": "BTW",
+                "reverseCharge": "Verlegd",
+                "total": "Totaal"
             }
         },
         "klant": {

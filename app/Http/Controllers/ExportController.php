@@ -76,8 +76,7 @@ final class ExportController extends Controller
     {
         match ($resource) {
             FilterableResource::Resellers, FilterableResource::Users, FilterableResource::Activity => $this->authorize('viewAny', 'App\Models\Reseller'),
-            FilterableResource::Klanten, FilterableResource::Courses, FilterableResource::Assignments, FilterableResource::Attempts => $this->authorize('viewAny', 'App\Models\ResellerKlant'),
-            FilterableResource::Invoices => abort(404),
+            FilterableResource::Klanten, FilterableResource::Courses, FilterableResource::Assignments, FilterableResource::Attempts, FilterableResource::Invoices => $this->authorize('viewAny', 'App\Models\ResellerKlant'),
         };
     }
 }

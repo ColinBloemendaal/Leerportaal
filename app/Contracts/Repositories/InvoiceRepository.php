@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace App\Contracts\Repositories;
 
+use App\DataTransferObjects\Filtering\FilterRequestData;
 use App\Models\Invoice;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\LazyCollection;
 
-interface InvoiceRepository
+/**
+ * @extends FilterablePaginator<Invoice>
+ */
+interface InvoiceRepository extends FilterablePaginator
 {
     /**
      * The one invoice a billable event may still attach a line to for this
@@ -51,4 +56,15 @@ interface InvoiceRepository
      * @return LazyCollection<int, Invoice>
      */
     public function overdue(): LazyCollection;
+
+    /**
+     * For the reseller admin invoices index -- Invoice is TenantScoped,
+     * so this is already scoped to the current reseller. No free-text
+     * search: nothing on the row is a natural search target (period/status
+     * /amounts), matching CourseAssignmentRepository::paginate()'s own
+     * reasoning.
+     *
+     * @return LengthAwarePaginator<int, Invoice>
+     */
+    public function paginate(FilterRequestData $filters, int $perPage = 15): LengthAwarePaginator;
 }

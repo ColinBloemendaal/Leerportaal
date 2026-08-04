@@ -41,6 +41,11 @@ const { t } = useI18n();
                         }}</Link>
                     </li>
                     <li class="nav-item">
+                        <Link href="/admin/reseller/invoices" class="nav-link text-white">{{
+                            t('layouts.reseller.invoices')
+                        }}</Link>
+                    </li>
+                    <li class="nav-item">
                         <Link href="/admin/reseller/billing" class="nav-link text-white">{{
                             t('layouts.reseller.billing')
                         }}</Link>
