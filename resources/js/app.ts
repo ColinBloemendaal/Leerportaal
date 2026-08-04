@@ -2,6 +2,7 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import 'bootstrap';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createApp, DefineComponent, h } from 'vue';
+import CookieConsentBanner from './Components/CookieConsentBanner.vue';
 import { createAppI18n } from './i18n';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Leerportaal';
@@ -17,7 +18,7 @@ createInertiaApp({
         const initialProps = props.initialPage.props as { locale?: string };
         const locale = initialProps.locale ?? 'nl';
 
-        createApp({ render: () => h(App, props) })
+        createApp({ render: () => [h(App, props), h(CookieConsentBanner)] })
             .use(plugin)
             .use(createAppI18n(locale))
             .mount(el);

@@ -73,6 +73,11 @@
         "noResultsFiltered": "Geen resultaten voor deze filters.",
         "notifications": "Meldingen"
     },
+    "cookieConsent": {
+        "message": "We gebruiken essentiële cookies om je ingelogd te houden en je tenant te onthouden. We gebruiken geen niet-essentiële cookies, behalve als je daar toestemming voor geeft.",
+        "essentialOnly": "Alleen essentieel",
+        "acceptAll": "Alles accepteren"
+    },
     "admin": {
         "platform": {
             "dashboard": {

@@ -73,6 +73,11 @@
         "noResultsFiltered": "No results match these filters.",
         "notifications": "Notifications"
     },
+    "cookieConsent": {
+        "message": "We use essential cookies to keep you signed in and remember your tenant. We don't use any non-essential cookies unless you say it's okay.",
+        "essentialOnly": "Essential only",
+        "acceptAll": "Accept all"
+    },
     "admin": {
         "platform": {
             "dashboard": {
