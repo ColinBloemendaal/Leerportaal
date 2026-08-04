@@ -343,6 +343,12 @@
             "notification": "Melding",
             "emailFrequency": "E-mailfrequentie",
             "emailFrequencyHelp": "Hoe vaak je e-mailmeldingen ontvangt. Meldingen in de app zijn altijd direct."
+        },
+        "dataExport": {
+            "title": "Mijn gegevens",
+            "description": "Download een kopie van alles wat dit platform over jou bewaart.",
+            "downloadJson": "Downloaden als JSON",
+            "downloadHtml": "Downloaden als HTML"
         }
     },
     "dashboard": {

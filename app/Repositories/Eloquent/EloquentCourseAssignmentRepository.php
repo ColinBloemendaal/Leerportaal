@@ -27,6 +27,19 @@ final class EloquentCourseAssignmentRepository implements CourseAssignmentReposi
             ->get();
     }
 
+    public function allForUser(int $userId): Collection
+    {
+        // withoutTenantScope(): a user's complete personal-data export
+        // must never depend on the request's ambient tenant, same
+        // reasoning as EloquentCertificateRepository::forUser().
+        return CourseAssignment::query()
+            ->withoutTenantScope()
+            ->where('user_id', $userId)
+            ->with('course')
+            ->orderByDesc('assigned_at')
+            ->get();
+    }
+
     public function dueForDeadlineEvaluation(): LazyCollection
     {
         // Platform-wide by design -- see the interface docblock.

@@ -10,6 +10,7 @@ use App\DataTransferObjects\Filtering\FilterRequestData;
 use App\Models\QuizAttempt;
 use App\Support\Filtering\QueryFilterApplier;
 use App\Tenancy\TenantContext;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 final class EloquentQuizAttemptRepository implements QuizAttemptRepository
@@ -34,5 +35,10 @@ final class EloquentQuizAttemptRepository implements QuizAttemptRepository
         );
 
         return $this->filters->apply($base, $filters, $spec)->paginate($perPage);
+    }
+
+    public function forUser(int $userId): Collection
+    {
+        return QuizAttempt::query()->where('user_id', $userId)->with('quiz')->get();
     }
 }

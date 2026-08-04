@@ -18,10 +18,24 @@ interface CourseAssignmentRepository extends FilterablePaginator
     /**
      * Explicitly parameterized by user id, not ambient Auth::user(), so
      * this works the same whether called from a request or a queued job.
+     * Active assignments only (excludes revoked) -- the cursist
+     * dashboard's own need.
      *
      * @return Collection<int, CourseAssignment>
      */
     public function forUser(int $userId): Collection;
+
+    /**
+     * Every assignment this user has ever had, revoked or not, regardless
+     * of the request's ambient tenant -- the GDPR data-subject export's
+     * source. Deliberately a separate method from forUser() above rather
+     * than adding an "include revoked" flag to it: that method's callers
+     * (the cursist dashboard) never want revoked rows, so a flag would be
+     * dead weight there.
+     *
+     * @return Collection<int, CourseAssignment>
+     */
+    public function allForUser(int $userId): Collection;
 
     /**
      * Every active, deadlined assignment across every reseller --

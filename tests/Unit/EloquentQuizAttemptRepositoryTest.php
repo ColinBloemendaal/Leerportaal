@@ -34,3 +34,15 @@ it('scopes attempts to the current reseller via the attempting user, filtered by
 
     expect($result->total())->toBe(1);
 });
+
+it('finds every attempt for a user regardless of reseller', function (): void {
+    $quiz = Quiz::factory()->create();
+    $cursist = User::factory()->create();
+    QuizAttempt::factory()->for($quiz)->for($cursist, 'user')->create(['attempt_number' => 1]);
+    QuizAttempt::factory()->for($quiz)->for($cursist, 'user')->create(['attempt_number' => 2]);
+    QuizAttempt::factory()->for($quiz)->create(); // someone else's
+
+    $found = app(EloquentQuizAttemptRepository::class)->forUser($cursist->id);
+
+    expect($found)->toHaveCount(2);
+});

@@ -343,6 +343,12 @@
             "notification": "Notification",
             "emailFrequency": "Email frequency",
             "emailFrequencyHelp": "How often you receive email notifications. In-app notifications are always immediate."
+        },
+        "dataExport": {
+            "title": "My data",
+            "description": "Download a copy of everything this platform holds about you.",
+            "downloadJson": "Download as JSON",
+            "downloadHtml": "Download as HTML"
         }
     },
     "dashboard": {

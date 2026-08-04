@@ -16,6 +16,7 @@ use App\Http\Controllers\CertificateVerificationController;
 use App\Http\Controllers\CourseAssignmentIndexController;
 use App\Http\Controllers\CourseIndexController;
 use App\Http\Controllers\CursistDashboardController;
+use App\Http\Controllers\DataSubjectExportController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\InvitesController;
 use App\Http\Controllers\InvoiceIndexController;
@@ -136,6 +137,10 @@ Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->grou
             ->name('email-templates.edit');
         Route::put('/email-templates/{type}', [ResellerMailTemplateController::class, 'update'])
             ->name('email-templates.update');
+
+        Route::get('/data-export', [DataSubjectExportController::class, 'show'])->name('data-export.show');
+        Route::get('/data-export/json', [DataSubjectExportController::class, 'json'])->name('data-export.json');
+        Route::get('/data-export/html', [DataSubjectExportController::class, 'html'])->name('data-export.html');
     });
 
     // Reference vertical slice (FormRequest -> DTO -> Action -> Repository
