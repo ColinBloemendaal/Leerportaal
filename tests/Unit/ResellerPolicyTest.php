@@ -31,3 +31,19 @@ it('denies reseller-side users from managing resellers', function (): void {
         ->and($this->policy->view($user, $reseller))->toBeFalse()
         ->and($this->policy->update($user, $reseller))->toBeFalse();
 });
+
+it('lets a reseller-side user manage their own reseller\'s DPA but not another\'s', function (): void {
+    $reseller = Reseller::factory()->create();
+    $otherReseller = Reseller::factory()->create();
+    $user = User::factory()->create(['reseller_id' => $reseller->id]);
+
+    expect($this->policy->manageDpa($user, $reseller))->toBeTrue()
+        ->and($this->policy->manageDpa($user, $otherReseller))->toBeFalse();
+});
+
+it('denies platform staff from managing a reseller\'s DPA through this ability', function (): void {
+    $staff = User::factory()->platformStaff()->create();
+    $reseller = Reseller::factory()->create();
+
+    expect($this->policy->manageDpa($staff, $reseller))->toBeFalse();
+});

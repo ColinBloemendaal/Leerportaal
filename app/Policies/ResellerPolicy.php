@@ -31,4 +31,16 @@ final class ResellerPolicy
     {
         return $user->reseller_id === null;
     }
+
+    /**
+     * CLAUDE.md §8 (GDPR): "Per-reseller DPA acceptance and record." The
+     * inverse boundary from every other method on this policy -- a
+     * reseller-side user manages their *own* reseller's DPA, not
+     * platform staff managing any reseller. Same boundary as
+     * ResellerThemePolicy.
+     */
+    public function manageDpa(User $user, Reseller $reseller): bool
+    {
+        return $user->reseller_id === $reseller->id;
+    }
 }

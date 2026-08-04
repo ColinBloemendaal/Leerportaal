@@ -357,6 +357,13 @@
             "description": "Download een kopie van alles wat dit platform over jou bewaart.",
             "downloadJson": "Downloaden als JSON",
             "downloadHtml": "Downloaden als HTML"
+        },
+        "dpa": {
+            "title": "Verwerkersovereenkomst",
+            "neverAccepted": "Bekijk en accepteer de verwerkersovereenkomst hieronder.",
+            "staleNotice": "De verwerkersovereenkomst is bijgewerkt naar versie {version}. Bekijk en accepteer deze opnieuw.",
+            "acceptedNotice": "Geaccepteerd op {date}.",
+            "accept": "Accepteren"
         }
     },
     "dashboard": {

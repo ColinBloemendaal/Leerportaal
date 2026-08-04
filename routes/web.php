@@ -16,6 +16,7 @@ use App\Http\Controllers\CertificateVerificationController;
 use App\Http\Controllers\CourseAssignmentIndexController;
 use App\Http\Controllers\CourseIndexController;
 use App\Http\Controllers\CursistDashboardController;
+use App\Http\Controllers\DataProcessingAgreementController;
 use App\Http\Controllers\DataSubjectExportController;
 use App\Http\Controllers\EraseDataSubjectController;
 use App\Http\Controllers\ExportController;
@@ -142,6 +143,9 @@ Route::middleware(['auth', EnsureTwoFactorAuthenticationIsEnabled::class])->grou
         Route::get('/data-export', [DataSubjectExportController::class, 'show'])->name('data-export.show');
         Route::get('/data-export/json', [DataSubjectExportController::class, 'json'])->name('data-export.json');
         Route::get('/data-export/html', [DataSubjectExportController::class, 'html'])->name('data-export.html');
+
+        Route::get('/dpa', [DataProcessingAgreementController::class, 'show'])->name('dpa.show');
+        Route::post('/dpa/accept', [DataProcessingAgreementController::class, 'accept'])->name('dpa.accept');
     });
 
     // Reference vertical slice (FormRequest -> DTO -> Action -> Repository

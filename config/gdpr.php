@@ -26,4 +26,20 @@ return [
         'expired_exports_grace_days' => (int) env('RETENTION_EXPIRED_EXPORTS_GRACE_DAYS', 7),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Data Processing Agreement version
+    |--------------------------------------------------------------------------
+    |
+    | CLAUDE.md §7/§8: "Every reseller gets a DPA" / "Per-reseller DPA
+    | acceptance and record." Bump this (and docs/dpa.md's own version
+    | header) whenever the DPA text changes -- a reseller's stored
+    | `dpa_accepted_version` is compared against this exact string, so
+    | changing it is what makes every reseller's existing acceptance
+    | stale and prompts them to review and re-accept.
+    |
+    */
+
+    'dpa_version' => env('DPA_VERSION', '2026-08-04'),
+
 ];
